@@ -1,0 +1,48 @@
+
+@extends('layouts.student-app')
+
+@section('content')
+    <section class="main__header">
+        <div class="d-flex align-items-center gap-2" style="width: 70%">
+            <a
+                href="/"
+                style="display: block"
+                class="main__mobile--logo"
+            >
+                <img class="logo" src="{{ asset('assets/images/logo.png') }}" alt="Logo" />
+            </a>
+            <h3 class="section__title mx-lg-0 mx-auto">Mustaqil ta`lim</h3>
+        </div>
+
+        <!-- Profile -->
+        <div class="right__sider--head main__banner--profile">
+             <button class="btn btn-text">
+                <a href="{{ route('StudentProfile') }}">
+                    <i class="fa-solid fa-circle-user bar__icon"></i>
+                </a>
+            </button>
+            <button
+                type="button"
+                class="btn btn-text dropdown-toggle mobileHide"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                <img
+                    class="profile__small--image"
+                    src="{{ asset('assets/images/profile-image.png') }}"
+                    alt="Profile"
+                />
+                {{ auth()->user()->name }}
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="row m-0">
+        @foreach( $selfstudies as $s)
+            <livewire:self-study :s="$s" />
+        @endforeach
+    </section>
+@endsection
