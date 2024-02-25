@@ -65,7 +65,7 @@
                                 <div class="input-group p-3">
                                     <label for="checkBox{{$option->id}}"> {{ $v[$i-1] }}</label><br/>
                                     <input style="width:5%" id="checkBox{{$option->id}}" type="checkbox" value="{{ $option->is_correct }}" class="form-control {{ $errors->has('status') ? ' is-invalid' : '' }}"  {{ ($option && $option->is_correct == 1) ? 'checked' : '' }} disabled>
-                                    <input style="width:5%" id="checkBox{{$option->id}}" type="checkbox" value="{{ $option->is_correct }}" name="status.{{$option->id}}" class="form-control {{ $errors->has('status') ? ' is-invalid' : '' }}" {{ ($option && $option->is_correct == 1) ? 'checked' : '' }}>
+                                    <input style="width:5%" id="checkBox{{$option->id}}" type="checkbox" name="status[{{$option->id}}]" class="form-control {{ $errors->has('status') ? ' is-invalid' : '' }}" {{ ($option && $option->is_correct == 1) ? 'checked' : '' }}>
                                     <input style="width:70% "  type="text" name="option[]" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('option',$option->option) }}" required/>
                                     <input style="width:70% "  type="hidden" name="option_id[]" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('option_id',$option->id) }}" required/>
                                     <input style="width:7% " type="numeric" name="difficulty[]" class="form-control ml-1  {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('difficulty',$option->difficulty) }}" required />
