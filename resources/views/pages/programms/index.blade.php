@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('content') 
+@section('content')
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -66,7 +66,7 @@
                                     </td>
                                     <td>{{ $programm->id }}</td>
                                     <td>{{ $programm->programm_name }}</td>
-                                    <td>{{ $programm->faculty->faculty_name }}</td>
+                                    <td>{{ optional($programm->faculty)->faculty_name }}</td>
                                     <td class="text-center">
                                         @can('programm.destroy')
                                             <form id="deleteForm" action="{{ route('programmDestroy', $programm->id) }}"
@@ -147,7 +147,7 @@
                                 console.log('response', response)
                                 if(response.success == true){
                                     $.each(all_ids, function(key, val) {
-                                        $('#programm_ids' + val).remove();   
+                                        $('#programm_ids' + val).remove();
                                     });
                                     swalWithBootstrapButtons.fire({
                                       title: "O'chirildi!",
@@ -158,10 +158,10 @@
                                 }else {
                                     alert(response.message)
                                 }
-                                
+
                             }
                         });
-                  } 
+                  }
                   else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel

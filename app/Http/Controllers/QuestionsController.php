@@ -109,7 +109,7 @@ class QuestionsController extends Controller
             ->get();
 
 
-//            dd($request->option_id);
+//            dd($request);
 
         if ($request->status) {
             foreach ($request->option_id as $key => $id) {
@@ -119,7 +119,8 @@ class QuestionsController extends Controller
                     ->first();
                 $option->update([
                     'is_correct' => $status,
-                    'difficulty' => $request->difficulty[$key],
+                    'option' => $request->option[$key],
+                    'difficulty' => $request->difficulty[$key] * 10,
                 ]);
             }
         } else {
@@ -130,7 +131,8 @@ class QuestionsController extends Controller
                     ->first();
                 $option->update([
                     'is_correct' => 0,
-                    'difficulty' => $request->difficulty[$k],
+                    'option' => $request->option[$key],
+                    'difficulty' => $request->difficulty[$k] * 10,
                 ]);
             }
         }

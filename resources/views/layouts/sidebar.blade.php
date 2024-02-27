@@ -433,9 +433,9 @@
 
             </li>
 
-            <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview">
                 <a href="#"
-                   class="nav-link {{ Request::is('teachers*') ? 'active' : '' }}">
+                   class="nav-link {{ Request::is('result*') ? 'active' : '' }}">
                     <i class="fa-solid fa-square-poll-vertical"></i>
                     <p>
                         Natijalar
@@ -443,24 +443,21 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview"
-                    style="display: {{ Request::is('teachers*') || Request::is('role*') || Request::is('user*') ? 'block' : 'none' }};">
+                    style="display: {{ Request::is('attendance_logs*') ? 'block' : 'none' }};">
 
-                    @can('result.show')
+                    @can('attendance_log.show')
                         <li class="nav-item">
                             <a href="{{ route('results.index') }}"
-                               class="nav-link {{ Request::is('teachers*') ? 'active' : '' }}">
-                                <i class="fa-solid fa-user-group"></i>
-                                <!-- <sub><i class="fa-solid fa-circle-plus"></i></sub> -->
+                               class="nav-link {{ Request::is('result*') ? 'active' : '' }}">
+                                <i class="fa-solid fa-check"></i>
                                 <p>Natijalar</p>
                             </a>
-
                         </li>
-                    @endcan
 
+                    @endcan
                 </ul>
 
             </li>
-
 
             <li class="nav-item has-treeview">
                 <a href="" class="nav-link">
