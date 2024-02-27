@@ -32,23 +32,27 @@ class ImportStudent implements WithHeadingRow, ToCollection
             ]);
         }
 
+
+
         foreach ($rows as $row) {
             $programName = trim($row['yonalish']);
             $program = Programm::where('programm_name', $programName)->first();
 
+        $id = auth()->user()->id;
             if ($program) {
                 // Student mavjudligini tekshirish
                 $existingStudent = Student::where('login', $row['login'])->first();
                 if (!$existingStudent) {
-                    $student = Student::create([
-                        'programm_id' => $program->id,
-                        'fullname' => trim($row['fish']),
-                        'photo' => trim($row['rasm']),
-                        'email' => trim($row['email']),
-                        'phone' => trim($row['telefon']),
-                        'login' => trim($row['login']),
-                        'password' => trim($row['parol']),
-                    ]);
+                   $student = Student::create([
+                    'user_id' => $id,
+                    'programm_id' => $program->id,
+                    'fullname' => trim($row['fish']),
+                    'photo' => trim($row['rasm']),
+                    'email' => trim($row['email']),
+                    'phone' => trim($row['telefon']),
+                    'login' => trim($row['login']),
+                    'password' => trim($row['parol']),
+                ]);
 
                     // Foydalanuvchi mavjudligini tekshirish
                     $existingUser = User::where('login', $row['login'])->first();
