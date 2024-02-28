@@ -24,7 +24,7 @@ class StoreQuetionsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'question' => ['string'],
         ];
     }
 }

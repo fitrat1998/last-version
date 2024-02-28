@@ -42,73 +42,85 @@
                     <div class="card-body w-100" style="overflow:auto">
                         <!-- Data table -->
                         <table id="dataTable"
-                            class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg"
-                            user="grid" aria-describedby="dataTable_info">
+                               class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg"
+                               user="grid" aria-describedby="dataTable_info">
                             <thead>
-                                <tr>
-                                    <th>
-                                        <div class="icheck-success">
-                                            <input type="checkbox" name="" id="select_all_ids">
-                                            <label for="select_all_ids" ></label>
-                                        </div>
-                                    </th>
-                                    <th>ID</th>
-                                    <th>Fish</th>
-                                    <th>Fakultet</th>
-                                    <th>Telefon raqam</th>
-                                    <th>Email</th>
-                                    <th>Login</th>
-                                    <th>Rasm</th>
-                                    <th class="w-25">Amallar</th>
-                                </tr>
+                            <tr>
+                                <th>
+                                    <div class="icheck-success">
+                                        <input type="checkbox" name="" id="select_all_ids">
+                                        <label for="select_all_ids"></label>
+                                    </div>
+                                </th>
+                                <th>ID</th>
+                                <th>Fish</th>
+                                <th>Fakultet</th>
+                                <th>Telefon raqam</th>
+                                <th>Email</th>
+                                <th>Login</th>
+                                <th>Guruhlar</th>
+                                <th>Rasm</th>
+                                <th class="w-25">Amallar</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach ($teachers as $teacher)
-                                     <tr id="datas_ids{{ $teacher->id }}">
-                                        <td>
-                                            <div class="icheck-success">
-                                                <input type="hidden" name="" id="delete_url" value="{{ route('teachers.DeleteAll') }}">
-                                                <input type="checkbox" class="checkbox_ids" name="ids" id="checkboxSuccess.{{$teacher->id}}" value="{{ $teacher->id }}">
-                                                <label for="checkboxSuccess.{{$teacher->id}}" >
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>{{ $teacher->id }}</td>
-                                        <td>{{ $teacher->fullname }}</td>
-                                        <td>
-                                            @if($teacher->faculties)
-                                                {{ $teacher->faculties->faculty_name }}
-                                            @else
+                            @foreach ($teachers as $teacher)
+                                <tr id="datas_ids{{ $teacher->id }}">
+                                    <td>
+                                        <div class="icheck-success">
+                                            <input type="hidden" name="" id="delete_url"
+                                                   value="{{ route('teachers.DeleteAll') }}">
+                                            <input type="checkbox" class="checkbox_ids" name="ids"
+                                                   id="checkboxSuccess.{{$teacher->id}}" value="{{ $teacher->id }}">
+                                            <label for="checkboxSuccess.{{$teacher->id}}">
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{ $teacher->id }}</td>
+                                    <td>{{ $teacher->fullname }}</td>
+                                    <td>
+                                        @if($teacher->faculties)
+                                            {{ $teacher->faculties->faculty_name }}
+                                        @else
 
-                                            @endif
-                                        </td>
-
-
-                                        <td>{{ $teacher->phone }}</td>
-                                        <td>{{ $teacher->email }}</td>
-                                        <td>{{ $teacher->login }}</td>
-                                        <td><img src="{{ asset('storage/teacher-photos/'.$teacher->photo)}}" alt="Rasm"></td>
+                                        @endif
+                                    </td>
 
 
+                                    <td>{{ $teacher->phone }}</td>
+                                    <td>{{ $teacher->email }}</td>
+                                    <td>{{ $teacher->login }}</td>
+                                    <td>
+                                        @foreach($teacher->attach_group($teacher->id) as $g)
+                                            <span class="btn btn-info p-0">{{ $g->name }}</span>
+                                        @endforeach
+                                    </td>
 
-                                        <td class="">
-                                            @can('teacher.destroy')
-                                                <form action="{{ route('teachers.destroy', $teacher->id) }}" method="post">
-                                                    @csrf
-                                                    <div class="btn-group">
-                                                        @can('teacher.edit')
-                                                            <a href="{{ route('teachers.edit', $teacher->id) }}" type="button"
-                                                                class="btn btn-info btn-sm">Tahrirlash</a>
-                                                        @endcan
-                                                        <input name="_method" type="hidden" value="DELETE">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            onclick="if (confirm('Вы уверены?')) { this.form.submit() } ">O'chirish</button>
-                                                    </div>
-                                                </form>
-                                            @endcan
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                    <td><img src="{{ asset('storage/teacher-photos/'.$teacher->photo)}}" alt="Rasm">
+                                    </td>
+
+
+                                    <td class="">
+                                        @can('teacher.destroy')
+                                            <form action="{{ route('teachers.destroy', $teacher->id) }}" method="post">
+                                                @csrf
+                                                <div class="btn-group">
+                                                    @can('teacher.edit')
+                                                        <a href="{{ route('teachers.edit', $teacher->id) }}"
+                                                           type="button"
+                                                           class="btn btn-info btn-sm">Tahrirlash</a>
+                                                    @endcan
+                                                    <input name="_method" type="hidden" value="DELETE">
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                            onclick="if (confirm('Вы уверены?')) { this.form.submit() } ">
+                                                        O'chirish
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        @endcan
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

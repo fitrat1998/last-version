@@ -6,11 +6,16 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1>O'qitvchi</h1>
+                     @if(session('success'))
+                            <div class="alert alert-danger">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('home') }}">Bo'sh sahifa</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('attachstudents.index') }}">Talabalar</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('attachstudents.index') }}">O'qituvchilar</a></li>
                         <li class="breadcrumb-item active">Biriktirish</li>
                     </ol>
                 </div>

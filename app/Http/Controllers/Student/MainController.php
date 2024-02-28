@@ -49,22 +49,24 @@ class MainController extends Controller
             ->where('students_id', $student->student_id)
             ->first();
 
-        if ($attached->groups_id) {
+        if ($attached) {
             $attached_subject = DB::table('subject_has_group')
-                                ->where('groups_id', $attached->groups_id)
-                                ->get();
-            
-            $attached_subject = $attached_subject->pluck('subjects_id')->toArray();   
+                ->where('groups_id', $attached->groups_id)
+                ->get();
 
-            if ($attached_subject) { 
+            $attached_subject = $attached_subject->pluck('subjects_id')->toArray();
+
+            if ($attached_subject) {
                 $subjects = Subject::whereIn('id', $attached_subject)
-                                    ->get();
-        
+                    ->get();
+
             }
+
+        }
+        else {
+            $subjects = [];
         }
 
-        
- 
 
         $examTypes = Examtype::pluck('id');
         $results = [];
@@ -79,7 +81,7 @@ class MainController extends Controller
             }
         }
 
-        return view('students.index', compact('subjects', 'announcements','results'));
+        return view('students.index', compact('subjects', 'announcements', 'results'));
 
     }
 
@@ -108,7 +110,7 @@ class MainController extends Controller
         return view('students.finalexam', compact('finalexams'));
     }
 
-     public function currentexam()
+    public function currentexam()
     {
         $currentexams = Currentexam::all();
 
@@ -137,30 +139,29 @@ class MainController extends Controller
                     $subjects[] = $subject;
                 }
 
-                if($exercise){
+                if ($exercise) {
                     $exercises [] = $exercise;
                 }
             }
 
-            foreach($exercises as $e){
+            foreach ($exercises as $e) {
                 $lesson = Lessontype::find($e->lessontypes_id)->first();
                 $topic = Topic::find($e->topics_id)->first();
 
-                if($lesson){
-                    $lessons [] = $lesson; 
+                if ($lesson) {
+                    $lessons [] = $lesson;
                 }
 
-                if($topic){
-                    $topics [] = $topic; 
+                if ($topic) {
+                    $topics [] = $topic;
                 }
             }
 
-            
-        } 
-      
+
+        }
 
 
-        return view('students.retry', compact('retries','absents','subjects','exercises','topics','lessons'));
+        return view('students.retry', compact('retries', 'absents', 'subjects', 'exercises', 'topics', 'lessons'));
     }
 
     public function result()

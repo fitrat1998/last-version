@@ -42,20 +42,14 @@
                                     </option>
                                     @endforeach
                                 </select>
-                                
+
                             </div>
                             <div class="form-group">
                                 <label>Yo'nalish</label><br />
-                                <select class="form-control" name="programm_name" id="programm_id">
-                                    @foreach($programms as $p)
-                                    <option value = "{{ $p->programm_name}}" {{ ($p->id == $programm->id ? "selected":'') }}>
-                                        {{ $p->programm_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                
+                                  <input type="text" name="programm_name" class="form-control {{ $errors->has('name') ? "is-invalid":"" }}" value="{{ old('programm',$programm->programm_name) }}" required>
+
                             </div>
-                         
+
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success float-right">Saqlash</button>
                                 <a href="{{ route('groupIndex') }}" class="btn btn-default float-left">Bekor qilish</a>

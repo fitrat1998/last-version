@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreTeacherRequest;
@@ -33,6 +34,15 @@ class TeacherController extends Controller
         $subjects = Subject::all();
         $groups = Group::all();
         $faculties = Faculty::all();
+
+         $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        if ($role[0] == 'teacher') {
+            $groups = Teacher::where('user_id', $user)->get();
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $teachers = Teacher::all();
+        }
 
         return view('pages.teachers.index',compact('teachers','groups','subjects','faculties','topics'));
     }
@@ -153,10 +163,12 @@ class TeacherController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        User::where('teacher_id',$teacher->id)->update([
+        $u_id = User::where('teacher_id',$teacher->id)->first();
+
+        User::where('teacher_id',$u_id->teacher_id)->update([
             'password' => Hash::make($request->get('password')),
             'name' => $request->get('fullname'),
-            'student_id' => $teacher->id,
+            'teacher_id' => $teacher->id,
             'theme' => 'default'
         ]);
 
@@ -192,19 +204,26 @@ class TeacherController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,
             "message" => "This delete action failed!"
         ]);
     }
-    
+
     public function destroy($id)
     {
         abort_if_forbidden('teacher.destroy');
 
         Teacher::find($id)->delete();
+
+        $test = DB::table('teacher_has_group')
+            ->where('teachers_id',$id)
+            ->delete();
+        $test = DB::table('model_has_roles')
+            ->where('model_id',$id)
+            ->delete();
         return redirect()->back();
     }
 }

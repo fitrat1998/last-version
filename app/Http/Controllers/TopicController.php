@@ -137,7 +137,7 @@ class TopicController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,
@@ -147,6 +147,9 @@ class TopicController extends Controller
 
     public function destroy($id)
     {
+
         Topic::find($id)->delete();
+        return redirect()->route('topics.index');
+
     }
 }

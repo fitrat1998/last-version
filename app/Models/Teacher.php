@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 
 
@@ -24,6 +25,16 @@ class Teacher extends Authenticatable
         'password',
         'faculties_id',
     ];
+
+    public function attach_group($id)
+    {
+         $test = DB::table('teacher_has_group')
+            ->where('teachers_id',$id)
+             ->pluck('groups_id');
+         $groups = Group::whereIn('id',$test)->get();
+
+         return $groups;
+    }
 
     public function groups()
     {

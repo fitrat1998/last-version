@@ -36,7 +36,7 @@ class Questions extends Component
         'variant' => 'required|array',
         'answer' => 'required|array',
         'difficulty' => 'required|array',
-        'question' => 'required'
+        'question' => 'required|string'
     ];
 
     public function countCreate()

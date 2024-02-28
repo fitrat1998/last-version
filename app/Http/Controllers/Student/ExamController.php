@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendancecheck;
 use App\Models\Currentexam;
 use App\Models\ExamsStatusUser;
 use App\Models\Finalexam;
@@ -13,6 +14,7 @@ use App\Models\Result;
 use App\Models\Retriesexam;
 use App\Models\Selfstudyexams;
 use App\Models\Topic;
+use App\Models\User;
 use Carbon\Carbon;
 use function view;
 
@@ -159,6 +161,13 @@ class ExamController extends Controller
         else if($type_id == 5){
             $self = Currentexam::find($id);
         }
+
+        $u_id = auth()->user()->id;
+        $u_id = User::find($u_id );
+
+        $absent = Attendancecheck::find($u_id);
+
+//        dd($absent);
 
         $number = $self->number;
         $test = [];

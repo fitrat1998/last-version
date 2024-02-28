@@ -36,7 +36,7 @@ class AttachTeacherController extends Controller
      */
     public function create()
     {
-         abort_if_forbidden('teacherattach.create');
+        abort_if_forbidden('teacherattach.create');
 
     }
 
@@ -49,7 +49,7 @@ class AttachTeacherController extends Controller
     public function store(StoreAttachTeacherRequest $request)
     {
 
-     abort_if_forbidden('teacherattach.create');
+        abort_if_forbidden('teacherattach.create');
 
 
 //        dd($request);
@@ -63,19 +63,26 @@ class AttachTeacherController extends Controller
         foreach ($teachers as $teacher) {
             $existingTeacher = DB::table('teacher_has_group')
                 ->where('teachers_id', $teacher)
+                ->where('groups_id', $request->groups_id)
+                ->where('faculties_id', $request->faculty_id)
                 ->first();
 
             if (!$existingTeacher) {
                 DB::table('teacher_has_group')->insert([
                     'teachers_id' => $teacher,
-                    'faculties_id' => $faculties, // Bu qismni o'zingizga muvofiq o'zgartiring
-                    'groups_id' => $groups,       // Bu qismni o'zingizga muvofiq o'zgartiring
+                    'faculties_id' => $faculties,
+                    'groups_id' => $groups,
                 ]);
+                return redirect()->route('teachers.index')->with('success', 'O`qituvchi muvvafaqiyatli Biriktirildi');
+
+            }
+            else {
+                return redirect()->back()->with('success', 'O`qituvchi allaqacho bu guruhga biriktirilgan');
             }
         }
 
 
-        return redirect()->back();
+        return redirect()->route('teachers.index')->with('success', 'O`qituvchi muvvafaqiyatli Biriktirildi');
     }
 
     /**
@@ -88,25 +95,26 @@ class AttachTeacherController extends Controller
     {
         $id = $request->input('id');
 
-        $teachers = Teacher::where('faculties_id',$id)->get();
+        $teachers = Teacher::where('faculties_id', $id)->get();
 
         $existsteachers = DB::table('teacher_has_group')
-                ->where('faculties_id', $id)
-                ->first();
+            ->where('faculties_id', $id)
+            ->first();
 
-        if (!$existsteachers) {
-            foreach ($teachers as $teacher) {
-                $faculty = Faculty::find($teacher->faculties_id);
+//        if (!$existsteachers) {
+        foreach ($teachers as $teacher) {
+            $faculty = Faculty::find($teacher->faculties_id);
 
-                if ($faculty) {
-                    $teacher->faculties_id = $faculty->faculty_name;
-                }
+            if ($faculty) {
+                $teacher->faculties_id = $faculty->faculty_name;
             }
-            return response()->json($teachers);
-        } else {
-            $data = ['id' => 'student yuq', 'id' => 'student yuq', 'id' => 'student yuq', 'id' => 'student yuq'];
-            return response()->json($data);
         }
+        return response()->json($teachers);
+//        }
+//        else {
+//            $data = ['id' => 'student yuq', 'id' => 'student yuq', 'id' => 'student yuq', 'id' => 'student yuq'];
+//            return response()->json($data);
+//        }
 
     }
 

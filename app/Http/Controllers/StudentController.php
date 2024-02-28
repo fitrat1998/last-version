@@ -31,7 +31,7 @@ class StudentController extends Controller
     {
         abort_if_forbidden('student.show');
 
-        
+
         $users = User::where('id', '!=', auth()->user()->id)->get();
         $faculties = Faculty::all();
         $groups = Group::all();
@@ -106,6 +106,8 @@ class StudentController extends Controller
             'login' => $request->get('login'),
             'password' => Hash::make($request->get('password')),
         ]);
+
+
 
         $user = User::create([
             'login' => $request->get('login'),
@@ -197,8 +199,9 @@ class StudentController extends Controller
             'password'          => Hash::make($request->get('password')),
         ]);
 
+        $u_id = User::where('student_id',$student->id)->first();
 
-        User::where('student_id',$student->student_id)->update([
+        User::where('student_id',$u_id->student_id)->update([
             'password' => Hash::make($request->get('password')),
             'name' => $request->get('fullname'),
             'student_id' => $student->id,
@@ -259,14 +262,14 @@ class StudentController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,
             "message" => "This delete action failed!"
         ]);
     }
-    
+
     public function destroy($id)
     {
         abort_if_forbidden('student.destroy');

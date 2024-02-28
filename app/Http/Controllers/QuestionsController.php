@@ -9,6 +9,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreQuetionsRequest;
 use App\Http\Requests\UpdateQuetionsRequest;
+use Illuminate\Support\Facades\Validator;
 
 
 class QuestionsController extends Controller
@@ -92,24 +93,23 @@ class QuestionsController extends Controller
      * @param \App\Models\Questions $questions
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $questions, $id)
+    public function update(UpdateQuetionsRequest $request, Question $questions, $id)
     {
         // abort_if_forbidden('question.edit');
 
         $question = Question::find($id);
 
+         $validatedData = $request->validated();
 
+//        dd($validatedData);
         $question->update([
-            'question' => $request->question,
-            'topic_id' => $request->topic_id
-        ]);
+            'question' => $validatedData['question'],
+            'topic_id' => $validatedData['topic_id']
+        ]);;
 
         $options = Options::where('question_id', $question->id)
             ->whereIn('id', $request->option_id)
             ->get();
-
-
-//            dd($request);
 
         if ($request->status) {
             foreach ($request->option_id as $key => $id) {
@@ -174,6 +174,7 @@ class QuestionsController extends Controller
         abort_if_forbidden('question.destroy');
 
         Question::find($quetions)->delete();
+//        Options::where('$quetions',$quetions)->get();
         return redirect()->back();
     }
 }
