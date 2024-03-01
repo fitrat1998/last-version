@@ -71,7 +71,7 @@
                                         <td>{{ $e->title }}</td>
                                         <td>{{ $e->lessontype->name }}</td>
                                         <td>{{ $e->group->name }}</td>
-                                        <td>{{ $e->teacher->fullname }} </td>
+                                        <td>{{ optional($e->teacher)->fullname }}</td>
                                         <td>{{ $e->educationyear->education_year }} - yil</td>
                                         <td>{{ $e->semester->semester_number }} - semester</td>
                                         <td>{{ $e->subject->subject_name }} </td>

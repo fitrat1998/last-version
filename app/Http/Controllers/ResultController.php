@@ -133,7 +133,7 @@ class ResultController extends Controller
     public function examsSolutionSelfTestResult(Request $request, $type_id, $id): \Illuminate\Http\JsonResponse
     {
 
-          $data = $request->get('data');
+        $data = $request->get('data');
 
         if (!$data || count($data) < 1){
             return response()->json([

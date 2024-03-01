@@ -163,11 +163,12 @@ class ExamController extends Controller
         }
 
         $u_id = auth()->user()->id;
-        $u_id = User::find($u_id );
+        $s_id = User::find($u_id);
 
-        $absent = Attendancecheck::find($u_id);
+        $topic = Attendancecheck::where('students_id', $s_id->student_id)->pluck('topics_id');
+        $subject = Attendancecheck::where('students_id', $s_id->student_id)->pluck('subjects_id');
 
-//        dd($absent);
+
 
         $number = $self->number;
         $test = [];
@@ -177,6 +178,18 @@ class ExamController extends Controller
 
             $topics = Topic::where('subject_id',$subjects_id)
                 ->pluck('id');
+
+            if($type_id == 3){
+                $topics = Topic::whereIn('id',$topic)
+                    ->whereIn('subject_id',$subject)
+                    ->get();
+
+
+            }
+            else {
+                $topics = Topic::where('subject_id',$subjects_id)
+                ->pluck('id');
+            }
 
             $randomQuestion = Question::whereIn('topic_id', $topics)
                 ->inRandomOrder()
@@ -204,7 +217,7 @@ class ExamController extends Controller
 
                 $test[] = [
                     'id'                => $question->id,
-                    'multipleSelect'    => $condition,
+                    'multipleSelect'    => false,
                     'questionIndex'     => $k + 1,
                     'question'          => $question->question,
                     'variants'          => $varyand

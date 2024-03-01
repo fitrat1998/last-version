@@ -49,7 +49,6 @@ $(document).ready(() => {
     const handleSubmit = () => {
         // submit data
         const localData = getDataFromLocal();
-
         $.ajax({
             url: currentExampUrl + '/result',
             method: "GET",
@@ -58,7 +57,7 @@ $(document).ready(() => {
                 data: localData
             },
             success: function (x) {
-                // console.log(x);
+                console.log(x);
                 if(x){
                     // LocalSetdan o'chirish
                     clearDataFromLocal()
