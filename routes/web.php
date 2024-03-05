@@ -163,7 +163,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/student/{student_id}/edit', [StudentController::class, 'edit'])->name('studentEdit');
     Route::post('/student/update/{student_id}', [StudentController::class, 'update'])->name('studentUpdate');
     Route::delete('/student/delete/{id}', [StudentController::class, 'destroy'])->name('studentDestroy');
-    Route::delete('/student/deleteAll', [StudentController::class, 'deleteAll'])->name('studentDeleteAll');
+    Route::delete('/student/deleteAll/{ids}', [StudentController::class, 'deleteAll'])->name('studentDeleteAll');
 
 
     //Attachstudent

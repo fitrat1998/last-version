@@ -95,15 +95,21 @@ class FacultyController extends Controller
 
         $id = $test->pluck('groups_id')->toArray();
 
-        $role =  auth()->user()->roles->pluck('name');
+        $role = auth()->user()->roles->pluck('name');
         $user = auth()->user()->id;
 
-        if($role[0] == 'teacher'){
-            $groups = Group::whereIn('id', $id)
-                ->where('user_id',$user)
-                ->get();
-        }
-        else if(auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+        $t_id = User::find($user);
+
+        if ($role[0] == 'teacher') {
+
+        $group = DB::table('teacher_has_group')->where('teachers_id',$t_id->teacher_id)->pluck('groups_id');
+
+        $groups = Group::whereIn('id',$id)->get();
+
+        $idArray = $groups->pluck('id')->toArray();
+
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }
 

@@ -9,6 +9,7 @@ use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Faculty;
 use App\Models\Formofeducation;
@@ -43,8 +44,15 @@ class GroupController extends Controller
         $role = auth()->user()->roles->pluck('name');
         $user = auth()->user()->id;
 
+        $t_id = User::find($user);
+
+
         if ($role[0] == 'teacher') {
-            $groups = Group::where('user_id', $user)->get();
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }
@@ -114,16 +122,25 @@ class GroupController extends Controller
         $role = auth()->user()->roles->pluck('name');
         $user = auth()->user()->id;
 
+        $t_id = User::find($user);
+
+
         if ($role[0] == 'teacher') {
-            $groups = Group::where('user_id', $user)
-                ->where('id', $id)
-                ->get();
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
+            $idArray = $groups->pluck('id')->toArray();
+
+
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }
 
+
         $subjects = DB::table('subject_has_group')
-            ->whereIn('groups_id', $groups)
+            ->whereIn('groups_id', $idArray)
             ->get('subjects_id')
             ->pluck('subjects_id')
             ->toArray();
@@ -143,27 +160,21 @@ class GroupController extends Controller
     {
         $id = intval($request->input('id'));
 
-
-//
-////        $role = auth()->user()->roles->pluck('name');
-//        $user = auth()->user()->id;
-//
-//        $role = 'Super Admin';
-//
-//        if ($role == 'Super Admin') {
-//            $groups = Group::where('user_id', $user)
-//                ->where('id',$id)
-//                ->get();
-//        }
-//        else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
-//            $groups = Group::all();
-//        }
-
         $role = auth()->user()->roles->pluck('name');
         $user = auth()->user()->id;
 
+        $t_id = User::find($user);
+
+
         if ($role[0] == 'teacher') {
-            $groups = Group::where('user_id', $user)->get();
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
+            $idArray = $groups->pluck('id')->toArray();
+
+
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }

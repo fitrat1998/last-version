@@ -152,7 +152,6 @@ class QuestionsController extends Controller
      */
     public function deleteAll(Request $request)
     {
-        abort_if_forbidden('question.destroy');
 
         $ids = $request->ids;
 

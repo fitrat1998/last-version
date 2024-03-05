@@ -88,7 +88,7 @@
                                         </td>
                                         <td>
                                              @foreach ($question->options as $key => $o)
-                                                <span class="badge bg-info">{{ chr($key + 65) }} - {{ $o->difficulty / 10}}</span> <br>
+                                                <span class="badge bg-info">{{ chr($key + 65) }} - {{ $o->difficulty }}</span> <br>
                                             @endforeach
                                         </td>
                                         <td class="text-center">
