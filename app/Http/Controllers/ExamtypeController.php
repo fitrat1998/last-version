@@ -64,9 +64,9 @@ class ExamtypeController extends Controller
         //
     }
 
-    public function show2(Examtype $examtype)
+    public function show2(Request $request)
     {
-        //
+        return response()->json($request->id);
     }
 
     /**

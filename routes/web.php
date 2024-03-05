@@ -204,7 +204,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Test type
     Route::resource('examtypes', 'ExamtypeController');
-    Route::get('examtypes/show2', 'ExamtypeController@show2')->name('examtypes.show2');
+    Route::get('/show2', 'ExamtypeController@show2')->name('examtypes.show2');
     Route::delete('/deleteAllExamtype', 'ExamtypeController@deleteAll')->name('examtypes.DeleteAll');
 
 
