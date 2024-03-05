@@ -37,19 +37,19 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <!-- <div class="card-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <h4>Fakultet</h4>
+                                    <h4>Yo'nalish</h4>
 
-                                    <input type="hidden" name="url_faculty" value="{{route('teachersData')}}" 
-                                    id="url_faculty_result">
+                                    <input type="hidden" name="url_result_programm" value="{{route('programmShow')}}"
+                                    id="url_result_programm">
 
-                                    <select class="select2" name="faculty" data-placeholder="Semestrni tanlang" style="width: 100%;" id="attendance_faculty">
-                                        <option>fakultetni tanlang</option>
-                                        @foreach($faculties as $f)
-                                            <option value="{{ $f->id  }}">{{ $f->faculty_name  }}</option>
+                                    <select class="select2" name="faculty" data-placeholder="Semestrni tanlang" style="width: 100%;" id="result_programm">
+                                        <option>yo'nalishni tanlang</option>
+                                        @foreach($programms as $p)
+                                            <option value="{{ $p->id  }}">{{ $p->programm_name  }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -57,17 +57,26 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <h4>Guruh</h4>
-                                    <input type="hidden" name="url_groups" value="{{route('groupShow')}}" id="url_group_result">
-                                <select class="select2" data-placeholder="guruhni tanlang" style="width: 100%;" id="attendance_groups_id">
+                                    <input type="hidden" name="url_result_groups" value="{{route('groupShow2')}}" id="url_group_result">
+                                <select class="select2" data-placeholder="guruhni tanlang" style="width: 100%;" id="group_result">
                                     <option>----</option>
 
                                 </select>
                                 </div>
                             </div>
 
+                             <div class="col-md-3">
+                                <div class="form-group">
+                                    <h4>Fan</h4>
+                                    <input type="hidden" name="url_subjects" value="{{route('examtypes.show2')}}" id="url_subject_result">
+                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 100%;" id="subject_result">
+
+                                </select>
+                                </div>
+                            </div>
 
                         </div>
-                    </div> -->
+                    </div>
 
                     <!-- /.card-header -->
                     <div class="card-body w-100" style="overflow:auto">
@@ -85,7 +94,7 @@
                                 <th>Semester</th>
                                 <th>Ball</th>
                                 <th>To'gri javoblar soni</th>
-                               
+
                             </tr>
                             </thead>
                             <tbody>
@@ -99,7 +108,7 @@
                                     <td>{{ optional($result->group($result->users_id))->name ?? "Malumotlar mavjud emas!" }}</td>
 
                                     <td>{{ optional($result->examtype($result->examtypes_id))->name ?? "Malumotlar mavjud emas!" }}</td>
-                                    
+
                                     <td>{{ $result->subject($result->subjects_id) ?? "Malumotlar mavjud emas!" }}</td>
 
                                     <td>{{ $result->semester($result->semesters_id) ?? "Malumotlar mavjud emas!" }}</td>
@@ -109,7 +118,7 @@
                                     <td>{{ $result->correct ?? "0" }}</td>
                                 </tr>
 
-                                   
+
                                 </tr>
                             @endforeach
                             </tbody>

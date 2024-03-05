@@ -505,7 +505,7 @@ $(document).ready(function () {
 
 
 
-//resluts show with ajax
+// attendance resluts show with ajax
 
     $('#attendance_faculty_result').on('change', function () {
         var faculties_id = $(this).val();
@@ -591,6 +591,136 @@ $(document).ready(function () {
 
 
             // alert(subjects_url);
+
+            $.ajax({
+                url: subjects_url,
+                type: 'GET',
+                data: {id: subjects_id},
+                success: function (response) {
+
+                    console.log(response)
+
+
+                    var table = $('#dataTable').DataTable();
+
+                    table.clear().draw();
+                    let absent;
+
+                    for (var i = 0; i < response.length; i++) {
+                            if(response[i].absent){
+                                absent = "Qatnashmagan";
+                            }
+                            else {
+                                absent = "Qatnashgan";
+                            }
+                        table.row.add([
+                            response[i].attendance_check_id,
+                            response[i].exercise_title,
+                            response[i].name,
+                            response[i].student_name,
+                            absent,
+                            response[i].absent_date,
+                        ]);
+                    }
+
+
+                    table.draw();
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+
+        });
+
+//result exams
+
+      $('#result_programm').on('change', function () {
+        var pr_id = $(this).val();
+        var pr_url = $('#url_result_programm').val();
+
+        // alert(pr_id);
+
+        $.ajax({
+            url: pr_url,
+            type: 'GET',
+            data: {id: pr_id},
+            success: function (response) {
+                console.log(response)
+                var select = $('#group_result');
+
+
+                select.empty();
+
+                select.append('<option value="" disabled selected>Guruhni tanlang</option>');
+
+
+                $.each(response, function (index, item) {
+                    select.append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+
+
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+        //end groups fetch
+
+        $('#group_result').change(function () {
+
+            var groups_id = $(this).val();
+            var groups_url = $('#url_group_result').val();
+
+            // alert(groups_url);
+
+            $.ajax({
+                url: groups_url,
+                type: 'GET',
+                data: {id: groups_id},
+                success: function (response) {
+                    console.log(response)
+
+                    var select2 = $('#subject_result');
+
+
+                    select2.empty();
+
+                    select2.append('<option value="" disabled selected>Fanni tanlang</option>');
+
+
+                    $.each(response, function (index, item) {
+                        select2.append('<option value="' + item.id + '">' + item.subject_name + '</option>');
+                    });
+
+
+                    // console.log(response);
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+
+        });
+
+         $('#subject_result').change(function () {
+
+            var subjects_id = $(this).val();
+            var subjects_url = $('#url_subject_result').val();
+
+
+            // let  urls = route(attendance_checks.show);
+
+
+            alert(subjects_url);
 
             $.ajax({
                 url: subjects_url,

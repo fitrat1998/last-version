@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Programm;
 use App\Http\Requests\StoreProgrammRequest;
 use App\Http\Requests\UpdateProgrammRequest;
@@ -88,9 +89,31 @@ class ProgrammController extends Controller
      * @param \App\Models\Programm $programm
      * @return \Illuminate\Http\Response
      */
-    public function show(Programm $programm)
+    public function show(Request $request)
     {
-        //
+        $id = intval($request->input('id'));
+
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
+
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $groups = Group::all();
+        }
+
+
+
+        return response()->json($groups);
     }
 
     /**
@@ -143,13 +166,13 @@ class ProgrammController extends Controller
         abort_if_forbidden('programm.destroy');
 
         $ids = $request->ids;
-        
+
         $res = Programm::whereIn('id',$ids)->delete();
         if($res){
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,

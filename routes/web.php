@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/programm/add', [ProgrammController::class, 'add'])->name('programmAdd');
     Route::post('/programm/create', [ProgrammController::class, 'create'])->name('programmCreate');
     Route::get('/programm/{programm_id}/edit', [ProgrammController::class, 'edit'])->name('programmEdit');
+    Route::get('/programm/show/', [ProgrammController::class, 'show'])->name('programmShow');
     Route::post('/programm/update/{programm_id}', [ProgrammController::class, 'update'])->name('programmUpdate');
     Route::delete('/programm/delete/{id}', [ProgrammController::class, 'destroy'])->name('programmDestroy');
     Route::delete('/programm/deleteAll', [ProgrammController::class, 'deleteAll'])->name('programmDeleteAll');
@@ -196,13 +197,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/deleteAllAttendanceLog', 'AttendanceLogController@deleteAll')->name('attendance_logs.DeleteAll');
     Route::get('/attendance-results', 'AttendanceLogController@results')->name('attendance_logs.attendance-results');
 
+
     //Attachstudent
     Route::resource('lessons', 'LessonController');
     Route::delete('/deleteAllLesson', 'LessonController@deleteAll')->name('lessons.DeleteAll');
 
     //Test type
     Route::resource('examtypes', 'ExamtypeController');
+    Route::get('examtypes/show2', 'ExamtypeController@show2')->name('examtypes.show2');
     Route::delete('/deleteAllExamtype', 'ExamtypeController@deleteAll')->name('examtypes.DeleteAll');
+
 
     //Attendance check
     Route::resource('attendancechecks', 'AttendanceCheckController');
@@ -238,7 +242,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('results', 'ResultController');
     Route::post('results/data', 'ResultController@data')->name('teachersData');
-
 
 
 });

@@ -64,6 +64,11 @@ class ExamtypeController extends Controller
         //
     }
 
+    public function show2(Examtype $examtype)
+    {
+        //
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -109,7 +114,7 @@ class ExamtypeController extends Controller
     {
         abort_if_forbidden('examtype.destroy');
 
-    
+
         $ids = $request->ids;
 
         $res = Examtype::whereIn('id',$ids)->delete();
@@ -117,7 +122,7 @@ class ExamtypeController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,
