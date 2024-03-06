@@ -211,24 +211,19 @@ $(document).ready(function () {
             if (splitURL[1].toString() == 'middleexams') {
                 topic = '{{ route("middleexams.show") }}';
                 console.log(1);
-            }
-            else if (splitURL[1].toString() == 'selfstudyexams') {
+            } else if (splitURL[1].toString() == 'selfstudyexams') {
                 topic = '{{ route("selfstudyexams.show") }}';
                 console.log(1);
-            }
-            else if (splitURL[1].toString() == 'retriesexams') {
+            } else if (splitURL[1].toString() == 'retriesexams') {
                 topic = '{{ route("retriesexams.show") }}';
                 console.log(1);
-            }
-            else if (splitURL[1].toString() == 'finalexams') {
+            } else if (splitURL[1].toString() == 'finalexams') {
                 topic = '{{ route("finalexams.show") }}';
                 // console.log(topic);
-            }
-             else if (splitURL[1].toString() == 'currentexams') {
+            } else if (splitURL[1].toString() == 'currentexams') {
                 topic = '{{ route("currentexams.show") }}';
                 // console.log(topic);
-            }
-            else if (splitURL[1].toString() == 'exercises') {
+            } else if (splitURL[1].toString() == 'exercises') {
                 topic = '{{ route("exercises.show") }}';
                 console.log(1)
             }
@@ -503,8 +498,6 @@ $(document).ready(function () {
     });
 
 
-
-
 // attendance resluts show with ajax
 
     $('#attendance_faculty_result').on('change', function () {
@@ -541,103 +534,102 @@ $(document).ready(function () {
     });
 
 
-        //end groups fetch
+    //end groups fetch
 
-        $('#attendance_groups_id_result').change(function () {
+    $('#attendance_groups_id_result').change(function () {
 
-            var groups_id = $('#attendance_groups_id_result').val();
-            var groups_url = $('#url_groups_result').val();
+        var groups_id = $('#attendance_groups_id_result').val();
+        var groups_url = $('#url_groups_result').val();
 
-            // alert(groups_url);
+        alert(groups_url);
 
-            $.ajax({
-                url: groups_url,
-                type: 'GET',
-                data: {id: groups_id},
-                success: function (response) {
-                    console.log(response)
+        $.ajax({
+            url: groups_url,
+            type: 'GET',
+            data: {id: groups_id},
+            success: function (response) {
+                console.log(response)
 
-                    var select2 = $('#attendance_subjects_id_result');
-
-
-                    select2.empty();
-
-                    select2.append('<option value="" disabled selected>Fanni tanlang</option>');
+                var select2 = $('#attendance_subjects_id_result');
 
 
-                    $.each(response, function (index, item) {
-                        select2.append('<option value="' + item.id + '">' + item.subject_name + '</option>');
-                    });
+                select2.empty();
+
+                select2.append('<option value="" disabled selected>Fanni tanlang</option>');
 
 
-                    // console.log(response);
-
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
+                $.each(response, function (index, item) {
+                    select2.append('<option value="' + item.id + '">' + item.subject_name + '</option>');
+                });
 
 
+                // console.log(response);
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
 
-         $('#attendance_subjects_id_result').change(function () {
 
-            var subjects_id = $('#attendance_subjects_id_result').val();
-            var subjects_url = $('#url_subjects_result').val();
+    });
 
+    $('#attendance_subjects_id_result').change(function () {
 
-            // let  urls = route(attendance_checks.show);
-
-
-            // alert(subjects_url);
-
-            $.ajax({
-                url: subjects_url,
-                type: 'GET',
-                data: {id: subjects_id},
-                success: function (response) {
-
-                    console.log(response)
+        var subjects_id = $('#attendance_subjects_id_result').val();
+        var subjects_url = $('#url_subjects_result').val();
 
 
-                    var table = $('#dataTable').DataTable();
+        // let  urls = route(attendance_checks.show);
 
-                    table.clear().draw();
-                    let absent;
 
-                    for (var i = 0; i < response.length; i++) {
-                            if(response[i].absent){
-                                absent = "Qatnashmagan";
-                            }
-                            else {
-                                absent = "Qatnashgan";
-                            }
-                        table.row.add([
-                            response[i].attendance_check_id,
-                            response[i].exercise_title,
-                            response[i].name,
-                            response[i].student_name,
-                            absent,
-                            response[i].absent_date,
-                        ]);
+        alert(subjects_url);
+
+        $.ajax({
+            url: subjects_url,
+            type: 'GET',
+            data: {id: subjects_id},
+            success: function (response) {
+
+                console.log(response)
+
+
+                var table = $('#dataTable').DataTable();
+
+                table.clear().draw();
+                let absent;
+
+                for (var i = 0; i < response.length; i++) {
+                    if (response[i].absent) {
+                        absent = "Qatnashmagan";
+                    } else {
+                        absent = "Qatnashgan";
                     }
-
-
-                    table.draw();
-
-                },
-                error: function (error) {
-                    console.log(error);
+                    table.row.add([
+                        response[i].attendance_check_id,
+                        response[i].exercise_title,
+                        response[i].name,
+                        response[i].student_name,
+                        absent,
+                        response[i].absent_date,
+                    ]);
                 }
-            });
 
 
+                table.draw();
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
+
+
+    });
 
 //result exams
 
-      $('#result_programm').on('change', function () {
+    $('#result_programm').on('change', function () {
         var pr_id = $(this).val();
         var pr_url = $('#url_result_programm').val();
 
@@ -648,7 +640,8 @@ $(document).ready(function () {
             type: 'GET',
             data: {id: pr_id},
             success: function (response) {
-                console.log(response)
+                // console.log(response)
+
                 var select = $('#group_result');
 
 
@@ -662,7 +655,6 @@ $(document).ready(function () {
                 });
 
 
-
             },
             error: function (error) {
                 console.log(error);
@@ -671,99 +663,122 @@ $(document).ready(function () {
     });
 
 
-        //end groups fetch
+    //end groups fetch
 
-        $('#group_result').change(function () {
+    $('#group_result').change(function () {
 
-            var groups_id = $(this).val();
-            var groups_url = $('#url_group_result').val();
+        var groups_id = $(this).val();
+        var groups_url = $('#url_group_result').val();
 
-            // alert(groups_url);
+        // alert(groups_url);
 
-            $.ajax({
-                url: groups_url,
-                type: 'GET',
-                data: {id: groups_id},
-                success: function (response) {
-                    console.log(response)
+        $.ajax({
+            url: groups_url,
+            type: 'GET',
+            data: {id: groups_id},
+            success: function (response) {
+                // console.log(response)
 
-                    var select2 = $('#subject_result');
-
-
-                    select2.empty();
-
-                    select2.append('<option value="" disabled selected>Fanni tanlang</option>');
+                var select2 = $('#subject_result');
 
 
-                    $.each(response, function (index, item) {
-                        select2.append('<option value="' + item.id + '">' + item.subject_name + '</option>');
-                    });
+                select2.empty();
+
+                select2.append('<option value="" disabled selected>Fanni tanlang</option>');
 
 
-                    // console.log(response);
-
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
+                $.each(response, function (index, item) {
+                    select2.append('<option value="' + item.id + '">' + item.subject_name + '</option>');
+                });
 
 
+                // console.log(response);
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
 
-         $('#subject_result').change(function () {
 
-            var subjects_id = $(this).val();
-            var subjects_url = $('#url_subject_result').val();
+    });
 
+    $('#subject_result').change(function () {
 
-            // let  urls = route(attendance_checks.show);
-
-
-            alert(subjects_url);
-
-            $.ajax({
-                url: subjects_url,
-                type: 'GET',
-                data: {id: subjects_id},
-                success: function (response) {
-
-                    console.log(response)
+        var subjects_id = $(this).val();
+        var subjects_url = $('#url_subject_result').val();
 
 
-                    var table = $('#dataTable').DataTable();
+        $.ajax({
+            url: subjects_url,
+            type: 'GET',
+            data: {id: subjects_id},
+            success: function (response) {
 
-                    table.clear().draw();
-                    let absent;
+                // console.log(response)
 
-                    for (var i = 0; i < response.length; i++) {
-                            if(response[i].absent){
-                                absent = "Qatnashmagan";
-                            }
-                            else {
-                                absent = "Qatnashgan";
-                            }
-                        table.row.add([
-                            response[i].attendance_check_id,
-                            response[i].exercise_title,
-                            response[i].name,
-                            response[i].student_name,
-                            absent,
-                            response[i].absent_date,
-                        ]);
-                    }
+                var select2 = $('#examtype_result');
+
+                select2.empty();
+
+                select2.append('<option value="" disabled selected>imtihon turini tanlang</option>');
 
 
-                    table.draw();
+                $.each(response, function (index, item) {
+                    select2.append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
 
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-
-
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
+
+
+    });
+
+    $('#examtype_result').change(function () {
+
+        var subjects_id = $(this).val();
+        var subjects_url = $('#url_examtype_result').val();
+
+
+        $.ajax({
+            url: subjects_url,
+            type: 'GET',
+            data: {id: subjects_id},
+            success: function (response) {
+                // console.log(response)
+
+                var table = $('#dataTable').DataTable();
+                table.clear().draw();
+
+                for (var i = 0; i < response.length; i++) {
+
+                    table.row.add([
+                        response[i].id,
+                        response[i].student,
+                        response[i].group,
+                        response[i].examtype,
+                        response[i].subject,
+                        response[i].semester,
+                        response[i].ball,
+                        // response[i].correct,
+                    ]);
+                }
+
+
+
+                table.draw();
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+
+    });
 
 
 });

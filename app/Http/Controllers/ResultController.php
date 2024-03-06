@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Currentexam;
+use App\Models\Examtype;
 use App\Models\Finalexam;
 use App\Models\Group;
 use App\Models\Middleexam;
@@ -15,6 +16,9 @@ use App\Http\Requests\StoreResultRequest;
 use App\Http\Requests\UpdateResultRequest;
 use App\Models\Retriesexam;
 use App\Models\Selfstudyexams;
+use App\Models\Semester;
+use App\Models\Student;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +57,7 @@ class ResultController extends Controller
 
         $programms = Programm::all();
 
-        return view('pages.results.index', compact('programms','results'));
+        return view('pages.results.index', compact('programms', 'results'));
 
     }
 
@@ -94,21 +98,97 @@ class ResultController extends Controller
      * @param \App\Models\Result $result
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        $id = $request->input('id');
-        // $user = auth()->user()->id;
-        // $test = DB::table('teacher_has_group')
-        //     ->select('groups_id')
-        //     ->where('faculties_id',$id)
-        //     // ->where('teachers_id',$user)
-        //     ->get();
+        $id = intval($request->input('id'));
 
-        //     $gr = $test->pluck('groups_id')->toArray();
+//        $result = Result::where('examtypes_id', $id)->get();
+//
+//        $u_id = $result->pluck('users_id');
+//
+//        $s_id = User::whereIn('id', $u_id)->pluck('student_id');
+//
+//        $sem_id = $result->pluck('semesters_id');
+//
+//        $sub_id = $result->pluck('subjects_id');
+//
+//        $semester = Semester::whereIn('id', $sem_id)->get();
+//
+//        $subject = Subject::whereIn('id', $sub_id)->get();
+//
+//        $g_id = DB::table('student_has_attach')->whereIn('students_id', $s_id)->pluck('groups_id');
+//
+//        $group = Group::whereIn('id', $g_id)->get();
+//
+//        $student = Student::whereIn('id', $s_id)->get();
+//
+//        $examtype = Examtype::find($id);
 
-        // $groups = Group::where('id', $id)->get();
+//        $results = Result::where('examtypes_id', $id)
+//            ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
+//            ->join('users', 'results.users_id', '=', 'users.id')
+//            ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
+//            ->join('groups', 'student_has_attach.groups_id', '=', 'groups.id')
+//            ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
+//            ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
+//            ->join('students', 'users.student_id', '=', 'students.id')
+//            ->select(
+//                'results.id as id',
+//                'results.correct as correct',
+//                'results.ball as ball',
+//                'semesters.semester_number as semester',
+//                'subjects.subject_name as subject',
+//                'groups.name as group',
+//                'students.fullname as student',
+//                'examtypes.name as examtype'
+//            )
+//            ->distinct()
+//
+//            ->get();
 
-        return response()->json($id);
+//                $max_ball = Result::where('examtypes_id', $id)->max('ball');
+
+        $max_balls = Result::where('examtypes_id', $id)
+                ->groupBy('examtypes_id')
+                ->select('examtypes_id', \DB::raw('MAX(ball) as max_ball'))
+                ->pluck('max_ball', 'examtypes_id');
+
+
+        $results = Result::where('examtypes_id', $id)
+            ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
+            ->join('users', 'results.users_id', '=', 'users.id')
+            ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
+            ->join('groups', 'student_has_attach.groups_id', '=', 'groups.id')
+            ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
+            ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
+            ->join('students', 'users.student_id', '=', 'students.id')
+            ->where('results.ball', $max_balls)
+            ->select(
+                'results.id as id',
+                'results.correct as correct',
+                'results.ball as ball',
+                'semesters.semester_number as semester',
+                'subjects.subject_name as subject',
+                'groups.name as group',
+                'students.fullname as student',
+                'examtypes.name as examtype'
+            )
+            ->distinct()
+            ->get();
+
+
+        return response()->json($results);
+    }
+
+
+    public function getDataExam(Request $request)
+    {
+        $id = intval($request->input('id'));
+
+        $result = Result::where('examtypes_id', $id);
+
+
+        return response()->json($result);
     }
 
 

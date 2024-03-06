@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Examtype;
 use App\Http\Requests\StoreExamtypeRequest;
 use App\Http\Requests\UpdateExamtypeRequest;
+use App\Models\Result;
 use Illuminate\Http\Request;
 
 
@@ -20,7 +21,7 @@ class ExamtypeController extends Controller
         abort_if_forbidden('examtype.show');
 
         $examtypes = Examtype::all();
-        return view('pages.examtypes.index',compact('examtypes'));
+        return view('pages.examtypes.index', compact('examtypes'));
     }
 
     /**
@@ -39,7 +40,7 @@ class ExamtypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreExamtypeRequest  $request
+     * @param \App\Http\Requests\StoreExamtypeRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreExamtypeRequest $request)
@@ -56,7 +57,7 @@ class ExamtypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Examtype  $examtype
+     * @param \App\Models\Examtype $examtype
      * @return \Illuminate\Http\Response
      */
     public function show(Examtype $examtype)
@@ -66,13 +67,19 @@ class ExamtypeController extends Controller
 
     public function show2(Request $request)
     {
-        return response()->json($request->id);
+        $id = intval($request->input('id'));
+
+        $subject = Result::where('subjects_id',$id)->pluck('examtypes_id');
+
+        $examtype = Examtype::whereIn('id',$subject)->get();
+
+        return response()->json($examtype);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Examtype  $examtype
+     * @param \App\Models\Examtype $examtype
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -86,11 +93,11 @@ class ExamtypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateExamtypeRequest  $request
-     * @param  \App\Models\Examtype  $examtype
+     * @param \App\Http\Requests\UpdateExamtypeRequest $request
+     * @param \App\Models\Examtype $examtype
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateExamtypeRequest $request,$id)
+    public function update(UpdateExamtypeRequest $request, $id)
     {
         abort_if_forbidden('examtype.edit');
 
@@ -106,7 +113,7 @@ class ExamtypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Examtype  $examtype
+     * @param \App\Models\Examtype $examtype
      * @return \Illuminate\Http\Response
      */
 
@@ -117,15 +124,15 @@ class ExamtypeController extends Controller
 
         $ids = $request->ids;
 
-        $res = Examtype::whereIn('id',$ids)->delete();
-        if($res){
+        $res = Examtype::whereIn('id', $ids)->delete();
+        if ($res) {
             return response()->json([
-                'success'=>true,
+                'success' => true,
                 "message" => "This action successfully complated"
             ]);
         }
         return response()->json([
-            'success'=>false,
+            'success' => false,
             "message" => "This delete action failed!"
         ]);
     }

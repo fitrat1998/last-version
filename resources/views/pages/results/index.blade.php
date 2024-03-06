@@ -75,6 +75,16 @@
                                 </div>
                             </div>
 
+                             <div class="col-md-3">
+                                <div class="form-group">
+                                    <h4>Imtihon turi</h4>
+                                    <input type="hidden" name="url_subjects" value="{{route('results.getDataExam')}}" id="url_examtype_result">
+                                    <select class="select2" data-placeholder="imtihon turini tanlang" style="width: 100%;" id="examtype_result">
+
+                                </select>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -93,7 +103,7 @@
                                 <th>Fan</th>
                                 <th>Semester</th>
                                 <th>Ball</th>
-                                <th>To'gri javoblar soni</th>
+{{--                                <th>To'gri javoblar soni</th>--}}
 
                             </tr>
                             </thead>
@@ -102,20 +112,20 @@
                             @foreach ($results as $result)
                                 <tr id="datas_ids{{ $result->id }}">
 
-                                    <td>{{ $result->id }}</td>
-                                    <td>{{ optional($result->student($result->users_id))->fullname ?? "Malumotlar mavjud emas!" }}</td>
+{{--                                    <td>{{ $result->id }}</td>--}}
+{{--                                    <td>{{ optional($result->student($result->users_id))->fullname ?? "Malumotlar mavjud emas!" }}</td>--}}
 
-                                    <td>{{ optional($result->group($result->users_id))->name ?? "Malumotlar mavjud emas!" }}</td>
+{{--                                    <td>{{ optional($result->group($result->users_id))->name ?? "Malumotlar mavjud emas!" }}</td>--}}
 
-                                    <td>{{ optional($result->examtype($result->examtypes_id))->name ?? "Malumotlar mavjud emas!" }}</td>
+{{--                                    <td>{{ optional($result->examtype($result->examtypes_id))->name ?? "Malumotlar mavjud emas!" }}</td>--}}
 
-                                    <td>{{ $result->subject($result->subjects_id) ?? "Malumotlar mavjud emas!" }}</td>
+{{--                                    <td>{{ $result->subject($result->subjects_id) ?? "Malumotlar mavjud emas!" }}</td>--}}
 
-                                    <td>{{ $result->semester($result->semesters_id) ?? "Malumotlar mavjud emas!" }}</td>
+{{--                                    <td>{{ $result->semester($result->semesters_id) ?? "Malumotlar mavjud emas!" }}</td>--}}
 
 
-                                    <td>{{ $result->ball ?? "0" }}</td>
-                                    <td>{{ $result->correct ?? "0" }}</td>
+{{--                                    <td>{{ $result->ball ?? "0" }}</td>--}}
+{{--                                    <td>{{ $result->correct ?? "0" }}</td>--}}
                                 </tr>
 
 

@@ -202,14 +202,12 @@
                 $('.checkbox_ids').prop('checked',$(this).prop('checked'));
             });
 
-
-
             var csrf_token = "{{ csrf_token() }}"
 
             $('#deleteAllSellected').click(function(e){
-	           
+
 	            const urls = $('#delete_url').val();
-                
+
 	            console.log(urls)
 
                 e.preventDefault();
@@ -218,7 +216,7 @@
                     all_ids.push($(this).val());
                 });
 
-               
+
 
                 const swalWithBootstrapButtons = Swal.mixin({
                   customClass: {
@@ -239,7 +237,7 @@
                   if (result.isConfirmed) {
                          $.ajax({
                             url: urls,
-                            type: 'DELETE',
+                            type: 'POST',
                             data: {
                                 ids: all_ids,
                                 _token: csrf_token
@@ -248,8 +246,8 @@
                                 console.log('response', response)
                                 if(response.success == true){
                                     $.each(all_ids, function(key, val) {
-                                        
-                                        $('#datas_ids' + val).remove();   
+
+                                        $('#datas_ids' + val).remove();
                                     });
                                     swalWithBootstrapButtons.fire({
                                       title: "O'chirildi!",
@@ -264,10 +262,10 @@
                                       icon: "error"
                                     });
                                 }
-                                
+
                             }
                         });
-                  } 
+                  }
                   else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
@@ -298,7 +296,7 @@
         $( "div[id*='_pair']" ).hide();
     });
 
-   
+
 
 </script>
 @if(session('_message'))

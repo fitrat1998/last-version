@@ -136,6 +136,9 @@ class GroupController extends Controller
 
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
+            $idArray = $groups->pluck('id')->toArray();
+
+
         }
 
 
