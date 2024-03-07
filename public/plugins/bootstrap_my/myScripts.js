@@ -748,7 +748,7 @@ $(document).ready(function () {
             type: 'GET',
             data: {id: subjects_id},
             success: function (response) {
-                // console.log(response)
+                console.log(response)
 
                 var table = $('#dataTable').DataTable();
                 table.clear().draw();

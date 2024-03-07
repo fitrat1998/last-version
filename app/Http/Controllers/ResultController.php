@@ -102,9 +102,9 @@ class ResultController extends Controller
     {
         $id = intval($request->input('id'));
 
-//        $result = Result::where('examtypes_id', $id)->get();
-//
-//        $u_id = $result->pluck('users_id');
+        $result = Result::where('examtypes_id', $id)->get();
+
+        $u_id = $result->pluck('users_id');
 //
 //        $s_id = User::whereIn('id', $u_id)->pluck('student_id');
 //
@@ -147,11 +147,19 @@ class ResultController extends Controller
 //            ->get();
 
 //                $max_ball = Result::where('examtypes_id', $id)->max('ball');
+//
+//        $max_balls = Result::whereIn('users_id', $u_id)
+//            ->select('users_id', DB::raw('MAX(ball) as max_ball'))
+//            ->groupBy('users_id', 'examtypes_id','subjects_id')
+//            ->pluck('max_ball');
 
-        $max_balls = Result::where('examtypes_id', $id)
-                ->groupBy('examtypes_id')
-                ->select('examtypes_id', \DB::raw('MAX(ball) as max_ball'))
-                ->pluck('max_ball', 'examtypes_id');
+        $max_balls = Result::whereIn('users_id', $u_id)
+            ->where('examtypes_id',$id)
+            ->select('users_id', DB::raw('MAX(ball) as max_ball'))
+            ->groupBy('users_id', 'examtypes_id', 'subjects_id')
+            ->pluck('max_ball')
+            ->toArray();
+
 
 
         $results = Result::where('examtypes_id', $id)
@@ -162,7 +170,7 @@ class ResultController extends Controller
             ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
             ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
             ->join('students', 'users.student_id', '=', 'students.id')
-            ->where('results.ball', $max_balls)
+            ->whereIn('results.ball', array_values($max_balls))
             ->select(
                 'results.id as id',
                 'results.correct as correct',
