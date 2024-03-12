@@ -258,6 +258,10 @@ class StudentController extends Controller
         $ids = $request->ids;
 
         $res = Student::whereIn('id',$ids)->delete();
+        User::whereIn('student_id',$ids)->delete();
+
+        DB::table('student_has_attach')->whereIn('students_id',$ids)->delete();
+
         if($res){
             return response()->json([
                 'success'=>true,
@@ -275,6 +279,8 @@ class StudentController extends Controller
         abort_if_forbidden('student.destroy');
 
         Student::find($id)->delete();
+        User::where('student_id',$id)->delete();
+        DB::table('student_has_attach')->where('students_id',$id)->delete();
         return redirect()->back();
     }
 }

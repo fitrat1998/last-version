@@ -119,7 +119,6 @@ function toggle_avtospisaniya(client_id, token, obj) {
     })
 }
 
-
 $(document).ready(function () {
     $('#programm').change(function () {
         var id = $('#programm').val();
@@ -131,13 +130,10 @@ $(document).ready(function () {
             url: url,
             data: {id: id},
             success: function (response) {
-                console.log(response);
+                // console.log(response);
 
-                var table = $('#AttachStudent').DataTable();
-
-                $('#AttachStudent').DataTable({
-                    "paging": true,
-                    "lengthMenu": [[10, 25, 50, -1]]
+                var table = $('#AttachStudent').DataTable({
+                    "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
                 });
 
 
