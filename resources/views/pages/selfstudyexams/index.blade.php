@@ -40,11 +40,11 @@
                                    class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg"
                                    user="grid" aria-describedby="dataTable_info">
                                 <thead>
-                                 <tr>
+                                <tr>
                                     <th>
                                         <div class="icheck-success">
                                             <input type="checkbox" name="" id="select_all_ids">
-                                            <label for="select_all_ids" ></label>
+                                            <label for="select_all_ids"></label>
                                         </div>
                                     </th>
                                     <th>#</th>
@@ -63,32 +63,35 @@
                                 </thead>
                                 <tbody>
                                 @foreach ($selfstudyexams as $s)
-                                     <tr id="datas_ids{{ $s->id }}">
+                                    <tr id="datas_ids{{ $s->id }}">
                                         <td>
                                             <div class="icheck-success">
-                                                <input type="hidden" name="" id="delete_url" value="{{ route('selfstudyexams.DeleteAll') }}">
-                                                <input type="checkbox" class="checkbox_ids" name="ids" id="checkboxSuccess.{{$s->id}}" value="{{ $s->id }}">
-                                                <label for="checkboxSuccess.{{$s->id}}" >
+                                                <input type="hidden" name="" id="delete_url"
+                                                       value="{{ route('selfstudyexams.DeleteAll') }}">
+                                                <input type="checkbox" class="checkbox_ids" name="ids"
+                                                       id="checkboxSuccess.{{$s->id}}" value="{{ $s->id }}">
+                                                <label for="checkboxSuccess.{{$s->id}}">
                                                 </label>
                                             </div>
                                         </td>
                                         <td style="width: 30px;">{{ $s->id }}</td>
 
-                                        <td>{{ $s->examtype->name}}</td>
-
-                                        <td>{{ $s->subject->subject_name ?? 0}}</td>
-                                        <td><a href="{{ route('attendance_logs.show', $s->id)}}"
-                                               class="text-dark">{{$s->number}}</a></td>
-                                        <td>{{ $s->group->name }}</td>
-                                        <td>{{ $s->semester->semester_number }}</td>
+                                        <td>{{ optional($s->examtype)->name }}</td>
+                                        <td>{{ optional($s->subject)->subject_name ?? 0 }}</td>
+                                        <td><a href="{{ route('attendance_logs.show', $s->id) }}"
+                                               class="text-dark">{{ $s->number }}</a></td>
+                                        <td>{{ optional($s->group)->name }}</td>
+                                        <td>{{ optional($s->semester)->semester_number }}</td>
                                         <td>{{ $s->attempts }}</td>
                                         <td>{{ $s->passing }}</td>
                                         <td>{{ $s->start }}</td>
                                         <td>{{ $s->end }}</td>
 
+
                                         <td class="text-center">
                                             @can('selfstudyexam.destroy')
-                                                <form action="{{ route('selfstudyexams.destroy', $s->id) }}" method="post">
+                                                <form action="{{ route('selfstudyexams.destroy', $s->id) }}"
+                                                      method="post">
                                                     @csrf
                                                     <div class="btn-group">
                                                         @can('selfstudyexam.edit')

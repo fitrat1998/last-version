@@ -158,36 +158,18 @@
                         $sum_retry = 0;
                         $sum_selfstudy = 0;
                         $sum_middle = 0;
-                        $sum_current = 0;
+                        $sum_all = 0;
                         foreach($results as $r){
 
-                            if($r->examtypes_id == 1){
-                                $sum_middle += $r->ball;
+                            if($r->examtypes_id != 3){
+                                $sum_all += $r->ball;
                             }
 
-                            if($r->examtypes_id == 2){
-                                $sum_selfstudy += $r->ball;
-                            }
-
-                            if($r->examtypes_id == 3){
-                                $sum_retry += $r->ball;
-                            }
-
-                            if($r->examtypes_id == 4){
-                                $sum_final += $r->ball;
-                            }
-
-                            if($r->examtypes_id == 5){
-                                $sum_current += $r->ball;
-                            }
                         }
                     @endphp
                     <th colspan="2" style="text-align:right">
-                        {{--                        <span class="mr-3">Oraliq umumiy: {{$sum_middle}}</span>--}}
-                        {{--                        <span class="mr-3">Mustaqil ta'lim umumiy: {{$sum_selfstudy}}</span>--}}
-                        {{--                        <span class="mr-3">Oraliq umumiy: {{$sum_retry}}</span>--}}
-                        {{--                        <span class="mr-3">Yakuniy umumiy: {{$sum_final}}  </span>--}}
-                        Umimuyi ball: {{ $sum_middle + $sum_selfstudy +  $sum_current / 10}}
+
+                       Umimuyi ball: {{ number_format($sum_all,1) }}
                     </th>
                     <th></th>
                     <th></th>

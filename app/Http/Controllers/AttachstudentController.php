@@ -43,7 +43,7 @@ class AttachstudentController extends Controller
         abort_if_forbidden('student.show');
 
         $students = Student::all();
-        $users = User::where('id','!=',auth()->user()->id)->get();
+        $users = User::where('id', '!=', auth()->user()->id)->get();
         $faculties = Faculty::all();
         $groups = Group::all();
         $semesters = Semester::all();
@@ -53,13 +53,13 @@ class AttachstudentController extends Controller
         $educationyears = Educationyear::all();
         // $topics = Topic::all();
 
-        return view('pages.students.attach',compact('semesters','educationyears','users','students','faculties','groups','educationforms','educationtypes','programms'));
+        return view('pages.students.attach', compact('semesters', 'educationyears', 'users', 'students', 'faculties', 'groups', 'educationforms', 'educationtypes', 'programms'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAttachstudentRequest  $request
+     * @param \App\Http\Requests\StoreAttachstudentRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAttachstudentRequest $request)
@@ -90,7 +90,7 @@ class AttachstudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Attachstudent  $attachstudent
+     * @param \App\Models\Attachstudent $attachstudent
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -108,23 +108,23 @@ class AttachstudentController extends Controller
         }
 
         $exists = DB::table('student_has_attach')
-            ->whereIn('students_id',$studentIds)
-            ->get();
+            ->whereIn('students_id', $studentIds)
+            ->pluck('students_id')
+            ->toArray();
 
-        // if (!empty($students) && array_intersect($students->pluck('id')->toArray(), $exists)){
+        $filteredStudents = $students->reject(function ($student) use ($exists) {
+            return in_array($student->id, $exists);
+        });
 
-        if (!empty($students)){
-            foreach ($students as $s) {
+        if (!empty($filteredStudents)) {
+            foreach ($filteredStudents as $s) {
                 $programName = Programm::find($s->programm_id)->programm_name;
-                $s->programm_id = $programName;  
+                $s->programm_id = $programName;
             }
-
-            return response()->json($students);
-        }
-         else {
-            $data = ['id' => 'student yuq','id' => 'student yuq','id' => 'student yuq','id' => 'student yuq'];
+            return response()->json($filteredStudents);
+        } else {
+            $data = ['id' => 'student yuq', 'id' => 'student yuq', 'id' => 'student yuq', 'id' => 'student yuq'];
             return response()->json($data);
-
         }
 
     }
@@ -132,19 +132,19 @@ class AttachstudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Attachstudent  $attachstudent
+     * @param \App\Models\Attachstudent $attachstudent
      * @return \Illuminate\Http\Response
      */
     public function edit(Attachstudent $attachstudent)
     {
-               abort_if_forbidden('announcement.edit');
+        abort_if_forbidden('announcement.edit');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAttachstudentRequest  $request
-     * @param  \App\Models\Attachstudent  $attachstudent
+     * @param \App\Http\Requests\UpdateAttachstudentRequest $request
+     * @param \App\Models\Attachstudent $attachstudent
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateAttachstudentRequest $request, Attachstudent $attachstudent)
@@ -155,7 +155,7 @@ class AttachstudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Attachstudent  $attachstudent
+     * @param \App\Models\Attachstudent $attachstudent
      * @return \Illuminate\Http\Response
      */
     public function destroy(Attachstudent $attachstudent)

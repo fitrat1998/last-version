@@ -49,6 +49,8 @@ class MainController extends Controller
             ->where('students_id', $student->student_id)
             ->first();
 
+
+
         if ($attached) {
             $attached_subject = DB::table('subject_has_group')
                 ->where('groups_id', $attached->groups_id)
@@ -73,6 +75,7 @@ class MainController extends Controller
 
         foreach ($examTypes as $examTypeId) {
             $latestResult = Result::where('examtypes_id', $examTypeId)
+                ->where('users_id',$student->id)
                 ->latest('id')
                 ->first();
 

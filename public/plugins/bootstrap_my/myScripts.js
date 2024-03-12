@@ -3,6 +3,7 @@
 */
 $(function () {
     $("#dataTable").DataTable();
+
 });
 
 function preloader() {
@@ -127,26 +128,32 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'GET',
-            url: url,  // Routing nomini ishlatamiz
-            data: {id: id}, // Ma'lumotni so'rovga qo'shamiz
+            url: url,
+            data: {id: id},
             success: function (response) {
                 console.log(response);
-                var table = $('#dataTable').DataTable();
-                // DataTable jadvallarini tozalash
+
+                var table = $('#AttachStudent').DataTable();
+
+                $('#AttachStudent').DataTable({
+                    "paging": true,
+                    "lengthMenu": [[10, 25, 50, -1]]
+                });
+
+
                 table.clear().draw();
 
-                // Har bir JSON qatorini DataTable jadvallariga qo'shish
-                for (var i = 0; i < response.length; i++) {
-                    table.row.add([
-                        '<input type="checkbox"  name="students_id[]" id="checkboxSuccess3" value="' + response[i].id + '">',
-                        response[i].id,
-                        response[i].fullname,
-                        response[i].programm_id
-                        // ... qo'shimcha ustunlar
-                    ]);
-                }
 
-                table.draw();
+                Object.keys(response).forEach(function (key) {
+                    var student = response[key];
+                    table.row.add([
+                        '<input type="checkbox" name="students_id[]" id="checkboxSuccess3" value="' + student.id + '">',
+                        student.id,
+                        student.fullname,
+                        student.programm_id
+                    ]).draw(false);
+                });
+
 
             },
             error: function (error) {
@@ -751,6 +758,7 @@ $(document).ready(function () {
                 console.log(response)
 
                 var table = $('#dataTable').DataTable();
+
                 table.clear().draw();
 
                 for (var i = 0; i < response.length; i++) {
@@ -766,7 +774,6 @@ $(document).ready(function () {
                         // response[i].correct,
                     ]);
                 }
-
 
 
                 table.draw();
