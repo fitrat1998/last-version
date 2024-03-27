@@ -101,57 +101,13 @@ class ResultController extends Controller
     public function show(Request $request)
     {
         $id = intval($request->input('id'));
+        $group_id = intval($request->input('group_id'));
 
-        $result = Result::where('examtypes_id', $id)->get();
+        $result = Result::where('examtypes_id', $id)
+            ->get();
 
         $u_id = $result->pluck('users_id');
-//
-//        $s_id = User::whereIn('id', $u_id)->pluck('student_id');
-//
-//        $sem_id = $result->pluck('semesters_id');
-//
-//        $sub_id = $result->pluck('subjects_id');
-//
-//        $semester = Semester::whereIn('id', $sem_id)->get();
-//
-//        $subject = Subject::whereIn('id', $sub_id)->get();
-//
-//        $g_id = DB::table('student_has_attach')->whereIn('students_id', $s_id)->pluck('groups_id');
-//
-//        $group = Group::whereIn('id', $g_id)->get();
-//
-//        $student = Student::whereIn('id', $s_id)->get();
-//
-//        $examtype = Examtype::find($id);
 
-//        $results = Result::where('examtypes_id', $id)
-//            ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
-//            ->join('users', 'results.users_id', '=', 'users.id')
-//            ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
-//            ->join('groups', 'student_has_attach.groups_id', '=', 'groups.id')
-//            ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
-//            ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
-//            ->join('students', 'users.student_id', '=', 'students.id')
-//            ->select(
-//                'results.id as id',
-//                'results.correct as correct',
-//                'results.ball as ball',
-//                'semesters.semester_number as semester',
-//                'subjects.subject_name as subject',
-//                'groups.name as group',
-//                'students.fullname as student',
-//                'examtypes.name as examtype'
-//            )
-//            ->distinct()
-//
-//            ->get();
-
-//                $max_ball = Result::where('examtypes_id', $id)->max('ball');
-//
-//        $max_balls = Result::whereIn('users_id', $u_id)
-//            ->select('users_id', DB::raw('MAX(ball) as max_ball'))
-//            ->groupBy('users_id', 'examtypes_id','subjects_id')
-//            ->pluck('max_ball');
 
         $max_balls = Result::whereIn('users_id', $u_id)
             ->where('examtypes_id',$id)
@@ -160,9 +116,9 @@ class ResultController extends Controller
             ->pluck('max_ball')
             ->toArray();
 
+        $nid = $result->pluck('examtypes_id');
 
-
-        $results = Result::where('examtypes_id', $id)
+        $results = Result::whereIn('examtypes_id', $nid)
             ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
             ->join('users', 'results.users_id', '=', 'users.id')
             ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
@@ -171,6 +127,7 @@ class ResultController extends Controller
             ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
             ->join('students', 'users.student_id', '=', 'students.id')
             ->whereIn('results.ball', array_values($max_balls))
+            ->where('groups.id', $group_id)
             ->select(
                 'results.id as id',
                 'results.correct as correct',

@@ -636,7 +636,7 @@ $(document).ready(function () {
         var pr_id = $(this).val();
         var pr_url = $('#url_result_programm').val();
 
-        // alert(pr_id);
+        // alert(pr_url);
 
         $.ajax({
             url: pr_url,
@@ -744,12 +744,11 @@ $(document).ready(function () {
 
         var subjects_id = $(this).val();
         var subjects_url = $('#url_examtype_result').val();
-
-
+        var group_result = $("#group_result").val();
         $.ajax({
             url: subjects_url,
             type: 'GET',
-            data: {id: subjects_id},
+            data: {id: subjects_id,group_id: group_result},
             success: function (response) {
                 console.log(response)
 

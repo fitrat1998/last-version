@@ -43,7 +43,7 @@
                                 <div class="form-group">
                                     <h4>Yo'nalish</h4>
 
-                                    <input type="hidden" name="url_result_programm" value="{{route('programmShow')}}"
+                                    <input type="hidden" name="url_result_programm" value="{{route('programmShow2')}}"
                                     id="url_result_programm">
 
                                     <select class="select2" name="faculty" data-placeholder="Semestrni tanlang" style="width: 100%;" id="result_programm">

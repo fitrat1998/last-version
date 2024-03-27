@@ -169,24 +169,24 @@ class GroupController extends Controller
         $t_id = User::find($user);
 
 
-        if ($role[0] == 'teacher') {
-
-            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
-
-            $groups = Group::whereIn('id', $group)->get();
-
-            $idArray = $groups->pluck('id')->toArray();
-
-
-        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
-            $groups = Group::all();
-        }
-
-
-        $id = $groups->pluck('id')->toArray();
+//        if ($role[0] == 'teacher') {
+//
+//            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+//
+//            $groups = Group::whereIn('id', $group)->get();
+//
+//            $idArray = $groups->pluck('id')->toArray();
+//
+//
+//        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+//            $groups = Group::all();
+//        }
+//
+//
+//        $id = $groups->pluck('id')->toArray();
 
         $subjects = DB::table('subject_has_group')
-            ->whereIn('groups_id', $id)
+            ->where('groups_id', $id)
             ->get('subjects_id')
             ->pluck('subjects_id')
             ->toArray();

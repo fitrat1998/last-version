@@ -47,7 +47,7 @@
 
                             <select class="duallistbox" multiple="multiple" name="groups_id[]">
                                 @foreach($groups as $g)
-                                    <option value="{{ $g->id }}" @if(\App\Models\Subject::check($subject->id,$g->id)) selected @endif> {{ $g->name }}</option>
+                                    <option value="{{ $g->id }}"    > {{ $g->name }}</option>
                                 @endforeach
                             </select>
 
