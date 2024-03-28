@@ -59,8 +59,11 @@ class CurrentexamController extends Controller
     {
         abort_if_forbidden('currentexam.create');
 
+        $user_id = auth()->user()->id;
+
         $currentexam = Currentexam::create([
             'number' => $request->number,
+            'user_id' => $user_id,
             'examtypes_id' => $request->examtypes_id,
             'groups_id' => $request->groups_id,
             'subjects_id' => $request->subjects_id,
@@ -166,7 +169,7 @@ class CurrentexamController extends Controller
      * @param \App\Models\Currentexam $currentexam
      * @return \Illuminate\Http\Response
      */
-     
+
     public function deleteAll(Request $request)
     {
         abort_if_forbidden('currentexam.destroy');
@@ -178,7 +181,7 @@ class CurrentexamController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,

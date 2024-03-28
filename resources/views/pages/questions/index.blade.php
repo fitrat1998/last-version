@@ -70,7 +70,7 @@
                                         </td>
                                         <td>{{ $question->id }}</td>
                                         <td>{{ $question->question }}</td>
-                                        <td>{{ $question->question->topic_name ?? "Mavjud emas" }}</td>
+                                        <td>{{ $question->topic->topic_name ?? "Mavjud emas" }}</td>
                                         <td>
                                             @foreach ($question->options as $key => $o)
                                                 <span class="badge bg-success">{{ chr($key + 65) }} - {{ $o->option }}</span>

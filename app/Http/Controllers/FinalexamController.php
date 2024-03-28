@@ -58,9 +58,11 @@ class FinalexamController extends Controller
     public function store(StoreFinalexamRequest $request)
     {
         abort_if_forbidden('finalexam.create');
+        $user_id = auth()->user()->id;
 
         $finalexams = Finalexam::create([
             'number' => $request->number,
+            'user_id' => $user_id,
             'examtypes_id' => $request->examtypes_id,
             'groups_id' => $request->groups_id,
             'subjects_id' => $request->subjects_id,
@@ -177,7 +179,7 @@ class FinalexamController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,

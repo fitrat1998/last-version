@@ -17,20 +17,21 @@ class CreateSelfstudyexamsTable extends Migration
             $table->id();
             $table->integer('number');
 
-            $table->integer('user_id');
+                        $table->integer('user_id')->nullable();
+
             $table->string('limit')->nullable();
 
             $table->unsignedBigInteger('examtypes_id')->nullable();
-            $table->foreign('examtypes_id')->references('id')->on('examtypes');
+            $table->foreign('examtypes_id')->references('id')->on('examtypes')->onDelete('cascade');
 
             $table->unsignedBigInteger('subjects_id');
-            $table->foreign('subjects_id')->references('id')->on('subjects');
+            $table->foreign('subjects_id')->references('id')->on('subjects')->onDelete('cascade');
 
             $table->unsignedBigInteger('groups_id');
-            $table->foreign('groups_id')->references('id')->on('groups');
+            $table->foreign('groups_id')->references('id')->on('groups')->onDelete('cascade');
 
             $table->unsignedBigInteger('semesters_id');
-            $table->foreign('semesters_id')->references('id')->on('semesters');
+            $table->foreign('semesters_id')->references('id')->on('semesters')->onDelete('cascade');
 
             $table->integer('attempts')->nullable();
 

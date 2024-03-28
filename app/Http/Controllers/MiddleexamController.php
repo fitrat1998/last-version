@@ -62,11 +62,11 @@ class MiddleexamController extends Controller
     public function store(StoreMiddleexamRequest $request)
     {
         abort_if_forbidden('middleexam.create');
-
-//        dd($request);
+        $user_id = auth()->user()->id;
 
         $middleexams = Middleexam::create([
             'number' => $request->number,
+            'user_id' => $user_id,
             'examtypes_id' => $request->examtypes_id,
             'groups_id' => $request->groups_id,
             'subjects_id' => $request->subjects_id,
@@ -181,17 +181,17 @@ class MiddleexamController extends Controller
 
         $ids = $request->ids;
 
-         $res = Middleexam::whereIn('id',$ids)->delete();
-        
+        $res = Middleexam::whereIn('id', $ids)->delete();
 
-        if($res){
+
+        if ($res) {
             return response()->json([
-                'success'=>true,
+                'success' => true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
-            'success'=>false,
+            'success' => false,
             "message" => "SIHBDISA"
         ]);
     }

@@ -17,11 +17,11 @@ class CreateSubjectHasGroup extends Migration
             $table->id();
 
             $table->unsignedBigInteger('groups_id');
-            $table->foreign('groups_id')->references('id')->on('groups');
+            $table->foreign('groups_id')->references('id')->on('groups')->onDelete('cascade');
 
             $table->unsignedBigInteger('subjects_id');
-            $table->foreign('subjects_id')->references('id')->on('subjects');
-            
+            $table->foreign('subjects_id')->references('id')->on('subjects')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

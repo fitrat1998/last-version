@@ -17,23 +17,22 @@ class StudentHasAttachTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('students_id');
-            $table->foreign('students_id')->references('id')->on('students');
+            $table->foreign('students_id')->references('id')->on('students')->onDelete('cascade');
 
             $table->unsignedBigInteger('faculties_id');
-            $table->foreign('faculties_id')->references('id')->on('faculties');
+            $table->foreign('faculties_id')->references('id')->on('faculties')->onDelete('cascade');
 
             $table->unsignedBigInteger('educationtypes_id');
-            $table->foreign('educationtypes_id')->references('id')->on('educationtypes');
-
+            $table->foreign('educationtypes_id')->references('id')->on('educationtypes')->onDelete('cascade');
 
             $table->unsignedBigInteger('groups_id');
-            $table->foreign('groups_id')->references('id')->on('groups');
+            $table->foreign('groups_id')->references('id')->on('groups')->onDelete('cascade');
 
             $table->unsignedBigInteger('educationyears_id');
-            $table->foreign('educationyears_id')->references('id')->on('educationyears');
+            $table->foreign('educationyears_id')->references('id')->on('educationyears')->onDelete('cascade');
 
             $table->unsignedBigInteger('semesters_id');
-            $table->foreign('semesters_id')->references('id')->on('semesters');
+            $table->foreign('semesters_id')->references('id')->on('semesters')->onDelete('cascade');
 
             $table->timestamps();
         });

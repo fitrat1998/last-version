@@ -15,10 +15,11 @@ class CreateOptionsTable extends Migration
     {
         Schema::create('options', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('question_id');
+            $table->bigInteger('question_id')->unsigned();
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->text('option');
             $table->boolean('is_correct')->default(false);
-            $table->Integer('difficulty')->default(100);
+            $table->string('difficulty')->default(100);
             $table->timestamps();
         });
     }

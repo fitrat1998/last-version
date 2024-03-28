@@ -12,6 +12,19 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImportQuestion implements WithHeadingRow, ToCollection
 {
+    public function options_create($arr)
+    {
+        for ($i=0;$i<count($arr);$i++) {
+            for ($j=0;$j<count($arr[$i]["option"]);$j++) {
+                Options::create([
+                    'question_id'   => $arr[$i]["quetion"],
+                    'option'        => $arr[$i]["option"][$j],
+                    'is_correct'    => $arr[$i]["correct"][$j],
+                    'difficulty'    => $arr[$i]["difficulty"][$j],
+                ]);
+            }
+        }
+    }
     /**
      * @param array $row
      *
@@ -19,37 +32,39 @@ class ImportQuestion implements WithHeadingRow, ToCollection
      */
     public function collection(Collection $rows)
     {
+        $options_map = [];
+        for ($i=0;$i<count($rows);$i+=4) {
+             $topicName = trim($rows[$i]['mavzu']);
+             $questionText = trim($rows[$i]['savol']);
+             $isCorrect = [];
+             $difficulty = [];
+             $option = [];
 
-        foreach ($rows as $row) {
-
-            $topicName = trim($row['mavzu']);
-            $questionText = trim($row['savol']);
-            $optionText = trim($row['variant']);
-            $isCorrect = trim($row['javob']);
-            $difficulty = trim($row['qiyinchilik']);
-
-            $topic = Topic::where('topic_name', $topicName)->first();
+             for ($j=0;$j<4;$j++){
+                 $option[] = $rows[$i+$j]['variant'];
+                 $isCorrect[] =  $rows[$i+$j]['javob'];
+                 $difficulty[] = $rows[$i+$j]['qiyinchilik'];
+             }
+             $topic = Topic::where('topic_name', $topicName)->first();
 
             if (!$topic) {
                 continue;
             }
 
-            $existingQuestion = Question::where('question', $questionText)->first();
+            $question = Question::where('question', $questionText)->first();
 
-            if (!$existingQuestion) {
+            if (!$question) {
                 $question = Question::create([
                     'topic_id' => $topic->id,
                     'question' => $questionText,
                 ]);
             }
 
-            $option = Options::create([
-                'question_id' => $question->id,
-                'option' => $optionText,
-                'is_correct' => $isCorrect,
-                'difficulty' => $difficulty, 
-            ]);
+            $options_map[] = ["quetion" => $question->id,"option" => $option,"correct" => $isCorrect,"difficulty" => $difficulty];
         }
+
+        $this->options_create($options_map);
+
     }
 
 

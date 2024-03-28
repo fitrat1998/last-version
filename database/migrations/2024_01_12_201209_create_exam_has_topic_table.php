@@ -19,7 +19,7 @@ class CreateExamHasTopicTable extends Migration
             $table->string('exams_id');
 
             $table->unsignedBigInteger('topics_id');
-            $table->foreign('topics_id')->references('id')->on('topics');
+            $table->foreign('topics_id')->references('id')->on('topics')->onDelete('cascade');
 
             $table->timestamps();
         });

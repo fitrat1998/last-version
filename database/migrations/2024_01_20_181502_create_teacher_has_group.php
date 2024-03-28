@@ -19,10 +19,10 @@ class CreateTeacherHasGroup extends Migration
             $table->string('teachers_id');
 
              $table->unsignedBigInteger('faculties_id');
-            $table->foreign('faculties_id')->references('id')->on('faculties');
+            $table->foreign('faculties_id')->references('id')->on('faculties')->onDelete('cascade');
 
             $table->unsignedBigInteger('groups_id');
-            $table->foreign('groups_id')->references('id')->on('groups');
+            $table->foreign('groups_id')->references('id')->on('groups')->onDelete('cascade');
 
 
             $table->timestamps();

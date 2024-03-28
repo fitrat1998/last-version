@@ -17,14 +17,17 @@ class CreateAttendanceChecksTable extends Migration
             $table->id();
             $table->boolean('absent');
 
-            $table->unsignedBigInteger('exercises_id');
-            $table->foreign('exercises_id')->references('id')->on('exercises');
+             $table->unsignedBigInteger('exercises_id');
+            $table->foreign('exercises_id')->references('id')->on('exercises')->onDelete('cascade');
 
             $table->unsignedBigInteger('students_id');
-            $table->foreign('students_id')->references('id')->on('students');
+            $table->foreign('students_id')->references('id')->on('students')->onDelete('cascade');
 
-            $table->integer('topics_id');
-            $table->integer('subjects_id');
+            $table->unsignedBigInteger('topics_id');
+            $table->foreign('topics_id')->references('id')->on('topics')->onDelete('cascade');
+
+            $table->unsignedBigInteger('subjects_id');
+            $table->foreign('subjects_id')->references('id')->on('subjects')->onDelete('cascade');
 
             $table->timestamps();
         });

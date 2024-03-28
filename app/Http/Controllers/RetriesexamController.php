@@ -57,10 +57,11 @@ class RetriesexamController extends Controller
     {
         abort_if_forbidden('retryexam.create');
 
-        //        dd($request);
+        $user_id = auth()->user()->id;
 
         $retriesexams = Retriesexam::create([
             'number' => $request->number,
+            'user_id' => $user_id,
             'examtypes_id' => $request->examtypes_id,
             'groups_id' => $request->groups_id,
             'subjects_id' => $request->subjects_id,
@@ -176,7 +177,7 @@ class RetriesexamController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,

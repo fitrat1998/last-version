@@ -60,11 +60,13 @@ class SelfstudyexamsController extends Controller
     public function store(StoreSelfstudyexamsRequest $request)
     {
         abort_if_forbidden('selfstudyexam.create');
+        $user_id = auth()->user()->id;
 
         //        dd($request);
 
         $selfstudyexams = Selfstudyexams::create([
             'number' => $request->number,
+            'user_id' => $user_id,
             'examtypes_id' => $request->examtypes_id,
             'groups_id' => $request->groups_id,
             'subjects_id' => $request->subjects_id,
@@ -181,7 +183,7 @@ class SelfstudyexamsController extends Controller
             return response()->json([
                 'success'=>true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
             'success'=>false,

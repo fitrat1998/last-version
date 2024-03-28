@@ -120,7 +120,7 @@ class QuestionsController extends Controller
                 $option->update([
                     'is_correct' => $status,
                     'option' => $request->option[$key],
-                    'difficulty' => $request->difficulty[$key] * 10,
+                    'difficulty' => $request->difficulty[$key],
                 ]);
             }
         } else {
@@ -132,7 +132,7 @@ class QuestionsController extends Controller
                 $option->update([
                     'is_correct' => 0,
                     'option' => $request->option[$key],
-                    'difficulty' => $request->difficulty[$k] * 10,
+                    'difficulty' => $request->difficulty[$k],
                 ]);
             }
         }

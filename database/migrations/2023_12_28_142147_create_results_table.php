@@ -26,10 +26,10 @@ class CreateResultsTable extends Migration
 //            $table->foreign('examtypes_id')->references('id')->on('examtypes');
 
             $table->unsignedBigInteger('subjects_id');
-            $table->foreign('subjects_id')->references('id')->on('subjects');
+            $table->foreign('subjects_id')->references('id')->on('subjects')->onDelete('cascade');
 
             $table->unsignedBigInteger('semesters_id');
-            $table->foreign('semesters_id')->references('id')->on('semesters');
+            $table->foreign('semesters_id')->references('id')->on('semesters')->onDelete('cascade');
 
             $table->string('correct');
 

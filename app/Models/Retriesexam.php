@@ -12,6 +12,7 @@ class Retriesexam extends Model
 
     protected $fillable = [
         'number',
+        'user_id',
         'examtypes_id',
         'groups_id',
         'subjects_id',
@@ -31,8 +32,8 @@ class Retriesexam extends Model
     {
         return $this->belongsTo(Subject::class, 'subjects_id', 'id');
     }
-    
-    
+
+
 
     public function examtype()
     {

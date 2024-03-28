@@ -22,7 +22,8 @@ class CreateTeachersTable extends Migration
             $table->string('email');
             $table->string('login');
             $table->string('password');
-            $table->string('faculties_id');
+            $table->unsignedBigInteger('faculties_id');
+            $table->foreign('faculties_id')->references('id')->on('faculties');
             $table->softDeletes();
             $table->timestamps();
         });

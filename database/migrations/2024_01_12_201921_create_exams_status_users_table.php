@@ -19,7 +19,7 @@ class CreateExamsStatusUsersTable extends Migration
             $table->unsignedBigInteger('user_id');
 
             $table->unsignedBigInteger('examtypes_id')->nullable();
-            $table->foreign('examtypes_id')->references('id')->on('examtypes');
+            $table->foreign('examtypes_id')->references('id')->on('examtypes')->onDelete('cascade');
 
             $table->unsignedBigInteger('exams_id');
             $table->timestamps();

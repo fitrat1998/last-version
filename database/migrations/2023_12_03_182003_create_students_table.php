@@ -19,7 +19,8 @@ class CreateStudentsTable extends Migration
             $table->integer('user_id');
 
             $table->unsignedBigInteger('programm_id');
-            $table->foreign('programm_id')->references('id')->on('programms');
+            $table->foreign('programm_id')->references('id')->on('programms')->onDelete('cascade');
+
 
             $table->string('fullname');
             $table->string('photo')->nullable;

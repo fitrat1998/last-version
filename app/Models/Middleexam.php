@@ -12,6 +12,7 @@ class Middleexam extends Model
 
     protected $fillable = [
         'number',
+        'user_id',
         'examtypes_id',
         'groups_id',
         'subjects_id',
