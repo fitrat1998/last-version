@@ -45,6 +45,9 @@
           href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
 
     <link rel="icon" href="{{ asset('consImages/logoU.png')}}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     @livewireStyles
     @routes
 </head>
@@ -178,7 +181,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity=""
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==
 <script src="{{ asset('plugins/codemirror/codemirror.js') }}"></script>
 <script src="{{ asset('plugins/codemirror/mode/css/css.js') }}"></script>
 <script src="{{ asset('plugins/codemirror/mode/xml/xml.js') }}"></script>

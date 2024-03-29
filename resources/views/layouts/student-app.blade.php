@@ -71,6 +71,13 @@
                         </a>
                     </li>
                     <li>
+                        <a class="sider--button {{ request()->routeIs('/selfstudy') ? 'active' : '' }}"
+                           href="{{ route('studentAdminSelfstudy') }}">
+                            <i class="fa-solid fa-lg fa-clock-rotate-left"></i>
+                            <span class="sider__item--title">Mustaqil talim</span>
+                        </a>
+                    </li>
+                     <li>
                         <a class="sider--button {{ request()->routeIs('/retry') ? 'active' : '' }}"
                            href="{{ route('studentAdminRetry') }}">
                             <i class="fa-solid fa-lg fa-clock-rotate-left"></i>
@@ -186,6 +193,8 @@
         responsive: true
 
     });
+
+
 
 </script>
 

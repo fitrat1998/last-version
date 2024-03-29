@@ -176,13 +176,13 @@ class ExamController extends Controller
         if($self){
             $subjects_id = $self->subjects_id;
 
-            $topics = Topic::where('subject_id',$subjects_id)
-                ->pluck('id');
+//            $topics = Topic::where('subject_id',$subjects_id)
+//                ->pluck('id');
 
             if($type_id == 3){
                 $topics = Topic::whereIn('id',$topic)
                     ->whereIn('subject_id',$subject)
-                    ->get();
+                    ->pluck('id');
 
 
             }
@@ -191,7 +191,8 @@ class ExamController extends Controller
                 ->pluck('id');
             }
 
-            $randomQuestion = Question::whereIn('topic_id', $topics)
+            $randomQuestion = Question::where('topic_id', $topic)
+                    ->whereIn('topic_id', $topics)
                 ->inRandomOrder()
                 ->limit($number)
                 ->get();
@@ -226,6 +227,7 @@ class ExamController extends Controller
                 $k ++;
             }
         }
+
 
         return response()->json($test);
     }

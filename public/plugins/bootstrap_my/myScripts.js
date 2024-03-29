@@ -45,6 +45,8 @@ $(document).on('click', '.toggle-password', function () {
 });
 
 
+
+
 function alertMessage(message = '', type = 'default') {
 
     let messageDiv =
