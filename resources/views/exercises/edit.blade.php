@@ -104,7 +104,7 @@
                                 <label>O'qituvchi</label><br />
                                 <select class="form-control" name="teacher_id" id="teacher_id">
                                     @foreach($teachers as $teacher)
-                                    <option value = "{{ $teacher->id }}" {{ $teacher->id == ($exercises->teacher_id ? "selected":'') }}>{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
+                                    <option value = "{{ $teacher->id }}" {{ $teacher->id == ($exercises->teacher_id ? "selected":'') }}>{{ $teacher->fullname  }}</option>
                                     @endforeach
                                 </select>
                             </div>

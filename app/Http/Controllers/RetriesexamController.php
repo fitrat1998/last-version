@@ -24,10 +24,20 @@ class RetriesexamController extends Controller
     {
         abort_if_forbidden('retryexam.show');
 
-        $retriesexams = Retriesexam::all();
-        $groups = Group::all();
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
 
-        return view('pages.retriesexams.index', compact('retriesexams', 'groups'));
+
+        if ($role[0] == 'teacher') {
+
+            $retriesexams = Retriesexam::where('user_id', $user)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $retriesexams = Retriesexam::all();
+
+        }
+
+        return view('pages.retriesexams.index', compact('retriesexams'));
     }
 
     /**

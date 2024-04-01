@@ -33,7 +33,7 @@ class SubjectController extends Controller
     {
         abort_if_forbidden('subject.show');
 
-        $faculties = Faculty::all();
+
         $users = User::where('id', '!=', auth()->user()->id)->get();
         $subjects = Subject::all();
 
@@ -55,7 +55,22 @@ class SubjectController extends Controller
     {
         abort_if_forbidden('subject.create');
 
-        $groups = Group::all();
+          $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $groups = Group::all();
+        }
+
         return view('pages.subjects.add', compact('groups'));
     }
 

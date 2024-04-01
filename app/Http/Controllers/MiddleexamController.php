@@ -28,11 +28,22 @@ class MiddleexamController extends Controller
     {
         abort_if_forbidden('middleexam.show');
 
-        $middleexams = Middleexam::all();
-        $groups = Group::all();
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
 
 
-        return view('pages.middleexams.index', compact('middleexams', 'groups'));
+
+        if ($role[0] == 'teacher') {
+
+            $middleexams = Middleexam::where('user_id', $user)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+           $middleexams = Middleexam::all();
+
+        }
+
+
+        return view('pages.middleexams.index', compact('middleexams'));
     }
 
     /**

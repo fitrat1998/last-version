@@ -50,7 +50,6 @@ class MainController extends Controller
             ->first();
 
 
-
         if ($attached) {
             $attached_subject = DB::table('subject_has_group')
                 ->where('groups_id', $attached->groups_id)
@@ -64,8 +63,7 @@ class MainController extends Controller
 
             }
 
-        }
-        else {
+        } else {
             $subjects = [];
         }
 
@@ -75,7 +73,7 @@ class MainController extends Controller
 
         foreach ($examTypes as $examTypeId) {
             $latestResult = Result::where('examtypes_id', $examTypeId)
-                ->where('users_id',$student->id)
+                ->where('users_id', $student->id)
                 ->latest('id')
                 ->first();
 
@@ -90,40 +88,109 @@ class MainController extends Controller
 
     public function subjects()
     {
-        $subjects = Subject::all();
+        $user = auth()->user()->id;
+        // $subjects = Subject::all();
+        $announcements = Announcement::all();
+
+        $student = User::find($user);
+
+        $attached = DB::table('student_has_attach')
+            ->where('students_id', $student->student_id)
+            ->first();
+
+
+        if ($attached) {
+            $attached_subject = DB::table('subject_has_group')
+                ->where('groups_id', $attached->groups_id)
+                ->get();
+
+            $attached_subject = $attached_subject->pluck('subjects_id')->toArray();
+
+            if ($attached_subject) {
+                $subjects = Subject::whereIn('id', $attached_subject)
+                    ->get();
+
+            }
+
+        } else {
+            $subjects = [];
+        }
 
         return view('students.subject', compact('subjects'));
     }
 
     public function selfstudy()
     {
-        $selfstudies = Selfstudyexams::all();
+        $user = auth()->user()->id;
+
+        $student = User::find($user);
+
+        $attached = DB::table('student_has_attach')
+            ->where('students_id', $student->student_id)
+            ->first();
+
+        $selfstudies = Selfstudyexams::where('groups_id', $attached->groups_id)->get();
+
         return view('students.selfstudy', compact('selfstudies'));
     }
 
     public function middleexam()
     {
-        $middleexams = Middleexam::all();
+        $user = auth()->user()->id;
+
+        $student = User::find($user);
+
+        $attached = DB::table('student_has_attach')
+            ->where('students_id', $student->student_id)
+            ->first();
+
+//        dd($attached);
+
+        $middleexams = Middleexam::where('groups_id',$attached->groups_id)->get();
         return view('students.middleexam', compact('middleexams'));
     }
 
     public function finalexam()
     {
-        $finalexams = Finalexam::all();
+        $user = auth()->user()->id;
+
+        $student = User::find($user);
+
+        $attached = DB::table('student_has_attach')
+            ->where('students_id', $student->student_id)
+            ->first();
+
+        $finalexams = Finalexam::where('groups_id', $attached->groups_id)->get();
         return view('students.finalexam', compact('finalexams'));
     }
 
     public function currentexam()
     {
-        $currentexams = Currentexam::all();
+        $user = auth()->user()->id;
+
+        $student = User::find($user);
+
+        $attached = DB::table('student_has_attach')
+            ->where('students_id', $student->student_id)
+            ->first();
+
+        $currentexams = Currentexam::where('groups_id', $attached->groups_id)->get();
 
         return view('students.currentexam', compact('currentexams'));
     }
 
     public function retry()
     {
-        $retries = Retriesexam::all();
+
         $user_id = User::find(auth()->user()->id);
+
+
+        $attached = DB::table('student_has_attach')
+            ->where('students_id', $user_id->student_id)
+            ->first();
+
+
+        $retries = Retriesexam::where('groups_id',$attached->groups_id)->get();
 
 
         if ($user_id) {

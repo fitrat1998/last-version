@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
+use App\Models\Subject;
 use App\Models\User;
 use App\Models\Topic;
 use App\Models\Options;
@@ -9,6 +11,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreQuetionsRequest;
 use App\Http\Requests\UpdateQuetionsRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -23,10 +26,46 @@ class QuestionsController extends Controller
     {
         abort_if_forbidden('question.show');
 
-        $users = User::all();
-        $questions = Question::all();
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
 
-        return view('pages.questions.index', compact('users', 'questions'));
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->pluck('id');
+
+            $subjects_id = DB::table('subject_has_group')->whereIn('groups_id', $groups)->pluck('subjects_id');
+
+            $subjects = Subject::whereIn('id', $subjects_id)->get();
+            $topics = Topic::whereIn('subject_id', $subjects_id)->pluck('id');
+
+            $questions = Question::where('topic_id', $topics)->get();
+
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $subjects = Subject::all()->pluck('id');
+
+            $topics = Topic::whereIn('subject_id', $subjects)->pluck('id');
+
+            $questions = Question::all();
+        }
+
+        if ($role[0] == 'teacher') {
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $groups = Group::all();
+        }
+
+
+        return view('pages.questions.index', compact('questions'));
     }
 
 
@@ -99,7 +138,7 @@ class QuestionsController extends Controller
 
         $question = Question::find($id);
 
-         $validatedData = $request->validated();
+        $validatedData = $request->validated();
 
 //        dd($validatedData);
         $question->update([
@@ -136,9 +175,6 @@ class QuestionsController extends Controller
                 ]);
             }
         }
-
-
-
 
 
         return redirect()->route('questions.index');

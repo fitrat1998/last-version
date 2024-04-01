@@ -132,7 +132,7 @@ $(document).ready(function () {
             url: url,
             data: {id: id},
             success: function (response) {
-                // console.log(response);
+                console.log(response);
 
                 var table = $('#AttachStudent').DataTable({
                     "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
@@ -588,7 +588,7 @@ $(document).ready(function () {
         // let  urls = route(attendance_checks.show);
 
 
-        alert(subjects_url);
+        // alert(subjects_url);
 
         $.ajax({
             url: subjects_url,

@@ -26,11 +26,22 @@ class SelfstudyexamsController extends Controller
     {
         abort_if_forbidden('selfstudyexam.show');
 
-        $selfstudyexams = Selfstudyexams::all();
-        $groups = Group::all();
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
 
 
-        return view('pages.selfstudyexams.index', compact('selfstudyexams', 'groups'));
+
+        if ($role[0] == 'teacher') {
+
+            $selfstudyexams = Selfstudyexams::where('user_id', $user)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+           $selfstudyexams = Selfstudyexams::all();
+
+        }
+
+
+        return view('pages.selfstudyexams.index', compact('selfstudyexams'));
     }
 
     /**

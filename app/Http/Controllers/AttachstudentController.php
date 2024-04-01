@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Faculty;
@@ -42,10 +43,36 @@ class AttachstudentController extends Controller
     {
         abort_if_forbidden('student.show');
 
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+
+            $faculty = Teacher::find($t_id->teacher_id)->pluck('faculties_id');
+
+            $faculties = Faculty::find($faculty)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $faculties = Faculty::all();
+        }
+
+        if ($role[0] == 'teacher') {
+
+            $faculty = Teacher::find('id', $t_id->teacher_id)->pluck('faculties_id');
+
+            $faculties = Faculty::find($faculty)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $faculties = Faculty::all();
+        }
+
+
         $students = Student::all();
         $users = User::where('id', '!=', auth()->user()->id)->get();
-        $faculties = Faculty::all();
-        $groups = Group::all();
         $semesters = Semester::all();
         $programms = Programm::all();
         $educationforms = Formofeducation::all();

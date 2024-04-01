@@ -24,11 +24,22 @@ class CurrentexamController extends Controller
     {
         abort_if_forbidden('currentexam.show');
 
-        $currentexams = Currentexam::all();
-        $groups = Group::all();
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
 
 
-        return view('pages.currentexams.index', compact('currentexams', 'groups'));
+
+        if ($role[0] == 'teacher') {
+
+            $currentexams = Currentexam::where('user_id', $user)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $currentexams = Currentexam::all();
+
+        }
+
+
+        return view('pages.currentexams.index', compact('currentexams'));
     }
 
     /**
@@ -176,15 +187,15 @@ class CurrentexamController extends Controller
 
         $ids = $request->ids;
 
-        $res = Currentexam::whereIn('id',$ids)->delete();
-        if($res){
+        $res = Currentexam::whereIn('id', $ids)->delete();
+        if ($res) {
             return response()->json([
-                'success'=>true,
+                'success' => true,
                 "message" => "This action successfully complated"
             ]);
         }
         return response()->json([
-            'success'=>false,
+            'success' => false,
             "message" => "This delete action failed!"
         ]);
     }

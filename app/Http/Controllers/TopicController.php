@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Topic;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
@@ -25,17 +26,35 @@ class TopicController extends Controller
     {
         abort_if_forbidden('topic.show');
 
-        $subjects = Subject::all();
-        $users = User::where('id','!=',auth()->user()->id)->get();
-        $topics = Topic::all();
 
-        return view('pages.topics.index',compact('users','topics','subjects'));
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->pluck('id');
+
+            $subjects_id = DB::table('subject_has_group')->whereIn('groups_id', $groups)->pluck('subjects_id');
+
+            $subjects = Subject::whereIn('id', $subjects_id)->get();
+            $topics = Topic::whereIn('subject_id', $subjects_id)->get();
+
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $subjects = Subject::all()->pluck('id');
+
+            $topics = Topic::whereIn('subject_id', $subjects)->get();
+
+        }
+
+        return view('pages.topics.index', compact('topics', 'subjects'));
     }
 
-    public function add()
-    {
-
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -46,15 +65,28 @@ class TopicController extends Controller
     {
         abort_if_forbidden('topic.create');
 
-        $subjects = Subject::all();
-        return view('pages.topics.add',compact('subjects'));
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+            $subjects = Subject::where('user_id', $t_id->id)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $subjects = Subject::all();
+        }
+
+        return view('pages.topics.add', compact('subjects'));
 
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTopicRequest  $request
+     * @param \App\Http\Requests\StoreTopicRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTopicRequest $request)
@@ -72,12 +104,12 @@ class TopicController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Topic  $topic
+     * @param \App\Models\Topic $topic
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $topics = Topic::where('subject_id',$id)->get();
+        $topics = Topic::where('subject_id', $id)->get();
 
         return response()->json($topics);
     }
@@ -85,7 +117,7 @@ class TopicController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Topic  $topic
+     * @param \App\Models\Topic $topic
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -95,17 +127,17 @@ class TopicController extends Controller
         $topic = Topic::find($id);
         $subjects = Subject::all();
 
-        return view('pages.topics.edit',compact('topic','subjects'));
+        return view('pages.topics.edit', compact('topic', 'subjects'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTopicRequest  $request
-     * @param  \App\Models\Topic  $topic
+     * @param \App\Http\Requests\UpdateTopicRequest $request
+     * @param \App\Models\Topic $topic
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTopicRequest $request,$id)
+    public function update(UpdateTopicRequest $request, $id)
     {
         abort_if_forbidden('topic.edit');
 
@@ -122,7 +154,7 @@ class TopicController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Topic  $topic
+     * @param \App\Models\Topic $topic
      * @return \Illuminate\Http\Response
      */
 
@@ -132,15 +164,15 @@ class TopicController extends Controller
 
         $ids = $request->ids;
 
-        $res = Topic::whereIn('id',$ids)->delete();
-        if($res){
+        $res = Topic::whereIn('id', $ids)->delete();
+        if ($res) {
             return response()->json([
-                'success'=>true,
+                'success' => true,
                 "message" => "This action successfully complated"
             ]);
         }
         return response()->json([
-            'success'=>false,
+            'success' => false,
             "message" => "This delete action failed!"
         ]);
     }

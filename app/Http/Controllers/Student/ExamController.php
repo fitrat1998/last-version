@@ -183,8 +183,6 @@ class ExamController extends Controller
                 $topics = Topic::whereIn('id',$topic)
                     ->whereIn('subject_id',$subject)
                     ->pluck('id');
-
-
             }
             else {
                 $topics = Topic::where('subject_id',$subjects_id)

@@ -17,7 +17,7 @@ class CreateResultsTable extends Migration
             $table->id();
 
             $table->integer('users_id');
-            $table->unsignedBigInteger('ball');
+            $table->string('ball');
             $table->integer('quizzes_id');
 
             $table->integer('examtypes_id');
