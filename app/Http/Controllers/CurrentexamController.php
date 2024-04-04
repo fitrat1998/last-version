@@ -51,8 +51,28 @@ class CurrentexamController extends Controller
     {
         abort_if_forbidden('currentexam.create');
 
-        $subjects = Subject::all();
-        $groups = Group::all();
+
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $groups = Group::all();
+        }
+
+        if ($role[0] == 'teacher') {
+            $subjects = Subject::where('user_id', $user)->get();
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $subjects = Subject::all();
+        }
         $examtypes = Examtype::all();
         $semesters = Semester::all();
 
@@ -125,10 +145,29 @@ class CurrentexamController extends Controller
         abort_if_forbidden('currentexam.edit');
 
         $currentexam = Currentexam::find($id);
-        $subjects = Subject::all();
-        $groups = Group::all();
-        $semesters = Semester::all();
+        $role = auth()->user()->roles->pluck('name');
+        $user = auth()->user()->id;
+
+        $t_id = User::find($user);
+
+
+        if ($role[0] == 'teacher') {
+
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
+
+            $groups = Group::whereIn('id', $group)->get();
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $groups = Group::all();
+        }
+
+        if ($role[0] == 'teacher') {
+            $subjects = Subject::where('user_id', $user)->get();
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $subjects = Subject::all();
+        }
         $examtypes = Examtype::all();
+        $semesters = Semester::all();
         $topics = Topic::where('subject_id', $currentexam->subjects_id)->get();
 
         return view('pages.currentexams.edit', compact('currentexam', 'examtypes', 'subjects', 'groups', 'semesters', 'topics'));

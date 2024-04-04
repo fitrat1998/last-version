@@ -8,7 +8,7 @@ use App\Http\Requests\StoreAttendancecheckRequest;
 use App\Http\Requests\UpdateAttendancecheckRequest;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;        
+use Carbon\Carbon;
 
 class AttendanceCheckController extends Controller
 {
@@ -113,8 +113,10 @@ class AttendanceCheckController extends Controller
                     ->where('groups_id', $group_id)
                     ->pluck('students_id')
                     ->toArray();
-
-                $students = Student::whereIn('id', $student_ids)->get();
+                $user = auth()->user()->id;
+                $students = Student::whereIn('id', $student_ids)
+                    ->where('user_id',$user)
+                    ->get();
             }
 
             $ids = $students->pluck('id');
@@ -136,8 +138,8 @@ class AttendanceCheckController extends Controller
             $status = [];
         }
 
-       // return [$status,$exercise->id];  
-        
+       // return [$status,$exercise->id];
+
 
         if(!empty($students)){
             return view('pages.attendance_logs.check',compact('exercise','students','status','now'));

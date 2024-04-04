@@ -63,7 +63,11 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @php
+                                $i = 0;
+                            @endphp
                             @foreach ($students as $student)
+
                                 <tr id="datas_ids{{ $student->id }}">
                                     <td>
                                         <div class="icheck-success">
@@ -73,7 +77,7 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td>{{ $student->id }}</td>
+                                    <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $student->fullname }}</td>
                                     <td>{{ $programms->find($student->programm_id)->programm_name }}</td>
                                     <td>{{ $student->phone }}</td>

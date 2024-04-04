@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Faculty;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\Programm;
 use App\Models\Semester;
 use App\Services\LogWriter;
@@ -51,28 +51,32 @@ class AttachstudentController extends Controller
 
         if ($role[0] == 'teacher') {
 
+            $group = DB::table('teacher_has_group')->where('teachers_id', $t_id->teacher_id)->pluck('groups_id');
 
-            $faculty = Teacher::find($t_id->teacher_id)->pluck('faculties_id');
-
-            $faculties = Faculty::find($faculty)->get();
-
-        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
-            $faculties = Faculty::all();
-        }
-
-        if ($role[0] == 'teacher') {
-
-            $faculty = Teacher::find('id', $t_id->teacher_id)->pluck('faculties_id');
-
-            $faculties = Faculty::find($faculty)->get();
+            $groups = Group::whereIn('id', $group)->get();
 
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
-            $faculties = Faculty::all();
+            $groups = Group::all();
         }
 
+        //  if ($role[0] == 'teacher') {
 
+
+        //     $faculty = Teacher::find($t_id->teacher_id)->pluck('faculties_id');
+
+        //   dd($faculty);
+
+        //     $faculties = Faculty::find($faculty)->get();
+
+        // } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+
+        // }
+
+        $faculties = Faculty::all();
         $students = Student::all();
         $users = User::where('id', '!=', auth()->user()->id)->get();
+
+
         $semesters = Semester::all();
         $programms = Programm::all();
         $educationforms = Formofeducation::all();

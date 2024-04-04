@@ -25,6 +25,7 @@ class FacultyController extends Controller
     {
         abort_if_forbidden('faculty.show');
         $users = User::where('id','!=',auth()->user()->id)->get();
+
         $faculties = Faculty::all();
 
 

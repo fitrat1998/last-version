@@ -26,26 +26,40 @@ class AttendanceLogController extends Controller
         abort_if_forbidden('attendance_log.show');
 
         $teachers = Teacher::all();
-        $users = User::where('id','!=',auth()->user()->id)->get();
-        $faculties = Faculty::all();
+        $users = User::where('id', '!=', auth()->user()->id)->get();
+
 
         $educationyears = Educationyear::all();
         $lessontypes = Lessontype::all();
         $semesters = Semester::all();
         $attendance_logs = Attendance_log::all();
 
-         $role =  auth()->user()->roles->pluck('name');
+        $role = auth()->user()->roles->pluck('name');
         $user = auth()->user()->id;
+        $t_id = User::find($user);
 
-        if($role[0] == 'teacher'){
-            $groups = Group::where('user_id',$user)->get();
-        }
-        else if(auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+
+        if ($role[0] == 'teacher') {
+            $groups = Group::where('user_id', $user)->get();
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }
 
+        if ($role[0] == 'teacher') {
 
-        return view('pages.attendance_logs.index',compact('users','teachers','attendance_logs','faculties','groups','semesters','lessontypes','educationyears'));
+            $teacher = Teacher::where('id', $t_id->teacher_id)->pluck('faculties_id');
+
+            // dd($teacher);
+
+            $faculties = Faculty::find($teacher);
+
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $faculties = Faculty::all();
+        }
+
+
+        return view('pages.attendance_logs.index', compact('users', 'teachers', 'attendance_logs', 'faculties', 'groups', 'semesters', 'lessontypes', 'educationyears'));
     }
 
     /**
@@ -64,23 +78,22 @@ class AttendanceLogController extends Controller
         $semesters = Semester::all();
         $teachers = Teacher::all();
 
-        $role =  auth()->user()->roles->pluck('name');
+        $role = auth()->user()->roles->pluck('name');
         $user = auth()->user()->id;
 
-        if($role[0] == 'teacher'){
-            $groups = Group::where('user_id',$user)->get();
-        }
-        else if(auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+        if ($role[0] == 'teacher') {
+            $groups = Group::where('user_id', $user)->get();
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }
 
-        return view('pages.attendance_logs.add',compact('teachers','subjects','groups','semesters','lessontypes','educationyears'));
+        return view('pages.attendance_logs.add', compact('teachers', 'subjects', 'groups', 'semesters', 'lessontypes', 'educationyears'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAttendance_logRequest  $request
+     * @param \App\Http\Requests\StoreAttendance_logRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAttendance_logRequest $request)
@@ -103,7 +116,7 @@ class AttendanceLogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Attendance_log  $attendance_log
+     * @param \App\Models\Attendance_log $attendance_log
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($id)
@@ -115,13 +128,13 @@ class AttendanceLogController extends Controller
 
 //        dd($subjects);
 
-        return view('pages.attendance_logs.subjects',compact('subjects','group'));
+        return view('pages.attendance_logs.subjects', compact('subjects', 'group'));
     }
 
     public function results()
     {
         $teachers = Teacher::all();
-        $users = User::where('id','!=',auth()->user()->id)->get();
+        $users = User::where('id', '!=', auth()->user()->id)->get();
         $faculties = Faculty::all();
 
         $educationyears = Educationyear::all();
@@ -129,24 +142,23 @@ class AttendanceLogController extends Controller
         $semesters = Semester::all();
         $attendance_logs = Attendance_log::all();
 
-        $role =  auth()->user()->roles->pluck('name');
+        $role = auth()->user()->roles->pluck('name');
         $user = auth()->user()->id;
 
-        if($role[0] == 'teacher'){
-            $groups = Group::where('user_id',$user)->get();
-        }
-        else if(auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+        if ($role[0] == 'teacher') {
+            $groups = Group::where('user_id', $user)->get();
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }
 
 
-        return view('pages.attendance_logs.result',compact('attendance_logs','faculties','groups'));
+        return view('pages.attendance_logs.result', compact('attendance_logs', 'faculties', 'groups'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Attendance_log  $attendance_log
+     * @param \App\Models\Attendance_log $attendance_log
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -161,7 +173,7 @@ class AttendanceLogController extends Controller
         $semesters = Semester::all();
         $teachers = Teacher::all();
 
-        return view('pages.attendance_logs.edit',compact('attendance_log','teachers','subjects','groups','semesters','lessontypes','educationyears'));
+        return view('pages.attendance_logs.edit', compact('attendance_log', 'teachers', 'subjects', 'groups', 'semesters', 'lessontypes', 'educationyears'));
 
 
     }
@@ -169,8 +181,8 @@ class AttendanceLogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAttendance_logRequest  $request
-     * @param  \App\Models\Attendance_log  $attendance_log
+     * @param \App\Http\Requests\UpdateAttendance_logRequest $request
+     * @param \App\Models\Attendance_log $attendance_log
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateAttendance_logRequest $request, $id)
@@ -194,7 +206,7 @@ class AttendanceLogController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Attendance_log  $attendance_log
+     * @param \App\Models\Attendance_log $attendance_log
      * @return \Illuminate\Http\Response
      */
     public function destroy(Attendance_log $attendance_log)

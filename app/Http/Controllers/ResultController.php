@@ -55,7 +55,16 @@ class ResultController extends Controller
 
         $results = Result::all();
 
-        $programms = Programm::all();
+
+        if ($role[0] == 'teacher') {
+            $student = Student::where('user_id', $t_id->id)->pluck('programm_id');
+            $programms = Programm::find($student);
+
+
+        } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
+            $programms = Programm::all();
+
+        }
 
         return view('pages.results.index', compact('programms', 'results'));
 
@@ -102,6 +111,7 @@ class ResultController extends Controller
     {
         $id = intval($request->input('id'));
         $group_id = intval($request->input('group_id'));
+        $subject_id = intval($request->input('subject_id'));
 
         $result = Result::where('examtypes_id', $id)
             ->get();
@@ -110,7 +120,7 @@ class ResultController extends Controller
 
 
         $max_balls = Result::whereIn('users_id', $u_id)
-            ->where('examtypes_id',$id)
+            ->where('examtypes_id', $id)
             ->select('users_id', DB::raw('MAX(ball) as max_ball'))
             ->groupBy('users_id', 'examtypes_id', 'subjects_id')
             ->pluck('max_ball')
@@ -128,6 +138,7 @@ class ResultController extends Controller
             ->join('students', 'users.student_id', '=', 'students.id')
             ->whereIn('results.ball', array_values($max_balls))
             ->where('groups.id', $group_id)
+            ->where('subjects.id', $subject_id)
             ->select(
                 'results.id as id',
                 'results.correct as correct',

@@ -40,10 +40,13 @@ class QuestionsController extends Controller
 
             $subjects_id = DB::table('subject_has_group')->whereIn('groups_id', $groups)->pluck('subjects_id');
 
-            $subjects = Subject::whereIn('id', $subjects_id)->get();
-            $topics = Topic::whereIn('subject_id', $subjects_id)->pluck('id');
 
-            $questions = Question::where('topic_id', $topics)->get();
+            if (!empty($subjects_id)) {
+                $topics = Topic::whereIn('subject_id', $subjects_id)->pluck('id');
+                $questions = Question::whereIn('topic_id', $topics)->get();
+            } else {
+                $questions = null;
+            }
 
 
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
@@ -63,7 +66,6 @@ class QuestionsController extends Controller
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
             $groups = Group::all();
         }
-
 
         return view('pages.questions.index', compact('questions'));
     }

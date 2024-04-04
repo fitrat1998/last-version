@@ -195,6 +195,9 @@ class GroupController extends Controller
             $subjectDetails = Subject::whereIn('id', $subjects)
                 ->get();
             return response()->json($subjectDetails)->header('Content-Type', 'application/json');
+        } else {
+            return response()->json('data yuq')->header('Content-Type', 'application/json');
+
         }
 
     }

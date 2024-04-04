@@ -14,17 +14,18 @@ class ImportQuestion implements WithHeadingRow, ToCollection
 {
     public function options_create($arr)
     {
-        for ($i=0;$i<count($arr);$i++) {
-            for ($j=0;$j<count($arr[$i]["option"]);$j++) {
+        for ($i = 0; $i < count($arr); $i++) {
+            for ($j = 0; $j < count($arr[$i]["option"]); $j++) {
                 Options::create([
-                    'question_id'   => $arr[$i]["quetion"],
-                    'option'        => $arr[$i]["option"][$j],
-                    'is_correct'    => $arr[$i]["correct"][$j],
-                    'difficulty'    => $arr[$i]["difficulty"][$j],
+                    'question_id' => $arr[$i]["quetion"],
+                    'option' => $arr[$i]["option"][$j],
+                    'is_correct' => $arr[$i]["correct"][$j],
+                    'difficulty' => $arr[$i]["difficulty"][$j],
                 ]);
             }
         }
     }
+
     /**
      * @param array $row
      *
@@ -33,19 +34,19 @@ class ImportQuestion implements WithHeadingRow, ToCollection
     public function collection(Collection $rows)
     {
         $options_map = [];
-        for ($i=0;$i<count($rows);$i+=4) {
-             $topicName = trim($rows[$i]['mavzu']);
-             $questionText = trim($rows[$i]['savol']);
-             $isCorrect = [];
-             $difficulty = [];
-             $option = [];
+        for ($i = 0; $i < count($rows); $i += 4) {
+            $topicName = trim($rows[$i]['mavzu']);
+            $questionText = trim($rows[$i]['savol']);
+            $isCorrect = [];
+            $difficulty = [];
+            $option = [];
 
-             for ($j=0;$j<4;$j++){
-                 $option[] = $rows[$i+$j]['variant'];
-                 $isCorrect[] =  $rows[$i+$j]['javob'];
-                 $difficulty[] = $rows[$i+$j]['qiyinchilik'];
-             }
-             $topic = Topic::where('topic_name', $topicName)->first();
+            for ($j = 0; $j < 4; $j++) {
+                $option[] = $rows[$i + $j]['variant'];
+                $isCorrect[] = $rows[$i + $j]['javob'];
+                $difficulty[] = $rows[$i + $j]['qiyinchilik'];
+            }
+            $topic = Topic::where('topic_name', $topicName)->first();
 
             if (!$topic) {
                 continue;
@@ -59,8 +60,15 @@ class ImportQuestion implements WithHeadingRow, ToCollection
                     'question' => $questionText,
                 ]);
             }
+            $option_ex = Options::where('question_id', $question->id)
+                ->where('option', $option)
+                ->first();
 
-            $options_map[] = ["quetion" => $question->id,"option" => $option,"correct" => $isCorrect,"difficulty" => $difficulty];
+            if (!$option_ex) {
+                $options_map[] = ["quetion" => $question->id, "option" => $option, "correct" => $isCorrect, "difficulty" => $difficulty];
+            }
+
+
         }
 
         $this->options_create($options_map);

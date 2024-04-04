@@ -43,49 +43,49 @@
             <div class="sider__body">
                 <ul class="sider__body--list">
                     <li>
-                        <a class="sider--button {{ Route::currentRouteName() === '/' ? 'active' : '' }}"
+                        <a class="sider--button {{ Route::currentRouteName() === 'studentAdminIndex' ? 'active' : '' }}"
                            href="{{ route('studentAdminIndex') }}">
                             <i class="fa-solid fa-lg fa-house"></i>
                             <span class="sider__item--title">Asosiy</span>
                         </a>
                     </li>
                     <li>
-                        <a class="sider--button {{ request()->routeIs('/subjects') ? 'active' : '' }}"
+                        <a class="sider--button {{ request()->routeIs('studentAdminSubjects') ? 'active' : '' }}"
                            href="{{ route('studentAdminSubjects') }}">
                             <i class="fa-solid fa-lg fa-list"></i>
                             <span class="sider__item--title">Fanlar ro'yxati</span>
                         </a>
                     </li>
                     <li>
-                        <a class="sider--button {{ request()->routeIs('/currentexam') ? 'active' : '' }}"
+                        <a class="sider--button {{ request()->routeIs('studentAdminCurrent') ? 'active' : '' }}"
                            href="{{ route('studentAdminCurrent') }}">
                             <i class="fa-solid fa-spinner"></i>
                             <span class="sider__item--title">Joriy nazorat</span>
                         </a>
                     </li>
                     <li>
-                        <a class="sider--button {{ request()->routeIs('/middleexam') ? 'active' : '' }}"
+                        <a class="sider--button {{ request()->routeIs('studentAdminMiddleexam') ? 'active' : '' }}"
                            href="{{ route('studentAdminMiddleexam') }}">
                             <i class="fa-solid fa-lg fa-clipboard-list"></i>
                             <span class="sider__item--title">Oraliq</span>
                         </a>
                     </li>
                     <li>
-                        <a class="sider--button {{ request()->routeIs('/selfstudy') ? 'active' : '' }}"
+                        <a class="sider--button {{ request()->routeIs('studentAdminSelfstudy') ? 'active' : '' }}"
                            href="{{ route('studentAdminSelfstudy') }}">
-                            <i class="fa-solid fa-lg fa-clock-rotate-left"></i>
+                            <i class="fa-solid fa-file-circle-check"></i>
                             <span class="sider__item--title">Mustaqil talim</span>
                         </a>
                     </li>
-                     <li>
-                        <a class="sider--button {{ request()->routeIs('/retry') ? 'active' : '' }}"
+                    <li>
+                        <a class="sider--button {{ request()->routeIs('studentAdminRetry') ? 'active' : '' }}"
                            href="{{ route('studentAdminRetry') }}">
                             <i class="fa-solid fa-lg fa-clock-rotate-left"></i>
                             <span class="sider__item--title">Qayta o'zlashtirish</span>
                         </a>
                     </li>
                     <li>
-                        <a class="sider--button {{ request()->routeIs('/finalexam') ? 'active' : '' }}"
+                        <a class="sider--button {{ request()->routeIs('studentAdminFinal') ? 'active' : '' }}"
                            href="{{ route('studentAdminFinal') }}">
                             <i class="fa-solid fa-flag-checkered"></i>
                             <span class="sider__item--title">Yakuniya nazorat</span>
@@ -93,13 +93,14 @@
                     </li>
 
                     <li>
-                        <a class="sider--button {{ request()->routeIs('/result') ? 'active' : '' }}"
+                        <a class="sider--button {{ request()->routeIs('studentAdminResult') ? 'active' : '' }}"
                            href="{{ route('studentAdminResult') }}">
                             <i class="fa-solid fa-lg fa-ranking-star"></i>
                             <span class="sider__item--title">Natijalarni ko'rish</span>
                         </a>
                     </li>
                 </ul>
+
             </div>
 
             <!-- Footer -->
@@ -193,7 +194,6 @@
         responsive: true
 
     });
-
 
 
 </script>
