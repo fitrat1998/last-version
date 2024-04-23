@@ -34,7 +34,9 @@
                                 Savol qo'shish
                             </a>
                             @endcan
+                        @can('question.destroy')
                             <a href="" class="btn btn-danger" id="deleteAllSellected"> O'chirish</a>
+                        @endcan
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">

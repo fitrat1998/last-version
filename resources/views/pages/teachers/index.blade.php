@@ -29,6 +29,8 @@
                                 <span class="fas fa-plus-circle"></span>
                                 Qo'shish
                             </a>
+                        @endcan
+                        @can('teacher.destroy')
                             <a href="" class="btn btn-danger" id="deleteAllSellected"> O'chirish</a>
                         @endcan
 

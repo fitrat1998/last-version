@@ -141,9 +141,10 @@
 
                     table.clear().draw();
 
-
+                    let i = 0;
                     Object.keys(response).forEach(function (key) {
                         var student = response[key];
+                        i++;
                         table.row.add([
                             '<input type="checkbox" name="students_id[]" id="checkboxSuccess3" value="' + student.id + '">',
                             student.id,
@@ -178,11 +179,12 @@
                         // DataTable jadvallarini tozalash
                         table.clear().draw();
 
-
+                        let ii = 0;
                         for (var i = 0; i < response.length; i++) {
+                            ii++;
                             var row = [
                                 '<input type="checkbox" name="teachers_id[]" id="checkboxSuccess' + response[i].id + '" value="' + response[i].id + '">',
-                                response[i].id,
+                                ii,
                                 response[i].fullname,
                                 response[i].faculties_id
                             ];

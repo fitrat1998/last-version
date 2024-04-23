@@ -24,7 +24,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            @can('topics.create')
+                            @can('topic.create')
                             <a href="{{ route('topics.create') }}" class="btn btn-success btn-sm float-right">
                             <span class="fas fa-plus-circle"></span>
                                 Mavzu qo'shish
