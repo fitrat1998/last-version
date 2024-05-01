@@ -189,8 +189,7 @@ class ExamController extends Controller
                 ->pluck('id');
             }
 
-            $randomQuestion = Question::where('topic_id', $topic)
-                    ->whereIn('topic_id', $topics)
+            $randomQuestion = Question::whereIn('topic_id', $topics)
                 ->inRandomOrder()
                 ->limit($number)
                 ->get();
