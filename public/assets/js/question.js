@@ -8,6 +8,7 @@ $(document).ready(() => {
     const questionNextLabel = document.querySelector("#questionNextLabel");
     const quesCard = document.querySelector("#questionCard");
     const variantListForm = document.querySelector("#variantListForm");
+    const examTestMenuBtn = document.querySelector("#examTestMenuBtn");
 
     /* ================================ /
               CONFIG VARIABLES
@@ -21,6 +22,21 @@ $(document).ready(() => {
     // navigate succes route
     const navigateSuccessRoute = "../";
 
+
+    /* ====================Toggle test menu========================= */
+    // examTestMenuBtn.on('click',() => {
+    //     alert("menu")
+    // })
+
+   examTestMenuBtn.addEventListener('click', () => {
+        $('#examTestMenu').toggleClass('show');
+    })
+    $('#examTestMenu').on('click', ()=>{
+        $('#examTestMenu').removeClass('show');
+    });
+    $('#questionContent').on('click', ()=>{
+        $('#examTestMenu').removeClass('show');
+    });
 
     /* ====================Get data========================= */
     function getData() {

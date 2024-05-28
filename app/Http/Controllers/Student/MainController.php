@@ -69,20 +69,31 @@ class MainController extends Controller
 
 
         $examTypes = Examtype::pluck('id');
+        $result = Result::where('users_id', $student->id)->get();
         $results = [];
 
-        foreach ($examTypes as $examTypeId) {
-            $latestResult = Result::where('examtypes_id', $examTypeId)
-                ->where('users_id', $student->id)
-                ->latest('id')
-                ->first();
 
-            if (!is_null($latestResult)) {
-                $results[] = $latestResult;
+        foreach ($examTypes as $examTypeId) {
+            $latestResult = $result->where('examtypes_id', $examTypeId)->max('ball');
+            $latestResultData = $result->where('examtypes_id', $examTypeId)->where('ball', $latestResult)->first();
+
+
+            if ($latestResultData) {
+                $results[] = $latestResultData;
+            }
+
+            if ($examTypeId == 2) {
+                $sumOfScoresForExamType2 = $result->sum('ball');
             }
         }
 
-        return view('students.index', compact('subjects', 'announcements', 'results'));
+        foreach ($examTypes as $examTypeId) {
+              $sumselfstudy = Result::where('users_id', $student->id)
+                  ->where('examtypes_id',2)
+                  ->sum('ball');
+        }
+//        dd($results);
+        return view('students.index', compact('subjects', 'announcements', 'results','sumselfstudy'));
 
     }
 
@@ -146,7 +157,7 @@ class MainController extends Controller
 
 //        dd($attached);
 
-        $middleexams = Middleexam::where('groups_id',$attached->groups_id)->get();
+        $middleexams = Middleexam::where('groups_id', $attached->groups_id)->get();
         return view('students.middleexam', compact('middleexams'));
     }
 
@@ -190,7 +201,7 @@ class MainController extends Controller
             ->first();
 
 
-        $retries = Retriesexam::where('groups_id',$attached->groups_id)->get();
+        $retries = Retriesexam::where('groups_id', $attached->groups_id)->get();
 
 
         if ($user_id) {
@@ -240,7 +251,6 @@ class MainController extends Controller
 
         $results = Result::where('users_id', $user_id)->get();
 
-//        dd($results[0]->correct);
 
         return view('students.result', compact('results'));
     }

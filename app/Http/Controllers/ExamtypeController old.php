@@ -62,18 +62,18 @@ class ExamtypeController extends Controller
      */
     public function show(Examtype $examtype)
     {
-        $id = intval($request->input('id'));
-
-        $subject = Result::where('subjects_id', $id)->pluck('examtypes_id');
-
-        $examtype = Examtype::whereIn('id', $subject)->get();
-
-        return response()->json($examtype);
+        //
     }
 
     public function show2(Request $request)
     {
-        
+        $id = intval($request->input('id'));
+
+        $subject = Result::where('subjects_id',$id)->pluck('examtypes_id');
+
+        $examtype = Examtype::whereIn('id',$subject)->get();
+
+        return response()->json($examtype);
     }
 
     /**

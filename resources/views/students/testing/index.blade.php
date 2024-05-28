@@ -5,7 +5,8 @@
             <h6 class="text-dark">Siz Oraliqda ishtirok etmoqdasiz</h6>
         </div>
     @endif
-    <table class="table table-bordered">
+    <div data-spy="scroll" data-target=".table" data-offset="100" style="height: 800px">
+    <table class="table table-bordered  table-responsive" >
         <tr>
             <th>Holati</th>
             <td>
@@ -103,4 +104,5 @@
             <button type="submit" class="btn btn-info"> Qatnashish</button>
         </form>
     @endif
+    </div>
 @endsection

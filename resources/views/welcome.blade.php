@@ -1,4 +1,4 @@
-@extends('layouts.student-app')
+@extends('layouts.student-app.blade.php')
 
 @section('content')
     <!-- Profile header for responsive -->

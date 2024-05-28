@@ -46,7 +46,7 @@
                                     <input type="hidden" name="url_result_programm" value="{{route('programmShow2')}}"
                                     id="url_result_programm">
 
-                                    <select class="select2" name="faculty" data-placeholder="Semestrni tanlang" style="width: 100%;" id="result_programm">
+                                    <select class="select2" name="result_programm" data-placeholder="Semestrni tanlang" style="width: 100%;" id="result_programm">
                                         <option>yo'nalishni tanlang</option>
                                         @foreach($programms as $p)
                                             <option value="{{ $p->id  }}">{{ $p->programm_name  }}</option>
@@ -99,7 +99,10 @@
                                 <th>ID</th>
                                 <th>Fish</th>
                                 <th>Guruh</th>
-                                <th>Imtihon turi</th>
+                                <th>Joriy nazorat</th>
+                                <th>Oraliq nazorat</th>
+                                <th>Mustaqil ta`lim</th>
+                                <th>Yakuniy nazorat</th>
                                 <th>Fan</th>
                                 <th>Semester</th>
                                 <th>Ball</th>

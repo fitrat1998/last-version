@@ -14,15 +14,9 @@
 
         <!-- Profile -->
         <div class="right__sider--head main__banner--profile">
-            <button class="btn btn-text">
-                <a href="{{ route('StudentProfile') }}">
-                    <i class="fa-solid fa-circle-user bar__icon"></i>
-                </a>
-            </button>
-
             <button
                 type="button"
-                class="btn btn-text dropdown-toggle mobileHide"
+                class="btn btn-text dropdown-toggle"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
             >
@@ -33,7 +27,19 @@
                 />
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ route('studentAdminIndex') }}">Profile</a></li>
+                <li><a class="dropdown-item" href="{{ route('studentAdminIndex') }}">
+                    <i class="fa fa-user"></i>
+                    Profile
+                </a></li>
+                <li>
+                    <form action={{ route('logout') }} method='POST'>
+                        @csrf
+                        <button class="dropdown-item text-danger" type="submit">
+                            <i class="fa fa-sign-out-alt"></i>
+                            Chiqish
+                        </button>
+                    </form>
+                </li>
             </ul>
         </div>
     </section>
@@ -125,7 +131,12 @@
 
                         <td>
                             @if($result)
-                                {{$result->ball  ?? 0}}
+
+                                @if($result->examtypes_id == 2)
+                                    {{ $sumselfstudy }}
+                                @else
+                                    {{$result->ball  ?? 0}}
+                                @endif
                             @else
                                 mavjud emas
                             @endif
@@ -155,21 +166,19 @@
                 <tr>
                     @php
                         $sum_final = 0;
-                        $sum_retry = 0;
-                        $sum_selfstudy = 0;
-                        $sum_middle = 0;
+
                         $sum_all = 0;
                         foreach($results as $r){
 
-                            if($r->examtypes_id != 3){
+                            if($r->examtypes_id != 3 && $r->examtypes_id != 2){
                                 $sum_all += $r->ball;
                             }
-
+                            $sum_final = $sum_all + $sumselfstudy;
                         }
                     @endphp
                     <th colspan="2" style="text-align:right">
 
-                       Umimuyi ball: {{ number_format($sum_all,1) }}
+                       Umimuyi ball: {{ number_format($sum_final,1) }}
                     </th>
                     <th></th>
                     <th></th>

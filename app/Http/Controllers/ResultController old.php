@@ -21,9 +21,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ResultController extends Controller
 {
@@ -111,31 +109,26 @@ class ResultController extends Controller
      */
     public function show(Request $request)
     {
-        $subject_id = intval($request->input('id'));
+        $id = intval($request->input('id'));
         $group_id = intval($request->input('group_id'));
-        $programm_id = intval($request->input('programm_id'));
+        $subject_id = intval($request->input('subject_id'));
 
-        $students = Student::where('programm_id', $programm_id)->pluck('id');
-
-        $users = User::whereIn('student_id', $students)->pluck('id');
-
-        $result = Result::where('subjects_id', $subject_id)
+        $result = Result::where('examtypes_id', $id)
             ->get();
 
-        $u_id = $result->pluck('users_id')->toArray();
-
-        $examTypes = Result::where('subjects_id', $subject_id)->pluck('examtypes_id');
+        $u_id = $result->pluck('users_id');
+        $nid = $result->pluck('examtypes_id');
 
 
         $max_balls = Result::whereIn('users_id', $u_id)
-            ->whereIn('examtypes_id', $examTypes)
+            ->where('examtypes_id', $id)
             ->select('users_id', DB::raw('MAX(ball) as max_ball'))
-            ->groupBy('users_id','subjects_id','examtypes_id')
+            ->groupBy('users_id', 'examtypes_id', 'subjects_id')
             ->pluck('max_ball')
             ->toArray();
 
 
-        $results = Result::whereIn('examtypes_id', $examTypes)
+        $results = Result::whereIn('examtypes_id', $nid)
             ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
             ->join('users', 'results.users_id', '=', 'users.id')
             ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
@@ -159,8 +152,8 @@ class ResultController extends Controller
             ->distinct()
             ->get();
 
-         return response()->json(($results));
 
+        return response()->json($results);
     }
 
 
@@ -168,50 +161,10 @@ class ResultController extends Controller
     {
         $id = intval($request->input('id'));
 
-        // $id = intval($request->input('id'));
-
-        // $result = Result::where('examtypes_id', $id)->get();
-
-        // $u_id = $result->pluck('users_id');
-
-        // $max_balls = Result::whereIn('users_id', $u_id)
-        // ->where('examtypes_id', $id)
-        // ->select('users_id', 'examtypes_id', 'subjects_id', DB::raw('MAX(ball) as max_ball'))
-        // ->groupBy('users_id', 'examtypes_id', 'subjects_id')
-        // ->pluck('max_ball');
-
-        // // $results = Result::where('examtypes_id', $id)
-        // // ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
-        // // ->join('users', 'results.users_id', '=', 'users.id')
-        // // ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
-        // // // ->join('groups', 'student_has_attach.groups_id', '=', 'groups.id')
-        // // // ->join('students', 'users.student_id', '=', 'students.id')
-        // // ->get();
-
-        // $st = User::whereIn('id',$u_id)->get();
-
-        // $att = DB::table('student_has_attach')->whereIn('students_id',);
-
-        // // ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
-        // // ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
-        // // ->join('students', 'users.student_id', '=', 'students.id') // Bu qatordan foydalanuvchilarni izlashni oldini olamiz
-        // // ->whereIn('results.ball', $max_balls)
-        // // ->select([
-        // //     'results.id as id',
-        // //     'results.correct as correct',
-        // //     'results.ball as ball',
-        // //     'semesters.semester_number as semester',
-        // //     'subjects.subject_name as subject',
-        // //     'groups.name as group',
-        // //     'students.fullname as student',
-        // //     'examtypes.name as examtype',
-        // // ])
-        // // ->distinct()
-
-        // Log::info($results);
+        $result = Result::where('examtypes_id', $id);
 
 
-        // return response()->json(($u_id));
+        return response()->json($result);
     }
 
 

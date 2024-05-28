@@ -592,13 +592,13 @@ main.siderShow {
     max-width: 700px;
     transform: translateX(-50%);
     padding: 0.3rem;
-    overflow-x: scroll;
-    overflow-y: scroll;
+    overflow-x: auto;
+    box-shadow: 0px -10px 31px -3px rgba(0, 0, 0, 0.05);
 }
 
 .mobile__bottom--list {
     background: rgba(255, 255, 255, 0.582);
-    backdrop-filter: blur(32px);
+    /*backdrop-filter: blur(32px);*/
     border-radius: 12px;
     width: 100%;
     display: flex;
@@ -609,7 +609,6 @@ main.siderShow {
     margin: 0;
     padding-bottom: 1rem;
     height: 100%;
-
 }
 
 .mobile__bottom--list__link {
@@ -622,12 +621,10 @@ main.siderShow {
     height: 100%;
     text-decoration: none;
     color: #858585;
-
 }
 
 .active .mobile__bottom--list__link {
     color: #4062ff;
-
 }
 
 .bar__icon {
@@ -636,7 +633,6 @@ main.siderShow {
     min-width: 24px;
     margin-bottom: 4px;
     font-size: 1.3rem;
-
 }
 
 .bar__label {
@@ -711,7 +707,7 @@ main.siderShow {
     border-radius: 16px;
     background: #fff;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.06),
-    0px 0px 4px 0px rgba(0, 0, 0, 0.04);
+        0px 0px 4px 0px rgba(0, 0, 0, 0.04);
     z-index: 0;
 }
 
@@ -823,4 +819,3 @@ main.siderShow {
         max-width: 110px;
     }
 }
-

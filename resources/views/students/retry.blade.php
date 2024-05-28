@@ -44,7 +44,7 @@
         <div class="card p-1">
             <table id="example" class="table table-striped" style="width:100%">
                 <thead>
-                
+
                 <tr>
                     <th>Fan</th>
                     <th>Qoldirilgan dars mavzusi</th>
@@ -54,7 +54,7 @@
                 </thead>
                 <tbody>
                 @foreach($absents as $a)
-             
+
                 <tr>
                     <td>
                         @foreach($subjects as $s)
