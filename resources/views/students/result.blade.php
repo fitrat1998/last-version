@@ -74,7 +74,7 @@
 
                         <td>
                             @if($result)
-                                {{$result->ball / 10 ?? 0}}
+                                {{$result->ball ?? 0}}
                             @else
                                 mavjud emas
                             @endif

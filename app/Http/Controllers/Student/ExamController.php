@@ -57,10 +57,19 @@ class ExamController extends Controller
                 ->where('users_id',auth()->user()->id)
                 ->max('correct');
 
-            $maxBall = Result::where('examtypes_id',$type_id)
-                ->where('quizzes_id',$id)
-                ->where('users_id',auth()->user()->id)
-                ->max('ball');
+           $results1 = Result::where('users_id', $ud)
+                ->where('examtypes_id', $examp->examtypes_id)
+                ->where('subjects_id', $examp->subjects_id)
+                ->get();
+
+            $maxBall = null;
+
+            foreach ($results1 as $result) {
+
+                if ($maxBall === null || $result->ball > $maxBall) {
+                    $maxBall = $result->ball;
+                }
+            }
 
             $result = Result::find($type_id);
             return view('students.testing.index',compact('examp','vaqt','results','maxBall','maxCorrect','result'));

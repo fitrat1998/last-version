@@ -169,6 +169,12 @@
                                 <span class="bar__label">Yakuniy</span>
                             </a>
                         </li>
+                        <li class="{{ request()->routeIs('studentAdminResult') ? 'active' : '' }}">
+                            <a class="mobile__bottom--list__link {{ request()->routeIs('studentAdminResult') ? 'active' : '' }}" href="{{ route('studentAdminResult') }}">
+                                <i class="fa-solid fa-lg fa-ranking-star bar__icon"></i>
+                                <span class="bar__label">Natijalar</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </div>

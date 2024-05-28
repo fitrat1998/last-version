@@ -47,10 +47,10 @@
             <th>Eng katta ball / To'g'ri javoblar</th>
 
             @if($maxBall)
-                <td class="text-success"><b>{{ $maxBall }} / {{ $maxCorrect }}</b>
+                <td class="text-success"><b>{{ floatval($maxBall) }} / {{ $maxCorrect }}</b>
                 </td>
-            @elseif(( $maxBall > $examp->passing))
-                <td class="text-danger"><b>{{ $maxBall }} / {{ $maxCorrect }} </b></td>
+            @elseif(( intval($maxBall) > $examp->passing))
+                <td class="text-danger"><b>{{ floatval($maxBall)}} / {{ $maxCorrect }} </b></td>
             @else
                 <td class="">0</td>
             @endif

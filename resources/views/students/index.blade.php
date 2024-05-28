@@ -27,7 +27,7 @@
                 />
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ route('studentAdminIndex') }}">
+                <li><a class="dropdown-item" href="{{ route('StudentProfile') }}">
                     <i class="fa fa-user"></i>
                     Profile
                 </a></li>
@@ -133,7 +133,7 @@
                             @if($result)
 
                                 @if($result->examtypes_id == 2)
-                                    {{ $sumselfstudy }}
+                                    {{ $sumselfstudy ?? $result->ball }}
                                 @else
                                     {{$result->ball  ?? 0}}
                                 @endif

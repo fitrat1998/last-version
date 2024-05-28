@@ -126,40 +126,60 @@ class ResultController extends Controller
 
         $examTypes = Result::where('subjects_id', $subject_id)->pluck('examtypes_id');
 
-
-        $max_balls = Result::whereIn('users_id', $u_id)
-            ->whereIn('examtypes_id', $examTypes)
-            ->select('users_id', DB::raw('MAX(ball) as max_ball'))
-            ->groupBy('users_id','subjects_id','examtypes_id')
-            ->pluck('max_ball')
-            ->toArray();
-
-
         $results = Result::whereIn('examtypes_id', $examTypes)
-            ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
-            ->join('users', 'results.users_id', '=', 'users.id')
-            ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
-            ->join('groups', 'student_has_attach.groups_id', '=', 'groups.id')
-            ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
-            ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
-            ->join('students', 'users.student_id', '=', 'students.id')
-            ->whereIn('results.ball', array_values($max_balls))
-            ->where('groups.id', $group_id)
-            ->where('subjects.id', $subject_id)
-            ->select(
-                'results.id as id',
-                'results.correct as correct',
-                'results.ball as ball',
-                'semesters.semester_number as semester',
-                'subjects.subject_name as subject',
-                'groups.name as group',
-                'students.fullname as student',
-                'examtypes.name as examtype'
-            )
-            ->distinct()
+            ->whereIn('users_id', $u_id)
             ->get();
 
-         return response()->json(($results));
+        $groupedResults = $results->groupBy('subjects_id');
+
+        $highestScoresBySubject = [];
+
+        foreach ($groupedResults as $subjectId => $subjectResults) {
+            $highestScore = $subjectResults->max('ball');
+            $highestScoreData = $subjectResults->where('ball', $highestScore)->first();
+
+            // Eng yuqori ballni saqlash
+            if ($highestScoreData) {
+                $highestScoresBySubject[] = $highestScoreData;
+            }
+        }
+
+        return response()->json(($highestScoresBySubject));
+
+
+//        $max_balls = Result::whereIn('users_id', $u_id)
+//            ->whereIn('examtypes_id', $examTypes)
+//            ->select('users_id', DB::raw('MAX(ball) as max_ball'))
+//            ->groupBy('users_id','subjects_id','examtypes_id')
+//            ->pluck('max_ball')
+//            ->toArray();
+//
+//
+//        $results = Result::whereIn('examtypes_id', $examTypes)
+//            ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
+//            ->join('users', 'results.users_id', '=', 'users.id')
+//            ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
+//            ->join('groups', 'student_has_attach.groups_id', '=', 'groups.id')
+//            ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
+//            ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
+//            ->join('students', 'users.student_id', '=', 'students.id')
+//            ->whereIn('results.ball', array_values($max_balls))
+//            ->where('groups.id', $group_id)
+//            ->where('subjects.id', $subject_id)
+//            ->select(
+//                'results.id as id',
+//                'results.correct as correct',
+//                'results.ball as ball',
+//                'semesters.semester_number as semester',
+//                'subjects.subject_name as subject',
+//                'groups.name as group',
+//                'students.fullname as student',
+//                'examtypes.name as examtype'
+//            )
+//            ->distinct()
+//            ->get();
+
+//        return response()->json(($highestScoresBySubject));
 
     }
 
@@ -303,6 +323,7 @@ class ResultController extends Controller
             $examp = Middleexam::find($id);
         } else if ($type_id == 2) {
             $examp = Selfstudyexams::find($id);
+            $topics = DB::table('exam_has_topic')->where('exams_id',$examp->id)->select('topics_id')->first();
         } else if ($type_id == 3) {
             $examp = Retriesexam::find($id);
         } else if ($type_id == 4) {
@@ -317,6 +338,7 @@ class ResultController extends Controller
             'examtypes_id' => $type_id,
             'quizzes_id' => $id,
             'subjects_id' => $examp->subjects_id ?? 0,
+            'topics_id' => $topics->topics_id ?? 0,
             'semesters_id' => $examp->semesters_id ?? 0,
             'correct' => $correctCount,
             'incorrect' => ($examp->number ?? 0 - $correctCount)

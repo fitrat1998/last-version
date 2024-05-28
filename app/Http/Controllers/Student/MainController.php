@@ -69,11 +69,18 @@ class MainController extends Controller
 
 
         $examTypes = Examtype::pluck('id');
-        $result = Result::where('users_id', $student->id)->get();
+
+        $result = Result::where('users_id', $student->id)
+//            ->whereIn('subjects_id',$subject_ids)
+            ->get();
+         $subject_ids = $result->pluck('subjects_id');
+
         $results = [];
+        $topics = [];
 
-
+//        dd($result);
         foreach ($examTypes as $examTypeId) {
+
             $latestResult = $result->where('examtypes_id', $examTypeId)->max('ball');
             $latestResultData = $result->where('examtypes_id', $examTypeId)->where('ball', $latestResult)->first();
 

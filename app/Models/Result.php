@@ -14,6 +14,7 @@ class Result extends Model
         'users_id',
         'quizzes_id',
         'subjects_id',
+        'topics_id',
         'semesters_id',
         'correct',
         'incorrect',
@@ -68,7 +69,7 @@ class Result extends Model
         }
         return $exam;
     }
-    
+
 
     public function results($id)
     {
@@ -119,12 +120,12 @@ class Result extends Model
     public function student($id)
     {
         $user = User::find($id);
-    
+
         if ($user) {
             $students = DB::table('student_has_attach')
                 ->where('students_id', $user->student_id)
                 ->first();
-    
+
             if ($students) {
                 $student = Student::select('id', 'fullname')->find($students->students_id);
                 return $student;
@@ -135,7 +136,7 @@ class Result extends Model
             return "Foydalanuvchi topilmadi yoki noto'g'ri ID kiritildi!";
         }
     }
-    
+
 
    public function group($id)
    {
