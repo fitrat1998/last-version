@@ -69,7 +69,7 @@ class Questions extends Component
         ]);
 
         for ($i = 0; $i < count($date['variant']); $i++) {
-        $difficulty = $date['difficulty'][$i] * 10;
+        $difficulty = $date['difficulty'][$i];
             Options::create([
                 'question_id' => $que->id,
                 'option' => $date['variant'][$i],

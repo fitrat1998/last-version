@@ -70,37 +70,49 @@ class MainController extends Controller
 
         $examTypes = Examtype::pluck('id');
 
-        $result = Result::where('users_id', $student->id)
-//            ->whereIn('subjects_id',$subject_ids)
-            ->get();
-         $subject_ids = $result->pluck('subjects_id');
+        $examTypes = Examtype::pluck('id');
 
+        $result = Result::where('users_id', $student->id)->get();
+
+        $student_id = auth()->user()->student_id ?? 0;
+
+        $student = DB::table('student_has_attach')->where('students_id', $student_id)->first();
+
+        $subject = DB::table('subject_has_group')->where('groups_id', $student->groups_id)->pluck('subjects_id');
+
+        $exam_id = DB::table('selfstudyexams')->whereIn('subjects_id', $subject)->pluck('id');
+
+        $subjects_name = Subject::whereIn('id', $subject)->get();
+
+        $sumselfstudy = [];
+        $sum = 0;
+
+        foreach ($exam_id as $e) {
+            $result = Result::where('exams_id', $e)->max('ball');
+            $sum += $result;
+            $sumselfstudy["data"][] = [
+                "examp_id" => $e,
+                "max_result" => $result ?? 0
+            ];
+        }
+
+        $sumselfstudy["sum"] = $sum;
+
+        $examTypes = Examtype::pluck('id');
+        $result = Result::where('users_id', auth()->user()->id)->get();
         $results = [];
-        $topics = [];
 
-//        dd($result);
-        foreach ($examTypes as $examTypeId) {
+        $userId = auth()->user()->id;
+        $results = [];
 
-            $latestResult = $result->where('examtypes_id', $examTypeId)->max('ball');
-            $latestResultData = $result->where('examtypes_id', $examTypeId)->where('ball', $latestResult)->first();
+          $results = Result::where('users_id', $userId)
+                ->whereIn('examtypes_id', $examTypes)
+                ->orderBy('ball', 'desc')
+                ->get();
 
-
-            if ($latestResultData) {
-                $results[] = $latestResultData;
-            }
-
-            if ($examTypeId == 2) {
-                $sumOfScoresForExamType2 = $result->sum('ball');
-            }
-        }
-
-        foreach ($examTypes as $examTypeId) {
-              $sumselfstudy = Result::where('users_id', $student->id)
-                  ->where('examtypes_id',2)
-                  ->sum('ball');
-        }
 //        dd($results);
-        return view('students.index', compact('subjects', 'announcements', 'results','sumselfstudy'));
+//        exit;
+        return view('students.index', compact('subjects', 'announcements', 'sumselfstudy', 'results'));
 
     }
 

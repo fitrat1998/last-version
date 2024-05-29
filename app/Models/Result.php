@@ -15,6 +15,7 @@ class Result extends Model
         'quizzes_id',
         'subjects_id',
         'topics_id',
+        'exams_id',
         'semesters_id',
         'correct',
         'incorrect',

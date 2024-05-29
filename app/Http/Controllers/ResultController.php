@@ -339,6 +339,7 @@ class ResultController extends Controller
             'quizzes_id' => $id,
             'subjects_id' => $examp->subjects_id ?? 0,
             'topics_id' => $topics->topics_id ?? 0,
+            'exams_id' => $examp->id ?? 0,
             'semesters_id' => $examp->semesters_id ?? 0,
             'correct' => $correctCount,
             'incorrect' => ($examp->number ?? 0 - $correctCount)
