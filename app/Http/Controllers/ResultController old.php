@@ -239,16 +239,14 @@ class ResultController extends Controller
                 ->where('is_correct', 1)
                 ->get();
 
-            $i_c = 0;
+            $correctCount = 0;
+
             foreach ($variantList as $vk => $value) {
                 if ($option[ord($vk) - 97]['is_correct'] && $value) {
-                    $i_c++;
+                    $correctCount ++;
                     $difficulty += $option[ord($vk) - 97]['difficulty'];
                     $difficulty = (float)$difficulty;
                 }
-            }
-            if (count($option_correct) == $i_c) {
-                $correctCount++;
             }
         }
 
@@ -272,9 +270,9 @@ class ResultController extends Controller
             'subjects_id' => $examp->subjects_id ?? 0,
             'semesters_id' => $examp->semesters_id ?? 0,
             'correct' => $correctCount,
-            'incorrect' => ($examp->number ?? 0 - $correctCount)
+            'incorrect' => (($examp->number) - $correctCount)
         ]);
 
-        return response()->json(1);
+        return response()->json($examp);
     }
 }

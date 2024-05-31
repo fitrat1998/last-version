@@ -10,6 +10,7 @@ use App\Models\Group;
 use App\Models\Semester;
 use App\Models\Subject;
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

@@ -50,6 +50,7 @@
                     <th>Fan</th>
                     <th>Test turi</th>
                     <th>Ball</th>
+                    <th>Mavzular</th>
                     <th>Holati</th>
                 </tr>
                 </thead>
@@ -74,10 +75,16 @@
 
                         <td>
                             @if($result)
-                                {{$result->ball ?? 0}}
+                                {{$result->ball ?? 0}} / {{$result->correct ?? 0}}
                             @else
                                 mavjud emas
                             @endif
+                        </td>
+
+                        <td>
+                            @foreach($result->examps() as $r)
+                                <span class="bg-primary text-white p-1" style="border-radius: 7px;">{{ $r }}</span>
+                            @endforeach
                         </td>
 
                         <td>
@@ -88,7 +95,7 @@
                                 $passing = $result->examtypes($result->examtypes_id,$result->subjects_id);
                             @endphp
 
-                             @if($result->ball ?? 0 > $passing->passing ?? 1)
+                            @if($result->ball ?? 0 > $passing->passing ?? 1)
                                 <span class="text-success">Muvaffaqiyatli yakunlandi</span>
                             @else
                                 <span class="text-danger">Muvaffaqiyatsiz yakunlandi</span>

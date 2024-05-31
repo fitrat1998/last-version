@@ -65,21 +65,21 @@
                                 </div>
                             </div>
 
-                             <div class="col-md-3">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <h4>Fan</h4>
-                                    <input type="hidden" name="url_subjects" value="{{route('examtypes.show2')}}" id="url_subject_result">
-                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 100%;" id="subject_result">
-
-                                </select>
+                                    <h4>Semestr</h4>
+                                    <input type="hidden" name="url_subjects" value="{{route('examtypes.show2')}}" id="url_subject_resultx">
+                                    <label for="url_subject_resultx"></label><select class="select2" data-placeholder="fanni tanlang" style="width: 100%;" id="url_subject_resultx">
+                                        <option value="dxqdw">dwqdwq</option>
+                                    </select>
                                 </div>
                             </div>
 
                              <div class="col-md-3">
                                 <div class="form-group">
-                                    <h4>Imtihon turi</h4>
-                                    <input type="hidden" name="url_subjects" value="{{route('results.getDataExam')}}" id="url_examtype_result">
-                                    <select class="select2" data-placeholder="imtihon turini tanlang" style="width: 100%;" id="examtype_result">
+                                    <h4>Fan</h4>
+                                    <input type="hidden" name="url_subjects" value="{{route('examtypes.show2')}}" id="url_subject_result">
+                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 100%;" id="subject_result">
 
                                 </select>
                                 </div>
@@ -98,16 +98,10 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Fish</th>
-                                <th>Guruh</th>
                                 <th>Joriy nazorat</th>
                                 <th>Oraliq nazorat</th>
                                 <th>Mustaqil ta`lim</th>
                                 <th>Yakuniy nazorat</th>
-                                <th>Fan</th>
-                                <th>Semester</th>
-                                <th>Ball</th>
-{{--                                <th>To'gri javoblar soni</th>--}}
-
                             </tr>
                             </thead>
                             <tbody>

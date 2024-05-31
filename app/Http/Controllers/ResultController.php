@@ -30,7 +30,7 @@ class ResultController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -306,18 +306,21 @@ class ResultController extends Controller
                 ->where('is_correct', 1)
                 ->get();
 
-            $i_c = 0;
-            foreach ($variantList as $vk => $value) {
-                if ($option[ord($vk) - 97]['is_correct'] && $value) {
-                    $i_c++;
-                    $difficulty += $option[ord($vk) - 97]['difficulty'];
-                    $difficulty = (float)$difficulty;
-                }
+            $i_c = false;
+            $vk = key($variantList);
+            $value = value($variantList);
+            if ($option[ord($vk) - 97]['is_correct'] && $value) {
+                $i_c = true;
+                $difficulty += floatval($option[ord($vk) - 97]['difficulty']);
             }
-            if (count($option_correct) == $i_c) {
+
+            if ($i_c) {
                 $correctCount++;
             }
         }
+
+        return response()->json($difficulty);
+
 
         if ($type_id == 1) {
             $examp = Middleexam::find($id);
@@ -332,7 +335,7 @@ class ResultController extends Controller
             $examp = Currentexam::find($id);
         }
 
-        Result::create([
+        $result = Result::create([
             'users_id' => auth()->user()->id,
             'ball' => $difficulty,
             'examtypes_id' => $type_id,
@@ -342,7 +345,7 @@ class ResultController extends Controller
             'exams_id' => $examp->id ?? 0,
             'semesters_id' => $examp->semesters_id ?? 0,
             'correct' => $correctCount,
-            'incorrect' => ($examp->number ?? 0 - $correctCount)
+            'incorrect' => ($examp->number - $correctCount)
         ]);
 
         return response()->json(1);

@@ -28,9 +28,9 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{{ route('StudentProfile') }}">
-                    <i class="fa fa-user"></i>
-                    Profile
-                </a></li>
+                        <i class="fa fa-user"></i>
+                        Profile
+                    </a></li>
                 <li>
                     <form action={{ route('logout') }} method='POST'>
                         @csrf
@@ -93,103 +93,52 @@
                 </ul>
             </div>
         </div>
+{{--        <div class="card mb-2">--}}
+{{--            <div class="card-body">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-md-4">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label for="fan">Fanlar </label>--}}
+{{--                            <label>--}}
+{{--                                <select class="select2 m-3 p-3 form-control" onchange="subjects()" id="subject_id">--}}
+{{--                                    <option selected disabled>-- Tanlang --</option>--}}
+
+{{--                                    @foreach($subjects as $s)--}}
+{{--                                        <option value="{{ $s->id }}" @if($s->id == request()->get('subject')) selected @endif>{{ $s->subject_name }}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </label>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
         <div class="card p-1">
             <table id="example" class="table table-striped table-responsive" style="width:100%">
                 <thead>
                 <tr>
-                    <th>Fan</th>
-                    <th>Test turi</th>
-                    <th>Ball</th>
-                    <th>Sanasi</th>
-                    <th>Holati</th>
+                    <th>Fanlar</th>
+                    <th>J.N</th>
+                    <th>M.I</th>
+                    <th>O.R</th>
+                    <th>Y.N</th>
                 </tr>
                 </thead>
                 <tbody>
-
-                @foreach($results as $result)
-
-                    @php
-
-                        $passing = $result->examtypes($result->quizzes_id,$result->subjects_id);
-                    @endphp
+                @foreach($subjects as $s)
                     <tr>
-                        <td>
-                            @if($result)
-                                {{$result->subject($result->subjects_id)}}
-                            @else
-                                mavjud emas
-                            @endif
-                        </td>
-
-                        <td>
-                            @if($result)
-                                {{$result->examtype($result->examtypes_id)->name}}
-                            @else
-                                mavjud emas
-                            @endif
-                        </td>
-
-                        <td>
-                            @if($result)
-
-                                @if($result->examtypes_id == 2)
-                                    {{ $sumselfstudy ?? $result->ball }}
-                                @else
-                                    {{$result->ball  ?? 0}}
-                                @endif
-                            @else
-                                mavjud emas
-                            @endif
-                        </td>
-
-                        <td>
-                            @if($result)
-                                {{$result->created_at->format('Y-m-d')}}
-                            @else
-                                mavjud emas
-                            @endif
-                        </td>
-
-                        <td>
-                            @if($result->ball ?? 0 > $passing->passing ?? 1)
-                                <span class="text-success">Muvaffaqiyatli yakunlandi</span>
-                            @else
-                                <span class="text-danger">Muvaffaqiyatsiz yakunlandi</span>
-                            @endif
-
-                        </td>
+                        <td>{{ $s->subject_name }}</td>
+                        <td>{{ $s->jn() }}</td>
+                        <td>{{ $s->mi() }}</td>
+                        <td>{{ $s->onr() }}</td>
+                        <td>{{ $s->yn() }}</td>
                     </tr>
                 @endforeach
 
                 </tbody>
-                <tfoot>
-                <tr>
-                    @php
-                        $sum_final = 0;
-
-                        $sum_all = 0;
-                        foreach($results as $r){
-
-                            if($r->examtypes_id != 3 && $r->examtypes_id != 2){
-                                $sum_all += $r->ball;
-                            }
-                            $sum_final = $sum_all + $sumselfstudy;
-                        }
-                    @endphp
-                    <th colspan="2" style="text-align:right">
-
-                       Umimuyi ball: {{ number_format($sum_final,1) }}
-                    </th>
-                    <th></th>
-                    <th></th>
-
-                </tr>
-                </tfoot>
-
-
             </table>
-
-
         </div>
+
     </section>
 @endsection

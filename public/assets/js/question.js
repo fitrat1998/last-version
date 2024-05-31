@@ -74,6 +74,7 @@ $(document).ready(() => {
             },
             success: function (x) {
                 console.log(x);
+                return ;
                 if(x){
                     // LocalSetdan o'chirish
                     clearDataFromLocal()
@@ -119,6 +120,7 @@ $(document).ready(() => {
         setTimeout(() => {
             window.location.href = navigateSuccessRoute;
         }, 1500);
+
         clearDataFromLocal();
     }
 
@@ -325,7 +327,7 @@ $(document).ready(() => {
                     variant: key,
                     title: variants[key],
                     questionId,
-                    isMultiple: true,
+                    isMultiple: false,
                     isChecked,
                 });
             });

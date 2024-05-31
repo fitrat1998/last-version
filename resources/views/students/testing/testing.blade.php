@@ -14,6 +14,15 @@
     <link rel="stylesheet" href="{{ asset('assets/css/splide/splide.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/splide/themes/splide-default.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/exam.css') }}" />
+
+    <style>
+        #question__list {
+            overflow: scroll;
+            scrollbar-color: black orange;
+            scrollbar-width: thin;
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>

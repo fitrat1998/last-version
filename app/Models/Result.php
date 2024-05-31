@@ -23,6 +23,32 @@ class Result extends Model
         'ball'
     ];
 
+    public function examps()
+    {
+        $quiz = $this->quizzes_id;
+        $type_id = $this->examtypes_id;
+
+        if($type_id == 1){
+            $examp = Middleexam::find($quiz);
+        }
+        else if($type_id == 2){
+            $examp = Selfstudyexams::find($quiz);
+        }
+        else if($type_id == 3){
+            $examp = Retriesexam::find($quiz);
+        }
+        else if($type_id == 4){
+            $examp = Finalexam::find($quiz);
+        }
+        else if($type_id == 5){
+            $examp = Currentexam::find($quiz);
+        }
+
+        $topics_id = DB::table('exam_has_topic')->where('exams_id',$examp->id)->pluck('topics_id');
+        $topics = Topic::whereIn('id',$topics_id)->pluck('topic_name');
+        return $topics;
+    }
+
     public function examtype($id)
     {
         if ($id == 1) {
@@ -37,9 +63,7 @@ class Result extends Model
             $exam = Examtype::find($id);
         }
 
-
         return $exam;
-
     }
 
     public function examtypes($id, $subjects_id)
@@ -149,16 +173,9 @@ class Result extends Model
 
         if ($students) {
             $group = Group::select('id', 'name')->find($students->groups_id);
-
-
             return $group;
-
         } else {
             return "Bunda ma'lumot topilmadi";
         }
-
     }
-
-
-
 }

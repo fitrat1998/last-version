@@ -30,6 +30,23 @@ Route::get('/', function () {
     return redirect()->route('home');
 })->name('welcome');
 
+Route::get('/sql', function () {
+    $results = \App\Models\Result::all();
+
+    $arr = [];
+
+    foreach ($results as $r) {
+        $incorrect = $r->incorrect;
+
+        $ball = 2*(20 - $incorrect)/20;
+//
+        $r->ball = $ball;
+        $r->save();
+        $arr[] = $ball;
+    }
+    dd($arr);
+});
+
 
 // Web pages
 Route::group(['middleware' => 'auth'], function () {
@@ -198,6 +215,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('attendance_logs', 'AttendanceLogController');
     Route::post('/deleteAllAttendanceLog', 'AttendanceLogController@deleteAll')->name('attendance_logs.DeleteAll');
     Route::get('/attendance-results', 'AttendanceLogController@results')->name('attendance_logs.attendance-results');
+
 
 
     //Attachstudent

@@ -21,6 +21,7 @@ use App\Models\Selfstudyexams;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Topic;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function view;
 
@@ -37,8 +38,10 @@ class MainController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $subject_id = $request->get('subject');
+
         $user = auth()->user()->id;
         // $subjects = Subject::all();
         $announcements = Announcement::all();
@@ -60,7 +63,6 @@ class MainController extends Controller
             if ($attached_subject) {
                 $subjects = Subject::whereIn('id', $attached_subject)
                     ->get();
-
             }
 
         } else {
@@ -70,32 +72,30 @@ class MainController extends Controller
 
         $examTypes = Examtype::pluck('id');
 
-        $examTypes = Examtype::pluck('id');
-
         $result = Result::where('users_id', $student->id)->get();
+        if ($result) {
+            $student_id = auth()->user()->student_id ?? 0;
 
-        $student_id = auth()->user()->student_id ?? 0;
+            $student = DB::table('student_has_attach')->where('students_id', $student_id)->first();
 
-        $student = DB::table('student_has_attach')->where('students_id', $student_id)->first();
+            $subject = DB::table('subject_has_group')->where('groups_id', $student->groups_id)->pluck('subjects_id');
 
-        $subject = DB::table('subject_has_group')->where('groups_id', $student->groups_id)->pluck('subjects_id');
+            $exam_id = DB::table('selfstudyexams')->whereIn('subjects_id', $subject)->pluck('id');
 
-        $exam_id = DB::table('selfstudyexams')->whereIn('subjects_id', $subject)->pluck('id');
+            $subjects_name = Subject::whereIn('id', $subject)->get();
 
-        $subjects_name = Subject::whereIn('id', $subject)->get();
+            $sumselfstudy = [];
+            $sum = 0;
 
-        $sumselfstudy = [];
-        $sum = 0;
-
-        foreach ($exam_id as $e) {
-            $result = Result::where('exams_id', $e)->max('ball');
-            $sum += $result;
-            $sumselfstudy["data"][] = [
-                "examp_id" => $e,
-                "max_result" => $result ?? 0
-            ];
+            foreach ($exam_id as $e) {
+                $result = Result::where('exams_id', $e)->where('users_id', $user)->max('ball');
+                $sum += $result;
+                $sumselfstudy["data"][] = [
+                    "examp_id" => $e,
+                    "max_result" => $result ?? 0
+                ];
+            }
         }
-
         $sumselfstudy["sum"] = $sum;
 
         $examTypes = Examtype::pluck('id');
@@ -103,15 +103,17 @@ class MainController extends Controller
         $results = [];
 
         $userId = auth()->user()->id;
-        $results = [];
 
-          $results = Result::where('users_id', $userId)
-                ->whereIn('examtypes_id', $examTypes)
-                ->orderBy('ball', 'desc')
-                ->get();
+        $results = Result::select('users_id', 'examtypes_id', 'subjects_id', DB::raw('MAX(ball) as max_ball'), DB::raw('MAX(created_at) as latest_created_at'))
+            ->groupBy('users_id', 'examtypes_id', 'subjects_id')
+            ->where('users_id', $userId)
+            ->orderByDesc('max_ball')
+            ->get();
+
 
 //        dd($results);
 //        exit;
+//        dd($subjects);
         return view('students.index', compact('subjects', 'announcements', 'sumselfstudy', 'results'));
 
     }
@@ -256,10 +258,7 @@ class MainController extends Controller
                     $topics [] = $topic;
                 }
             }
-
-
         }
-
 
         return view('students.retry', compact('retries', 'absents', 'subjects', 'exercises', 'topics', 'lessons'));
     }
@@ -269,7 +268,6 @@ class MainController extends Controller
         $user_id = auth()->user()->id;
 
         $results = Result::where('users_id', $user_id)->get();
-
 
         return view('students.result', compact('results'));
     }

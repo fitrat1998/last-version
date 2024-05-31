@@ -51,24 +51,22 @@ class ExamController extends Controller
 
             $results = count($results);
 
-
             $maxCorrect = Result::where('examtypes_id',$type_id)
                 ->where('quizzes_id',$id)
                 ->where('users_id',auth()->user()->id)
-                ->max('correct');
+                ->pluck('correct')
+                ->max();
 
            $results1 = Result::where('users_id', $ud)
+                ->where('quizzes_id',$id)
                 ->where('examtypes_id', $examp->examtypes_id)
                 ->where('subjects_id', $examp->subjects_id)
                 ->get();
 
-            $maxBall = null;
+            $maxBall = 0;
 
             foreach ($results1 as $result) {
-
-                if ($maxBall === null || $result->ball > $maxBall) {
-                    $maxBall = $result->ball;
-                }
+                $maxBall = max($maxBall,floatval($result->ball));
             }
 
             $result = Result::find($type_id);
@@ -233,7 +231,6 @@ class ExamController extends Controller
                 $k ++;
             }
         }
-
 
         return response()->json($test);
     }
