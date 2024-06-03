@@ -59,6 +59,9 @@ class Subject extends Model
         $results = Result::where('subjects_id', $this->id)->where('users_id', auth()->user()->id)->get();
         $res = [];
         $eid = 2;
+
+
+        $sum = 0;
         $results = Result::where('subjects_id', $this->id)
             ->where('users_id', auth()->user()->id)
             ->where('examtypes_id', $eid)
@@ -72,7 +75,6 @@ class Subject extends Model
             $quizs = collect($ry)->unique();
 
             $h = [];
-            $sum = 0;
 
             foreach ($quizs as $q) {
                 $rx = Result::where('subjects_id', $this->id)

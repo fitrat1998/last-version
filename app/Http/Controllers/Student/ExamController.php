@@ -16,6 +16,7 @@ use App\Models\Selfstudyexams;
 use App\Models\Topic;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use function view;
 
 class ExamController extends Controller
@@ -153,8 +154,11 @@ class ExamController extends Controller
     public function examsSolutionSelfTest($type_id,$id): \Illuminate\Http\JsonResponse
     {
         $self = null;
-        if($type_id == 1){
+
+        if($type_id  == 1){
             $self = Middleexam::find($id);
+
+
         }
         else if($type_id == 2){
             $self = Selfstudyexams::find($id);
@@ -192,9 +196,11 @@ class ExamController extends Controller
                     ->pluck('id');
             }
             else {
-                $topics = Topic::where('subject_id',$subjects_id)
-                ->pluck('id');
+                $topics = DB::table('exam_has_topic')->where('exams_id',$self->id)
+                ->pluck('topics_id');
             }
+
+//            return response()->json($topics);
 
             $randomQuestion = Question::whereIn('topic_id', $topics)
                 ->inRandomOrder()

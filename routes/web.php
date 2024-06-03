@@ -141,6 +141,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/educationyear/create', [EducationyearController::class, 'create'])->name('educationyearCreate');
     Route::get('/educationyear/{educationyear_id}/edit', [EducationyearController::class, 'edit'])->name('educationyearEdit');
     Route::get('/educationyear/show/', [EducationyearController::class, 'show'])->name('educationyearShow');
+    Route::get('/educationyear/show2/', [EducationyearController::class, 'show2'])->name('educationyearShow2');
     Route::post('/educationyear/update/{educationyear_id}', [EducationyearController::class, 'update'])->name('educationyearUpdate');
     Route::delete('/educationyear/delete/{id}', [EducationyearController::class, 'destroy'])->name('educationyearDestroy');
     Route::post('/educationyear/deleteAll', [EducationyearController::class, 'deleteAll'])->name('educationyearDeleteAll');

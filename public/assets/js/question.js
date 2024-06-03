@@ -28,21 +28,32 @@ $(document).ready(() => {
     //     alert("menu")
     // })
 
-   examTestMenuBtn.addEventListener('click', () => {
+    examTestMenuBtn.addEventListener('click', () => {
         $('#examTestMenu').toggleClass('show');
     })
-    $('#examTestMenu').on('click', ()=>{
+    $('#examTestMenu').on('click', () => {
         $('#examTestMenu').removeClass('show');
     });
-    $('#questionContent').on('click', ()=>{
+    $('#questionContent').on('click', () => {
         $('#examTestMenu').removeClass('show');
     });
+
+    // var confirmed = false;
+    //
+    // window.onbeforeunload = function (e) {
+    //     e = e || window.event;
+    //     if (!confirmed) {
+    //         e.returnValue = "Are you sure you want to close?";
+    //         confirmed = true;
+    //         handleSubmit();
+    //     }
+    // };
 
     /* ====================Get data========================= */
     function getData() {
         const originalData = getOriginalQuesFromLocal();
         // console.log("submited data", originalData);
-        if(originalData && originalData.length) {
+        if (originalData && originalData.length) {
             startQuiz([...originalData])
             return;
         }
@@ -74,8 +85,8 @@ $(document).ready(() => {
             },
             success: function (x) {
                 console.log(x);
-                return ;
-                if(x){
+                // return;
+                if (x) {
                     // LocalSetdan o'chirish
                     clearDataFromLocal()
 
@@ -557,12 +568,12 @@ $(document).ready(() => {
         localStorage.clear("originalQues");
     }
 
-    function setOriginalQuesToLocal(data){
+    function setOriginalQuesToLocal(data) {
         // local storage
         localStorage.setItem('originalQues', JSON.stringify(data));
     }
 
-    function getOriginalQuesFromLocal(){
+    function getOriginalQuesFromLocal() {
         // local storage
         const data = localStorage.getItem('originalQues');
 

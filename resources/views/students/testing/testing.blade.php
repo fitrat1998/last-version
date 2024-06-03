@@ -35,8 +35,8 @@
         <!-- Header -->
         <header class="exam--header">
             <div class="d-flex gap-3">
-                <a href="/" class="btn btn-primary exam--header__btn">
-                    <i class="fa fa-angle-left"></i>
+                <a href="{{ route('studentAdminIndex') }}" class="btn btn-primary exam--header__btn p-0 m-0">
+                    <i class="fa fa-home"></i>
                 </a>
                 <h3 class="exam--header__title">
                     Test- <span>{{ $data->subject->subject_name ?? "Fan o'chirib yuborilgan" }}</span>
@@ -116,5 +116,18 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/js/app.js') }}"></script>
 <script src="{{ asset('assets/js/question.js') }}"></script>
+
+{{--<script type="text/javascript">--}}
+
+{{--	 window.onbeforeunload = function (e) {--}}
+{{--	  // This function triggers before the window closes--}}
+{{--	  e = e || window.event; // Support IE--}}
+
+{{--	  // Chrome and other modern browsers might not always confirm!--}}
+{{--	  if (e) {--}}
+{{--	    e.returnValue = confirm("Are you sure you want to close?");--}}
+{{--	  }--}}
+{{--	};--}}
+{{--</script>--}}
 
 </html>

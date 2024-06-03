@@ -41,7 +41,7 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <!-- Data table -->
-                                <table id="dataTable" class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg" user="grid" aria-describedby="dataTable_info">
+                                <table id="dataTable" class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg" user="grid" aria-describedby="dataTable_info" style="width:100%"  >
                                     <thead>
                                     <tr>
                                         <th>
@@ -53,7 +53,7 @@
                                         <th>ID</th>
                                         <th class="w-50">Savol</th>
                                         <th>Mavzu</th>
-                                        <th>Variantlar</th>
+                                        <th width="">Variantlar</th>
                                         <th>To'g'ri javoblar</th>
                                         <th class="w-25">Qiyinchiligi</th>
                                         <th class="w-25">Amallar</th>

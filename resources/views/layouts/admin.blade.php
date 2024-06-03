@@ -195,12 +195,7 @@
         $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
         $('[data-mask]').inputmask()
     })
-    // $(document).ready(function () {
-    //     $('.nav-item').click(function () {
-    //         $('.sidebar-mini').removeClass('sidebar-toggle');
-    //         $('.sidebar-mini').addClass('sidebar-closed sidebar-collapse');
-    //     });
-    // });
+
 </script>
 <script>
     $(function (e) {
@@ -301,6 +296,7 @@
         $("div[id*='_pair']").hide();
     });
 
+});
 </script>
 @if(session('_message'))
     <script>

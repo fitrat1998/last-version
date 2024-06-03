@@ -27,10 +27,10 @@ class EducationyearController extends Controller
         abort_if_forbidden('educationyear.show');
 
         $faculties = Faculty::all();
-        $users = User::where('id','!=',auth()->user()->id)->get();
+        $users = User::where('id', '!=', auth()->user()->id)->get();
         $educationyears = Educationyear::all();
 
-        return view('pages.educationyears.index',compact('users','educationyears'));
+        return view('pages.educationyears.index', compact('users', 'educationyears'));
     }
 
     public function add()
@@ -50,7 +50,7 @@ class EducationyearController extends Controller
     {
         abort_if_forbidden('educationyear.create');
 
-        $this->validate($request,[
+        $this->validate($request, [
             'education_year' => ['required'],
         ]);
 
@@ -65,7 +65,7 @@ class EducationyearController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAdmissiondateRequest  $request
+     * @param \App\Http\Requests\StoreAdmissiondateRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAdmissiondateRequest $request)
@@ -76,7 +76,7 @@ class EducationyearController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Admissiondate  $admissiondate
+     * @param \App\Models\Admissiondate $admissiondate
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -87,11 +87,32 @@ class EducationyearController extends Controller
         return response()->json($groups)->header('Content-Type', 'application/json');
     }
 
+    public function show2(Request $request)
+    {
+        $subject_id = $request->input('id');
+        $group_id = $request->input('group_id');
+        $programm_id = $request->input('programm_id');
+//        $groups = Group::where('educationyear_id', '=', $subject_id)->get();
+
+      $groups = DB::table('subject_has_group')->where('subjects_id', $subject_id)
+          ->where('groups_id',  $group_id)
+          ->get()
+          ->pluck('groups_id');
+
+        $educationyear_id = DB::table('student_has_attach')
+            ->where('groups_id', $group_id)
+            ->pluck('educationyears_id')
+            ->unique();
+
+        $educationyear = Educationyear::whereIn('id',$educationyear_id)->get();
+
+        return response()->json($educationyear)->header('Content-Type', 'application/json');
+    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Admissiondate  $admissiondate
+     * @param \App\Models\Admissiondate $admissiondate
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -100,17 +121,17 @@ class EducationyearController extends Controller
 
         $educationyear = Educationyear::find($id);
 
-        return view('pages.educationyears.edit',compact('educationyear'));
+        return view('pages.educationyears.edit', compact('educationyear'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAdmissiondateRequest  $request
-     * @param  \App\Models\Admissiondate  $admissiondate
+     * @param \App\Http\Requests\UpdateAdmissiondateRequest $request
+     * @param \App\Models\Admissiondate $admissiondate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         abort_if_forbidden('educationyear.edit');
 
@@ -126,28 +147,28 @@ class EducationyearController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Admissiondate  $admissiondate
+     * @param \App\Models\Admissiondate $admissiondate
      * @return \Illuminate\Http\Response
      */
-      public function deleteAll(Request $request)
-      {
+    public function deleteAll(Request $request)
+    {
 
         abort_if_forbidden('educationyear.destroy');
 
         $ids = $request->ids;
-        
-        $res = Educationyear::whereIn('id',$ids)->delete();
-        if($res){
+
+        $res = Educationyear::whereIn('id', $ids)->delete();
+        if ($res) {
             return response()->json([
-                'success'=>true,
+                'success' => true,
                 "message" => "This action successfully complated"
-            ]); 
+            ]);
         }
         return response()->json([
-            'success'=>false,
+            'success' => false,
             "message" => "This delete action failed!"
         ]);
-       }
+    }
 
     public function destroy($id)
     {

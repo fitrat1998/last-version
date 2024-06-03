@@ -59,29 +59,28 @@
                                     <h4>Guruh</h4>
                                     <input type="hidden" name="url_result_groups" value="{{route('groupShow2')}}" id="url_group_result">
                                 <select class="select2" data-placeholder="guruhni tanlang" style="width: 100%;" id="group_result">
-                                    <option>----</option>
 
                                 </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <h4>Semestr</h4>
-                                    <input type="hidden" name="url_subjects" value="{{route('examtypes.show2')}}" id="url_subject_resultx">
-                                    <label for="url_subject_resultx"></label><select class="select2" data-placeholder="fanni tanlang" style="width: 100%;" id="url_subject_resultx">
-                                        <option value="dxqdw">dwqdwq</option>
-                                    </select>
                                 </div>
                             </div>
 
                              <div class="col-md-3">
                                 <div class="form-group">
                                     <h4>Fan</h4>
-                                    <input type="hidden" name="url_subjects" value="{{route('examtypes.show2')}}" id="url_subject_result">
+                                    <input type="hidden" name="url_subjects" value="{{route('educationyearShow2')}}" id="url_subject_result">
                                     <select class="select2" data-placeholder="fanni tanlang" style="width: 100%;" id="subject_result">
-
                                 </select>
+                                </div>
+                            </div>
+
+                             <div class="col-md-3">
+                                <div class="form-group">
+                                    <h4>O'quv yili</h4>
+                                    <input type="hidden" name="url_educationyear_result" value="{{route('examtypes.show2')}}" id="url_educationyear_result">
+                                    <label for="educationyear_result"></label>
+                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 95%;" id="educationyear_result">
+
+                                    </select>
                                 </div>
                             </div>
 
@@ -91,7 +90,7 @@
                     <!-- /.card-header -->
                     <div class="card-body w-100" style="overflow:auto">
                         <!-- Data table -->
-                        <table id="dataTable"
+                        <table id="exam_result"
                                class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg"
                                user="grid" aria-describedby="dataTable_info">
                             <thead>
@@ -105,29 +104,14 @@
                             </tr>
                             </thead>
                             <tbody>
-
-                            @foreach ($results as $result)
-                                <tr id="datas_ids{{ $result->id }}">
-
-{{--                                    <td>{{ $result->id }}</td>--}}
-{{--                                    <td>{{ optional($result->student($result->users_id))->fullname ?? "Malumotlar mavjud emas!" }}</td>--}}
-
-{{--                                    <td>{{ optional($result->group($result->users_id))->name ?? "Malumotlar mavjud emas!" }}</td>--}}
-
-{{--                                    <td>{{ optional($result->examtype($result->examtypes_id))->name ?? "Malumotlar mavjud emas!" }}</td>--}}
-
-{{--                                    <td>{{ $result->subject($result->subjects_id) ?? "Malumotlar mavjud emas!" }}</td>--}}
-
-{{--                                    <td>{{ $result->semester($result->semesters_id) ?? "Malumotlar mavjud emas!" }}</td>--}}
-
-
-{{--                                    <td>{{ $result->ball ?? "0" }}</td>--}}
-{{--                                    <td>{{ $result->correct ?? "0" }}</td>--}}
-                                </tr>
-
-
-                                </tr>
-                            @endforeach
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
