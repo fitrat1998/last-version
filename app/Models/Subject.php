@@ -147,12 +147,46 @@ class Subject extends Model
 
     public function yn()
     {
-        $x = $this->jn() + $this->onr() + $this->mi();
-        if ($x >= 30) {
-            return $x;
+        $eid = 4;
+        $results = Result::where('subjects_id', $this->id)
+            ->where('users_id', auth()->user()->id)
+            ->where('examtypes_id', $eid)
+            ->get();
+        $sum = 0;
+        if (count($results) > 0) {
+            $ry = Result::where('subjects_id', $this->id)
+                ->where('users_id', auth()->user()->id)
+                ->where('examtypes_id', $eid)
+                ->pluck('quizzes_id');
+            $quizs = collect($ry)->unique();
+            foreach ($quizs as $q) {
+                $rx = Result::where('subjects_id', $this->id)
+                    ->where('users_id', auth()->user()->id)
+                    ->where('examtypes_id', $eid)
+                    ->where('quizzes_id', $q)
+                    ->max('ball');
+                $sum += floatval($rx);
+            }
         }
-        else {
+
+        $x = $this->jn() + $this->onr() + $this->mi();
+
+        if ($x >= 30) {
+            return $sum;
+        } else {
             return "-";
+        }
+    }
+
+    public function allsum()
+    {
+        if ($this->yn() >= 0) {
+            $all = floatval($this->yn()) + $this->jn() + $this->onr() + $this->mi();
+            return $all;
+
+        } else {
+            $all = $this->jn() + $this->onr() + $this->mi();
+            return $all;
         }
     }
 }

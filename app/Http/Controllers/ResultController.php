@@ -468,7 +468,6 @@ class ResultController extends Controller
         $k = 0;
         $array = [];
         $correctCount = 0;
-        $difficulty = 0;
 
         $arr = [];
 
@@ -502,37 +501,28 @@ class ResultController extends Controller
             return response()->json(1);
         }
 
+        $difficulty = 0.0;
+        $arr = [];
+        $arr2 = [];
         foreach ($data as $d) {
             $questionId = $d['questionId'];
             $variantList = $d['variantList'];
 
             $question = Question::find($questionId);
 
+            $arr2 [] = $question ;
             $option = Options::where('question_id', $question->id)
                 ->get();
 
-            $option_correct = Options::where('question_id', $question->id)
-                ->where('is_correct', 1)
-                ->get();
-
-            $s = $option->pluck('difficulty');
-            $i_c = false;
             $vk = key($variantList);
             $value = value($variantList);
-            if ($option[ord($vk) - 97]['is_correct'] == 1 && $value) {
-                $i_c = true;
-                $difficulty += $option[ord($vk) - 97]['difficulty'];
-                $arr[] = floatval($option[ord($vk) - 97]['difficulty']);
-            }
 
-            if ($i_c) {
+            if ($option[ord($vk) - 97]['is_correct'] == 1 && $value) {
                 $correctCount++;
+                $difficulty += $option[ord($vk) - 97]['difficulty'];
+                $arr [] = $option[ord($vk) - 97]['difficulty'];
             }
         }
-        $difficulty = number_format($difficulty, 1, '.', '');
-
-//        return response()->json([$arr]);
-
 
         $result = Result::create([
             'users_id' => auth()->user()->id,

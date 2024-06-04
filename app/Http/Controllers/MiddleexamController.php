@@ -33,13 +33,12 @@ class MiddleexamController extends Controller
         $user = auth()->user()->id;
 
 
-
         if ($role[0] == 'teacher') {
 
             $middleexams = Middleexam::where('user_id', $user)->get();
 
         } else if (auth()->user()->roles->pluck('name')[0] == 'Super Admin') {
-           $middleexams = Middleexam::all();
+            $middleexams = Middleexam::all();
 
         }
 
@@ -113,6 +112,7 @@ class MiddleexamController extends Controller
             $topicsValues[] = [
                 'exams_id' => $middleexams->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 
@@ -210,6 +210,7 @@ class MiddleexamController extends Controller
             $topicsValues[] = [
                 'exams_id' => $middleexams->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 

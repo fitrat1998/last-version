@@ -91,7 +91,7 @@
                     <div class="card-body w-100" style="overflow:auto">
                         <!-- Data table -->
                         <table id="exam_result"
-                               class="table table-bordered table-striped dataTable dtr-inline table-responsive-lg"
+                               class="table btn_res table-bordered table-striped dataTable dtr-inline table-responsive-lg"
                                user="grid" aria-describedby="dataTable_info">
                             <thead>
                             <tr>
@@ -101,10 +101,12 @@
                                 <th>Oraliq nazorat</th>
                                 <th>Mustaqil ta`lim</th>
                                 <th>Yakuniy nazorat</th>
+                                <th>Umumiy</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

@@ -1,10 +1,12 @@
 /*
 * My functions for admin panel
 */
-$(function () {
-     var table = $("#dataTable").DataTable({
-        scrollX: true // Yatay kaydırma özelliğini etkinleştirin
+$(document).ready(function () {
+    var table = $("#dataTable").DataTable({
+        scrollX: true, // Enable horizontal scrolling
     });
+
+
 });
 
 function preloader() {
@@ -1564,20 +1566,32 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response)
 
+                var table2 = $('#exam_result').DataTable({
+                    dom: 'lBfrtip', // 'l' for length menu, 'B' for buttons, 'f' for filter
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    lengthMenu: [[10, 25, 100], [10, 25, 100]], // Display options for entries per page
+                    pageLength: 10 // Default number of entries per page
+                });
 
                 var table = $('#exam_result').DataTable();
 
-                table.clear().draw();
 
+                table.clear().draw();
+                let sum;
                 for (var i = 0; i < response.length; i++) {
                     if (response[i].name != null) {
+                        sum = (response[i].ball_jn / 10) + (response[i].ball_mi / 10) + (response[i].ball_on / 10) + (response[i].ball_yn / 10);
                         table.row.add([
                             i + 1,
                             response[i].name,
                             response[i].ball_jn / 10,
                             response[i].ball_on / 10,
                             response[i].ball_mi / 10,
-                            response[i].ball_jn / 10,
+                            response[i].ball_yn / 10,
+                            sum.toFixed(1),
+
                         ]);
                     }
                 }

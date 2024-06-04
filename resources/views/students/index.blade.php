@@ -123,6 +123,7 @@
                     <th>M.I</th>
                     <th>O.R</th>
                     <th>Y.N</th>
+                    <th>Umumiy</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -133,6 +134,7 @@
                         <td>{{ $s->mi() }}</td>
                         <td>{{ $s->onr() }}</td>
                         <td>{{ $s->yn() }}</td>
+                        <td>{{ $s->allsum() }}</td>
                     </tr>
                 @endforeach
 
