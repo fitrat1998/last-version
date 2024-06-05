@@ -60,7 +60,6 @@ class Subject extends Model
         $res = [];
         $eid = 2;
 
-
         $sum = 0;
         $results = Result::where('subjects_id', $this->id)
             ->where('users_id', auth()->user()->id)
@@ -99,22 +98,21 @@ class Subject extends Model
             ->where('examtypes_id', $eid)
             ->get();
         $sum = 0;
+
+        $maxGrade = 0;
         if (count($results) > 0) {
             $ry = Result::where('subjects_id', $this->id)
                 ->where('users_id', auth()->user()->id)
                 ->where('examtypes_id', $eid)
-                ->pluck('quizzes_id');
-            $quizs = collect($ry)->unique();
-            foreach ($quizs as $q) {
-                $rx = Result::where('subjects_id', $this->id)
-                    ->where('users_id', auth()->user()->id)
-                    ->where('examtypes_id', $eid)
-                    ->where('quizzes_id', $q)
-                    ->max('ball');
-                $sum += floatval($rx);
+                ->get();
+            foreach ($ry as $grade) {
+                $ball = (float)$grade['ball'];
+                if ($ball > $maxGrade) {
+                    $maxGrade = $ball;
+                }
             }
         }
-        return $sum;
+        return $maxGrade;
     }
 
     public function jn()
@@ -127,22 +125,21 @@ class Subject extends Model
             ->where('examtypes_id', $eid)
             ->get();
         $sum = 0;
+
+        $maxGrade = 0;
         if (count($results) > 0) {
             $ry = Result::where('subjects_id', $this->id)
                 ->where('users_id', auth()->user()->id)
                 ->where('examtypes_id', $eid)
-                ->pluck('quizzes_id');
-            $quizs = collect($ry)->unique();
-            foreach ($quizs as $q) {
-                $rx = Result::where('subjects_id', $this->id)
-                    ->where('users_id', auth()->user()->id)
-                    ->where('examtypes_id', $eid)
-                    ->where('quizzes_id', $q)
-                    ->max('ball');
-                $sum += floatval($rx);
+                ->get();
+            foreach ($ry as $grade) {
+                $ball = (float)$grade['ball'];
+                if ($ball > $maxGrade) {
+                    $maxGrade = $ball;
+                }
             }
         }
-        return $sum;
+        return $maxGrade;
     }
 
     public function yn()
@@ -153,26 +150,26 @@ class Subject extends Model
             ->where('examtypes_id', $eid)
             ->get();
         $sum = 0;
+
+        $maxGrade = 0;
         if (count($results) > 0) {
             $ry = Result::where('subjects_id', $this->id)
                 ->where('users_id', auth()->user()->id)
                 ->where('examtypes_id', $eid)
-                ->pluck('quizzes_id');
-            $quizs = collect($ry)->unique();
-            foreach ($quizs as $q) {
-                $rx = Result::where('subjects_id', $this->id)
-                    ->where('users_id', auth()->user()->id)
-                    ->where('examtypes_id', $eid)
-                    ->where('quizzes_id', $q)
-                    ->max('ball');
-                $sum += floatval($rx);
+                ->get();
+            foreach ($ry as $grade) {
+                $ball = (float)$grade['ball'];
+                if ($ball > $maxGrade) {
+                    $maxGrade = $ball;
+                }
             }
         }
+
 
         $x = $this->jn() + $this->onr() + $this->mi();
 
         if ($x >= 30) {
-            return $sum;
+            return $maxGrade;
         } else {
             return "-";
         }

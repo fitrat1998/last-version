@@ -111,6 +111,7 @@ class CurrentexamController extends Controller
             $topicsValues[] = [
                 'exams_id' => $currentexam->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 
@@ -206,6 +207,7 @@ class CurrentexamController extends Controller
             $topicsValues[] = [
                 'exams_id' => $currentexam->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 

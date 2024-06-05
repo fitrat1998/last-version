@@ -113,6 +113,7 @@ class SelfstudyexamsController extends Controller
             $topicsValues[] = [
                 'exams_id' => $selfstudyexams->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 
@@ -208,6 +209,7 @@ class SelfstudyexamsController extends Controller
             $topicsValues[] = [
                 'exams_id' => $selfstudyexam->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 

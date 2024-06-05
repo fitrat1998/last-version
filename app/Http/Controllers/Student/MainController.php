@@ -192,7 +192,219 @@ class MainController extends Controller
             ->where('students_id', $student->student_id)
             ->first();
 
-        $finalexams = Finalexam::where('groups_id', $attached->groups_id)->get();
+
+        if ($attached) {
+            $attached_subject = DB::table('subject_has_group')
+                ->where('groups_id', $attached->groups_id)
+                ->get();
+
+            $attached_subject = $attached_subject->pluck('subjects_id')->toArray();
+
+            if ($attached_subject) {
+                $subjects = Subject::whereIn('id', $attached_subject)
+                    ->get();
+            }
+
+        }
+
+        $data_mi = [];
+        $data_on = [];
+        $data_jn = [];
+        $data_yn = [];
+
+        foreach ($subjects as $subjects_id) {
+
+            $resultsMI = Result::where('subjects_id', $subjects_id->id)
+                ->where('users_id', $user)
+                ->where('examtypes_id', 2)
+                ->get();
+
+            $sum = 0;
+
+            if ($resultsMI->isNotEmpty()) {
+                $ry = $resultsMI->pluck('quizzes_id')->unique();
+
+                foreach ($ry as $q) {
+                    $rx = $resultsMI->where('quizzes_id', $q)->max('ball') * 10;
+                    $sum += $rx;
+                }
+
+                $data_mi[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => $sum,
+                    'type' => 4
+                ];
+            } else {
+                $data_mi[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => 0,
+                    'type' => 4
+                ];
+            }
+        }
+
+        foreach ($subjects as $subjects_id) {
+
+            $results2 = Result::where('subjects_id', $subjects_id->id)
+                ->where('users_id', $user)
+                ->where('examtypes_id', 1)
+                ->get();
+
+            $sum2 = 0;
+
+            if ($results2->isNotEmpty()) {
+                $quizs = $results2->pluck('quizzes_id')->unique();
+
+                foreach ($quizs as $q) {
+                    $rx = Result::where('subjects_id', $subjects_id->id)
+                            ->where('users_id', $user)
+                            ->where('examtypes_id', 1)
+                            ->where('quizzes_id', $q)
+                            ->max('ball') * 10;
+
+                }
+
+                $data_on[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => $rx,
+                    'type' => 4
+                ];
+            } else {
+                $data_on[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => 0,
+                    'type' => 4
+                ];
+            }
+        }
+
+        foreach ($subjects as $subjects_id) {
+
+            $results2 = Result::
+            where('users_id', $user)
+                ->where('examtypes_id', 5)
+                ->get();
+
+            $sum2 = 0;
+
+            if ($results2->isNotEmpty()) {
+                $quizs = $results2->pluck('quizzes_id')->unique();
+
+                foreach ($quizs as $q) {
+                    $rx = Result::where('subjects_id', $subjects_id->id)
+                            ->where('users_id', $user)
+                            ->where('examtypes_id', 5)
+                            ->where('quizzes_id', $q)
+                            ->max('ball') * 10;
+                }
+
+                $data_jn[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => $rx,
+                    'type' => 4
+                ];
+            } else {
+                $data_jn[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => 0,
+                    'type' => 4
+                ];
+            }
+        }
+
+        foreach ($subjects as $subjects_id) {
+
+            $results2 = Result::
+            where('users_id', $user)
+                ->where('examtypes_id', 4)
+                ->get();
+
+            $sum2 = 0;
+
+            if ($results2->isNotEmpty()) {
+                $quizs = $results2->pluck('quizzes_id')->unique();
+
+                foreach ($quizs as $q) {
+                    $rx = Result::where('subjects_id', $subjects_id->id)
+                            ->where('users_id', $user)
+                            ->where('examtypes_id', 4)
+                            ->where('quizzes_id', $q)
+                            ->max('ball') * 10;
+                }
+
+                $data_yn[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => $rx,
+                    'type' => 4
+                ];
+            } else {
+                $data_yn[] = [
+                    'user' => $user->name ?? null,
+                    'ball' => 0,
+                    'type' => 4
+                ];
+            }
+        }
+        $data = [];
+
+        for ($i = 0; $i < count($data_mi); $i++) {
+            $data[] = [
+                'name' => $data_mi[$i]['user'] ?? null,
+                'ball_mi' => $data_mi[$i]['ball'] ?? null,
+                'ball_on' => $data_on[$i]['ball'] ?? null,
+                'ball_jn' => $data_jn[$i]['ball'] ?? null,
+            ];
+        }
+
+        $subjects_sums = [];
+        $test = [];
+        foreach ($subjects as $subjects_id) {
+            $sum_mi = 0;
+            $sum_on = 0;
+            $sum_jn = 0;
+            $sum_yn = 0;
+
+            // Summa hisoblanishi
+            foreach ($data_mi as $data) {
+                if ($data['ball'] > 0) {
+                    $sum_mi += $data['ball'];
+                }
+            }
+
+            foreach ($data_on as $data) {
+                if ($data['ball'] > 0) {
+                    $sum_on += $data['ball'];
+                }
+            }
+
+            foreach ($data_jn as $data) {
+                if ($data['ball'] > 0) {
+                    $sum_jn += $data['ball'];
+                }
+            }
+
+            foreach ($data_yn as $data) {
+                if ($data['ball'] > 0) {
+                    $sum_yn += $data['ball'];
+                }
+            }
+
+            $total_sum = $sum_mi + $sum_on + $sum_jn + $sum_yn;
+            if (($total_sum / 10) > 30) {
+                $finalexams [] = Finalexam::where('subjects_id', $subjects_id->id)
+                    ->where('groups_id', $attached->groups_id)
+                    ->get();
+            } else {
+                $finalexams = [];
+            }
+
+        }
+
+dd($total_sum);
+
+exit;
+
+
         return view('students.finalexam', compact('finalexams'));
     }
 

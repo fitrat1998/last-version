@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateRetriesexamRequest;
 use App\Models\Semester;
 use App\Models\Subject;
 use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -106,6 +107,7 @@ class RetriesexamController extends Controller
             $topicsValues[] = [
                 'exams_id' => $retriesexams->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 
@@ -200,6 +202,7 @@ class RetriesexamController extends Controller
             $topicsValues[] = [
                 'exams_id' => $retriesexam->id,
                 'topics_id' => $topic_id,
+                'examtypes_id' => $request->examtypes_id,
             ];
         }
 

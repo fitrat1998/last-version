@@ -143,7 +143,7 @@ class ResultController extends Controller
         $data_mi = [];
         $data_on = [];
         $data_jn = [];
-        $datayn_yn = [];
+        $data_yn = [];
 
         $g = [];
 

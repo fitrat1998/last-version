@@ -42,8 +42,10 @@
     </section>
 
     <section class="row m-0">
-        @foreach( $finalexams as $f)
+        @foreach( $finalexams as $all)
+            @foreach($all as $f)
             <livewire:finalexams :f="$f" />
+            @endforeach
         @endforeach
     </section>
 @endsection
