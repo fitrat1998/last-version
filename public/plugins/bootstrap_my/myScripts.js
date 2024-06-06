@@ -1585,12 +1585,15 @@ $(document).ready(function () {
                         sum = (response[i].ball_jn / 10) + (response[i].ball_mi / 10) + (response[i].ball_on / 10) + (response[i].ball_yn / 10);
                         table.row.add([
                             i + 1,
-                            response[i].name,
-                            response[i].ball_jn / 10,
-                            response[i].ball_on / 10,
-                            response[i].ball_mi / 10,
-                            response[i].ball_yn / 10,
-                            sum.toFixed(1),
+                          response[i].name,
+response[i].ball_jn / 10,
+'<a class="btn btn-info" href="' + response[i].ex_ids_jn + '/edit/' + response[i].type_id + '"><i class="fa fa-pencil"></i></a>',
+response[i].ball_on / 10,
+'<a class="btn btn-info" href="' + response[i].ex_ids_on + '/edit/' + response[i].type_id + '"><i class="fa fa-pencil"></i></a>',
+response[i].ball_mi / 10,
+response[i].ball_yn / 10,
+'<a class="btn btn-info" href="' + response[i].ex_ids_yn + '/edit/' + response[i].type_id + '"><i class="fa fa-pencil"></i></a>',
+sum.toFixed(1),
 
                         ]);
                     }

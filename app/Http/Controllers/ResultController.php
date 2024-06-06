@@ -176,13 +176,15 @@ class ResultController extends Controller
                 $data_mi[] = [
                     'user' => $user->name ?? null,
                     'ball' => $sum,
-                    'type' => 4
+                    'ex_ids' => 0,
+                    'type' => 2
                 ];
             } else {
                 $data_mi[] = [
                     'user' => $user->name ?? null,
                     'ball' => 0,
-                    'type' => 4
+                    'ex_ids' => 0,
+                    'type' => 2
                 ];
             }
         }
@@ -195,30 +197,37 @@ class ResultController extends Controller
                 ->where('examtypes_id', 1)
                 ->get();
 
-            $sum2 = 0;
-
+            $maxGrade = 0;
             if ($results2->isNotEmpty()) {
                 $quizs = $results2->pluck('quizzes_id')->unique();
 
                 foreach ($quizs as $q) {
                     $rx = Result::where('subjects_id', $subjects_id)
-                            ->where('users_id', $user2->id)
-                            ->where('examtypes_id', 1)
-                            ->where('quizzes_id', $q)
-                            ->max('ball') * 10;
-
+                        ->where('users_id', $user2->id)
+                        ->where('examtypes_id', 1)
+                        ->where('quizzes_id', $q)
+                        ->get();
                 }
+//
 
-                $data_on[] = [
-                    'user' => $user2->name ?? null,
-                    'ball' => $rx,
-                    'type' => 4
-                ];
+                foreach ($rx as $grade) {
+                    $ball = (float)$grade['ball'];
+                    if ($ball > $maxGrade) {
+                        $maxGrade = $ball;
+                    }
+                    $data_on[] = [
+                        'user' => $user2->name ?? null,
+                        'ball' => $maxGrade * 10,
+                        'ex_ids' => $grade['quizzes_id'],
+                        'type' => 1
+                    ];
+                }
             } else {
                 $data_on[] = [
                     'user' => $user2->name ?? null,
                     'ball' => 0,
-                    'type' => 4
+                    'ex_ids' => 0,
+                    'type' => 1
                 ];
             }
         }
@@ -231,29 +240,37 @@ class ResultController extends Controller
                 ->where('examtypes_id', 5)
                 ->get();
 
-            $sum2 = 0;
+            $maxGrade = 0;
 
             if ($results2->isNotEmpty()) {
                 $quizs = $results2->pluck('quizzes_id')->unique();
 
                 foreach ($quizs as $q) {
                     $rx = Result::where('subjects_id', $subjects_id)
-                            ->where('users_id', $user2->id)
-                            ->where('examtypes_id', 5)
-                            ->where('quizzes_id', $q)
-                            ->max('ball') * 10;
+                        ->where('users_id', $user2->id)
+                        ->where('examtypes_id', 5)
+                        ->where('quizzes_id', $q)
+                        ->get();
+                }
+                foreach ($rx as $grade) {
+                    $ball = (float)$grade['ball'];
+                    if ($ball > $maxGrade) {
+                        $maxGrade = $ball;
+                    }
+                    $data_jn[] = [
+                        'user' => $user2->name ?? null,
+                        'ball' => $maxGrade * 10,
+                        'ex_ids' => $grade['quizzes_id'],
+                        'type' => 5
+                    ];
                 }
 
-                $data_jn[] = [
-                    'user' => $user2->name ?? null,
-                    'ball' => $rx,
-                    'type' => 4
-                ];
             } else {
                 $data_jn[] = [
                     'user' => $user2->name ?? null,
                     'ball' => 0,
-                    'type' => 4
+                    'ex_ids' => 0,
+                    'type' => 5
                 ];
             }
         }
@@ -267,27 +284,36 @@ class ResultController extends Controller
                 ->get();
 
             $sum2 = 0;
+            $ex_ids = [];
 
             if ($results2->isNotEmpty()) {
                 $quizs = $results2->pluck('quizzes_id')->unique();
 
                 foreach ($quizs as $q) {
                     $rx = Result::where('subjects_id', $subjects_id)
-                            ->where('users_id', $user2->id)
-                            ->where('examtypes_id', 4)
-                            ->where('quizzes_id', $q)
-                            ->max('ball') * 10;
+                        ->where('users_id', $user2->id)
+                        ->where('examtypes_id', 4)
+                        ->where('quizzes_id', $q)
+                        ->get();
+                }
+                foreach ($rx as $grade) {
+                    $ball = (float)$grade['ball'];
+                    if ($ball > $maxGrade) {
+                        $maxGrade = $ball;
+                    }
+                    $data_yn[] = [
+                        'user' => $user2->name ?? null,
+                        'ball' => $maxGrade * 10,
+                        'ex_ids' => $grade['quizzes_id'],
+                        'type' => 4
+                    ];
                 }
 
-                $data_yn[] = [
-                    'user' => $user2->name ?? null,
-                    'ball' => $rx,
-                    'type' => 4
-                ];
             } else {
                 $data_yn[] = [
                     'user' => $user2->name ?? null,
                     'ball' => 0,
+                    'ex_ids' => 0,
                     'type' => 4
                 ];
             }
@@ -301,69 +327,22 @@ class ResultController extends Controller
                 'ball_on' => $data_on[$i]['ball'] ?? null,
                 'ball_jn' => $data_jn[$i]['ball'] ?? null,
                 'ball_yn' => $data_yn[$i]['ball'] ?? null,
+                'type_on' => $data_on[$i]['type'] ?? null,
+                'type_jn' => $data_jn[$i]['type'] ?? null,
+                'type_yn' => $data_yn[$i]['type'] ?? null,
+                'ex_ids_on' => $data_on[$i]['ex_ids'] ?? null,
+                'ex_ids_jn' => $data_jn[$i]['ex_ids'] ?? null,
+                'ex_ids_yn' => $data_yn[$i]['ex_ids'] ?? null,
             ];
         }
-
 
         return response()->json($data);
 
 
-//        $users = User::all();
-//        $examtypes = Examtype::all();
-//
-//        $data = [];
-//        foreach ($users as $user) {
-//            foreach ($examtypes as $examtype) {
-//                if ($examtype->id != 2) {
-//                    $result = Result::where('users_id', $user->id)
-//                        ->where('subjects_id', $subjects_id)
-//                        ->where('examtypes_id', $examtype->id)
-//                        ->orderBy('ball', 'desc')
-//                        ->first();
-//                    $data [] = $result;
-//                }
-//            }
-//        }
-
-//        $max_balls = Result::whereIn('users_id', $u_id)
-//            ->whereIn('examtypes_id', $examTypes)
-//            ->select('users_id', DB::raw('MAX(ball) as max_ball'))
-//            ->groupBy('users_id','subjects_id','examtypes_id')
-//            ->pluck('max_ball')
-//            ->toArray();
-//
-//
-//        $results = Result::whereIn('examtypes_id', $examTypes)
-//            ->join('examtypes', 'results.examtypes_id', '=', 'examtypes.id')
-//            ->join('users', 'results.users_id', '=', 'users.id')
-//            ->join('student_has_attach', 'users.student_id', '=', 'student_has_attach.students_id')
-//            ->join('groups', 'student_has_attach.groups_id', '=', 'groups.id')
-//            ->join('semesters', 'results.semesters_id', '=', 'semesters.id')
-//            ->join('subjects', 'results.subjects_id', '=', 'subjects.id')
-//            ->join('students', 'users.student_id', '=', 'students.id')
-//            ->whereIn('results.ball', array_values($max_balls))
-//            ->where('groups.id', $group_id)
-//            ->where('subjects.id', $subject_id)
-//            ->select(
-//                'results.id as id',
-//                'results.correct as correct',
-//                'results.ball as ball',
-//                'semesters.semester_number as semester',
-//                'subjects.subject_name as subject',
-//                'groups.name as group',
-//                'students.fullname as student',
-//                'examtypes.name as examtype'
-//            )
-//            ->distinct()
-//            ->get();
-
-//        return response()->json(($highestScoresBySubject));
-
     }
 
 
-    public
-    function getDataExam(Request $request)
+    public function getDataExam(Request $request)
     {
         $id = intval($request->input('id'));
 
@@ -428,10 +407,11 @@ class ResultController extends Controller
      * @param \App\Models\Result $result
      * @return \Illuminate\Http\Response
      */
-    public
-    function edit(Result $result)
+    public function edit($id)
     {
-        //
+        return $id;
+        $id = $id;
+        return view('pages.results.edit',compact('id'));
     }
 
     /**
@@ -510,7 +490,7 @@ class ResultController extends Controller
 
             $question = Question::find($questionId);
 
-            $arr2 [] = $question ;
+            $arr2 [] = $question;
             $option = Options::where('question_id', $question->id)
                 ->get();
 

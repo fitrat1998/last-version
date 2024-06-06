@@ -85,6 +85,7 @@ $(document).ready(() => {
             },
             success: function (x) {
                 console.log(x);
+                // return;
                 if (x) {
                     // LocalSetdan o'chirish
                     clearDataFromLocal()

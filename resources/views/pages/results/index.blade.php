@@ -24,8 +24,8 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        @can('result.create')
-                          <!--   <a href="{{ route('results.create') }}" class="btn btn-success btn-sm float-right">
+                    @can('result.create')
+                        <!--   <a href="{{ route('results.create') }}" class="btn btn-success btn-sm float-right">
                                 <span class="fas fa-plus-circle"></span>
                                 Qo'shish
                             </a>
@@ -44,9 +44,10 @@
                                     <h4>Yo'nalish</h4>
 
                                     <input type="hidden" name="url_result_programm" value="{{route('programmShow2')}}"
-                                    id="url_result_programm">
+                                           id="url_result_programm">
 
-                                    <select class="select2" name="result_programm" data-placeholder="Semestrni tanlang" style="width: 100%;" id="result_programm">
+                                    <select class="select2" name="result_programm" data-placeholder="Semestrni tanlang"
+                                            style="width: 100%;" id="result_programm">
                                         <option>yo'nalishni tanlang</option>
                                         @foreach($programms as $p)
                                             <option value="{{ $p->id  }}">{{ $p->programm_name  }}</option>
@@ -57,28 +58,34 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <h4>Guruh</h4>
-                                    <input type="hidden" name="url_result_groups" value="{{route('groupShow2')}}" id="url_group_result">
-                                <select class="select2" data-placeholder="guruhni tanlang" style="width: 100%;" id="group_result">
+                                    <input type="hidden" name="url_result_groups" value="{{route('groupShow2')}}"
+                                           id="url_group_result">
+                                    <select class="select2" data-placeholder="guruhni tanlang" style="width: 100%;"
+                                            id="group_result">
 
-                                </select>
+                                    </select>
                                 </div>
                             </div>
 
-                             <div class="col-md-3">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <h4>Fan</h4>
-                                    <input type="hidden" name="url_subjects" value="{{route('educationyearShow2')}}" id="url_subject_result">
-                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 100%;" id="subject_result">
-                                </select>
+                                    <input type="hidden" name="url_subjects" value="{{route('educationyearShow2')}}"
+                                           id="url_subject_result">
+                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 100%;"
+                                            id="subject_result">
+                                    </select>
                                 </div>
                             </div>
 
-                             <div class="col-md-3">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <h4>O'quv yili</h4>
-                                    <input type="hidden" name="url_educationyear_result" value="{{route('examtypes.show2')}}" id="url_educationyear_result">
+                                    <input type="hidden" name="url_educationyear_result"
+                                           value="{{route('examtypes.show2')}}" id="url_educationyear_result">
                                     <label for="educationyear_result"></label>
-                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 95%;" id="educationyear_result">
+                                    <select class="select2" data-placeholder="fanni tanlang" style="width: 95%;"
+                                            id="educationyear_result">
 
                                     </select>
                                 </div>
@@ -98,14 +105,20 @@
                                 <th>ID</th>
                                 <th>Fish</th>
                                 <th>Joriy nazorat</th>
+                                <th><i class="fa fa-pencil"></i></th>
                                 <th>Oraliq nazorat</th>
+                                <th><i class="fa fa-pencil"></i></th>
                                 <th>Mustaqil ta`lim</th>
                                 <th>Yakuniy nazorat</th>
+                                <th><i class="fa fa-pencil"></i></th>
                                 <th>Umumiy</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

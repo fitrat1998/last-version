@@ -43,9 +43,20 @@ class Result extends Model
         else if($type_id == 5){
             $examp = Currentexam::find($quiz);
         }
+        // dd($examp);     
+        if($examp){
+            $topics_id = DB::table('exam_has_topic')->where('exams_id',$examp->id)->pluck('topics_id');
+        }
+        else {
+            $topics_id = [];
+        }
+        if($topics_id){
+            $topics = Topic::whereIn('id',$topics_id)->pluck('topic_name');
+        }
+        else {
+            $topics = ['mavjud emas'];
+        }
 
-        $topics_id = DB::table('exam_has_topic')->where('exams_id',$examp->id)->pluck('topics_id');
-        $topics = Topic::whereIn('id',$topics_id)->pluck('topic_name');
         return $topics;
     }
 
