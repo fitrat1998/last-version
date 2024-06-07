@@ -20,7 +20,7 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- Main content -->
-    {{ $id }}
+
     <section class="content">
         <div class="row">
             <div class="col-lg-8 offset-lg-2 col-sm-12">
@@ -31,18 +31,17 @@
                     <!-- /.card-header -->
                     <div class="card-body">
 
-                        <form action="{{ route('studentUpdate',$student->id) }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('results.update',$result->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
-
+                            @method('PUT')
                             <div class="form-group">
-                                <label>Ism</label>
-                                <input type="text" name="fullname" class="form-control {{ $errors->has('firstname') ? "is-invalid":"" }}" value="{{ old('fullname',$id) }}" required>
-                                @if($errors->has('firstname'))
-                                    <span class="error invalid-feedback">{{ $errors->first('firstname') }}</span>
+                                <label>Ball</label>
+                                <input type="hidden" name="data" value="{{ $id }}">
+                                <input type="text" name="ball" class="form-control {{ $errors->has('ball') ? "is-invalid":"" }}" value="{{ old('ball',$result->ball) }}" required>
+                                @if($errors->has('ball'))
+                                    <span class="error invalid-feedback">{{ $errors->first('ball') }}</span>
                                 @endif
                             </div>
-
-
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success float-right">@lang('global.save')</button>
                                 <a href="{{ route('studentIndex') }}" class="btn btn-default float-left">@lang('global.cancel')</a>

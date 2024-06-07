@@ -24,19 +24,18 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                    @can('result.create')
-                        <!--   <a href="{{ route('results.create') }}" class="btn btn-success btn-sm float-right">
-                                <span class="fas fa-plus-circle"></span>
-                                Qo'shish
-                            </a>
-                            <a href="" class="btn btn-danger" id="deleteAllSellected"> O'chirish</a> -->
-                        @endcan
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                     </div>
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
