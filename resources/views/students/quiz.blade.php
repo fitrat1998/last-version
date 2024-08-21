@@ -22,6 +22,7 @@
             </a>
             <h3 class="exam--header__title">
                 Mustaqil ta'lim & Test- <span>{{ $subject->subject_name }}</span>
+
             </h3>
         </header>
 

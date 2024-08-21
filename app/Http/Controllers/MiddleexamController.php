@@ -107,6 +107,14 @@ class MiddleexamController extends Controller
             'passing' => $request->passing,
         ]);
 
+//        dd($middleexams);
+
+        $duration = DB::table('quiz_has_duration')->insert([
+            'quiz_id'  => $middleexams->id,
+            'duration' => $request->duration,
+            'examtype_id' => $middleexams->examtypes_id,
+        ]);
+
         $topicsValues = [];
         foreach ($request->topics_id as $topic_id) {
             $topicsValues[] = [

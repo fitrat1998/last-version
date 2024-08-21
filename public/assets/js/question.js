@@ -48,7 +48,48 @@ $(document).ready(() => {
     //         handleSubmit();
     //     }
     // };
+var timerElement = document.getElementById('timer');
+if (timerElement) {
+    var minutesText = timerElement.textContent.trim();
+    console.log('minutesText:', minutesText); // Qiymatni tekshiring
 
+    var minutes = parseInt(minutesText, 10); // Daqiqalarni olish
+
+    console.log('minutes:', minutes); // Raqamga aylantirilgan qiymatni tekshiring
+
+    if (isNaN(minutes)) {
+        minutes = 0; // Agar qiymat NaN bo'lsa, 0 daqiqa qilib qo'yish
+    }
+
+    var timeLeft = minutes * 60; // Sekundlarga aylantirish
+    console.log('timeLeft:', timeLeft); // Sekundlarga aylantirilgan vaqt
+
+    function startTimer() {
+        var timerInterval = setInterval(function() {
+            var hoursLeft = Math.floor(timeLeft / 3600); // Soatlarni hisoblash
+            var minutesLeft = Math.floor((timeLeft % 3600) / 60); // Daqiqalarni hisoblash
+            var secondsLeft = timeLeft % 60; // Sekundlarni hisoblash
+
+            // Sekundlarni ikki raqamli formatda ko'rsatish
+            hoursLeft = hoursLeft < 10 ? '0' + hoursLeft : hoursLeft;
+            minutesLeft = minutesLeft < 10 ? '0' + minutesLeft : minutesLeft;
+            secondsLeft = secondsLeft < 10 ? '0' + secondsLeft : secondsLeft;
+
+            timerElement.innerHTML = hoursLeft + ':' + minutesLeft + ':' + secondsLeft;
+
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                clearInterval(timerInterval);
+                submitQuiz(); // Timer tugagach formani yuborish
+            }
+        }, 1000);
+    }
+
+    startTimer();
+} else {
+    console.error('Timer element not found!');
+}
     /* ====================Get data========================= */
     function getData() {
         const originalData = getOriginalQuesFromLocal();
@@ -85,7 +126,7 @@ $(document).ready(() => {
             },
             success: function (x) {
                 console.log(x);
-                // return;
+                return;
                 if (x) {
                     // LocalSetdan o'chirish
                     clearDataFromLocal()

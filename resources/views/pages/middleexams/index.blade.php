@@ -58,6 +58,7 @@
                                     <th>Tugash vaqti</th>
                                     <th>Urinishlar soni</th>
                                     <th>O'tish bali</th>
+                                    <th>Test davomiyligi</th>
                                     <th>Amallar</th>
 
                                 </tr>
@@ -86,6 +87,7 @@
                                         <td>{{ $m->end }}</td>
                                         <td>{{ $m->attempts}}</td>
                                         <td>{{ $m->passing}}</td>
+                                       <td>{{ optional($m->duration($m->id))->duration }}</td>
 
                                         <td class="text-center">
                                             @can('middleexam.destroy')

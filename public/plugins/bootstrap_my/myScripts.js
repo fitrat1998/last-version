@@ -1587,18 +1587,13 @@ $(document).ready(function () {
                             i + 1,
                             response[i].name,
                             response[i].ball_jn / 10,
-                            '<a class="btn btn-info" href="/results/' + (response[i].ex_ids_jn) + ',' + response[i].type_jn + ',' + response[i].
-result_id_jn + ',' + response[i].user_id + '/edit/"><i class="fa fa-pencil"></i></a>',
+                            '<a class="btn btn-info" href="/results/' + (response[i].ex_ids_jn) + ',' + response[i].type_jn + ',' + response[i].result_id_jn + ',' + response[i].user_id + '/edit/"><i class="fa fa-pencil"></i></a>',
                             response[i].ball_on / 10,
-                            '<a class="btn btn-info" href="/results/' + (response[i].ex_ids_on) + ',' + response[i].type_on + ',' + response[i].
-result_id_on + ',' + response[i].user_id + '/edit/"><i class="fa fa-pencil"></i></a>',
+                            '<a class="btn btn-info" href="/results/' + (response[i].ex_ids_on) + ',' + response[i].type_on + ',' + response[i].result_id_on + ',' + response[i].user_id + '/edit/"><i class="fa fa-pencil"></i></a>',
                             response[i].ball_mi / 10,
                             response[i].ball_yn / 10,
-                            '<a class="btn btn-info" href="/results/' + (response[i].ex_ids_yn) + ',' + response[i].type_yn + ',' + response[i].
-result_id_on + ',' + response[i].user_id + '/edit/"><i class="fa fa-pencil"></i></a>',
+                            '<a class="btn btn-info" href="/results/' + (response[i].ex_ids_yn) + ',' + response[i].type_yn + ',' + response[i].result_id_on + ',' + response[i].user_id + '/edit/"><i class="fa fa-pencil"></i></a>',
                             sum.toFixed(1)
-
-
 
 
                         ]);

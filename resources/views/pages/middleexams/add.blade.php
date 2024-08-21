@@ -128,6 +128,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Test davomiyligi <span class="text-danger">(minutlarda kiriting)</span></label>
+                                <input type="number" name="duration" class="form-control {{ $errors->has('duration') ? "is-invalid":"" }}" value="{{ old('duration') }}" required>
+                                @if($errors->has('duration'))
+                                    <span class="error invalid-feedback">{{ $errors->first('duration') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-success float-right">Saqlash</button>
                                 <a href="{{ route('attendance_logs.index') }}" class="btn btn-default float-left">Bekor qilish</a>
                             </div>
