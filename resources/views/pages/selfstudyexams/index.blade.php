@@ -54,9 +54,10 @@
                                     <th>Guruhlar</th>
                                     <th>Semester</th>
                                     <th>Urinishlar soni</th>
-                                    <th>O'tish bali</th>
                                     <th>Boshlanish vaqti</th>
                                     <th>Tugash vaqti</th>
+                                    <th>O'tish bali</th>
+                                    <th>Test davomiyligi</th>
                                     <th>Amallar</th>
 
                                 </tr>
@@ -83,9 +84,12 @@
                                         <td>{{ optional($s->group)->name }}</td>
                                         <td>{{ optional($s->semester)->semester_number }}</td>
                                         <td>{{ $s->attempts }}</td>
-                                        <td>{{ $s->passing }}</td>
                                         <td>{{ $s->start }}</td>
                                         <td>{{ $s->end }}</td>
+                                        <td>{{ $s->passing }}</td>
+                                        <td>
+                                            {{ $s->duration($s->id) ?? 0 }}
+                                        </td>
 
 
                                         <td class="text-center">

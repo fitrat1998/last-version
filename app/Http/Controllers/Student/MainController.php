@@ -400,9 +400,7 @@ class MainController extends Controller
 
         }
 
-dd($total_sum);
 
-exit;
 
 
         return view('students.finalexam', compact('finalexams'));

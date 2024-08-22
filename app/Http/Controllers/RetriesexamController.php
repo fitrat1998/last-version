@@ -102,6 +102,12 @@ class RetriesexamController extends Controller
             'passing' => $request->passing,
         ]);
 
+          $duration = DB::table('quiz_has_duration')->insert([
+            'quiz_id' => $retriesexams->id,
+            'duration' => $request->duration,
+            'examtype_id' => $retriesexams->examtypes_id,
+        ]);
+
         $topicsValues = [];
         foreach ($request->topics_id as $topic_id) {
             $topicsValues[] = [
@@ -167,7 +173,12 @@ class RetriesexamController extends Controller
         $semesters = Semester::all();
         $topics = Topic::where('subject_id', $retriesexam->subjects_id)->get();
 
-        return view('pages.retriesexams.edit', compact('retriesexam', 'examtypes', 'subjects', 'groups', 'semesters', 'topics'));
+          $duration = DB::table('quiz_has_duration')
+            ->where('quiz_id', $id)
+            ->where('examtype_id', $retriesexam->examtypes_id)
+            ->first();
+
+        return view('pages.retriesexams.edit', compact('retriesexam', 'examtypes', 'subjects', 'groups', 'semesters', 'topics','duration'));
     }
 
     /**
@@ -194,6 +205,13 @@ class RetriesexamController extends Controller
             'attempts' => $request->attempts,
             'passing' => $request->passing,
         ]);
+
+         $duration = DB::table('quiz_has_duration')
+            ->where('quiz_id', $id)
+            ->where('examtype_id', $retriesexam->examtypes_id)
+            ->update([
+                'duration' => $request->duration
+            ]);
 
         DB::table('exam_has_topic')->where('exams_id', $id)->delete();
 

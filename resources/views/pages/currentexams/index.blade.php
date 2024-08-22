@@ -54,9 +54,10 @@
                                     <th>Guruhlar</th>
                                     <th>Semester</th>
                                     <th>Urinishlar soni</th>
-                                    <th>O'tish balli</th>
                                     <th>Boshlanish vaqti</th>
                                     <th>Tugash vaqti</th>
+                                    <th>O'tish balli</th>
+                                    <th>Test davomiyligi</th>
                                     <th>Amallar</th>
 
                                 </tr>
@@ -82,9 +83,12 @@
                                         <td>{{ $c->group->name }}</td>
                                         <td>{{ $c->semester->semester_number }}</td>
                                         <td>{{ $c->attempts }}</td>
-                                        <td>{{ $c->passing }}</td>
                                         <td>{{ $c->start }}</td>
                                         <td>{{ $c->end }}</td>
+                                        <td>{{ $c->passing }}</td>
+                                         <td>
+                                                {{ $c->duration($c->id) ?? 0 }}
+                                            </td>
 
                                         <td class="text-center">
                                             @can('currentexam.destroy')

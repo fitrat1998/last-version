@@ -38,58 +38,79 @@ $(document).ready(() => {
         $('#examTestMenu').removeClass('show');
     });
 
-    // var confirmed = false;
-    //
-    // window.onbeforeunload = function (e) {
-    //     e = e || window.event;
-    //     if (!confirmed) {
-    //         e.returnValue = "Are you sure you want to close?";
-    //         confirmed = true;
-    //         handleSubmit();
-    //     }
-    // };
-var timerElement = document.getElementById('timer');
-if (timerElement) {
-    var minutesText = timerElement.textContent.trim();
-    console.log('minutesText:', minutesText); // Qiymatni tekshiring
+    var confirmed = false;
 
-    var minutes = parseInt(minutesText, 10); // Daqiqalarni olish
+    window.onbeforeunload = function (e) {
+        e = e || window.event;
+        if (!confirmed) {
+            e.returnValue = "Are you sure you want to close?";
+            confirmed = true;
+            handleSubmit();
+        }
+    };
 
-    console.log('minutes:', minutes); // Raqamga aylantirilgan qiymatni tekshiring
 
-    if (isNaN(minutes)) {
-        minutes = 0; // Agar qiymat NaN bo'lsa, 0 daqiqa qilib qo'yish
+    var timerElement = document.getElementById('timer');
+    if (timerElement) {
+        var timeText = timerElement.textContent.trim();
+        console.log('Initial time:', timeText); // Boshlang'ich vaqtni tekshirish
+
+        var timeParts = timeText.split(':');
+
+        // Soat, minut va sekundlarni ajratib olish
+        var hours = parseInt(timeParts, 10);
+        var minutes = parseInt(timeParts[1], 10);
+        var seconds = parseInt(timeParts[2], 10);
+
+        var hours_old = parseInt(timeParts[0], 10);
+
+        // NaN bo'lishidan ehtiyot bo'ling
+        if (isNaN(hours)) hours = 0;
+        if (isNaN(minutes)) minutes = 0;
+        if (isNaN(seconds)) seconds = 0;
+
+        // Agar soatlar 0 dan kichik bo'lsa, to'g'ri qiymatni saqlash
+        if (hours < 1 && hours >= 0 && minutes >= 0 && seconds >= 0) {
+            hours = hours_old; // Boshlang'ich vaqtni 01:20:56 qilib qo'yish
+        }
+
+        function startTimer() {
+            var timerInterval = setInterval(function () {
+                // Sekundlarni kamaytirish
+                if (seconds > 0) {
+                    seconds--;
+                } else {
+                    if (minutes > 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        if (hours > 0) {
+                            hours--;
+                            minutes = 59;
+                            seconds = 59;
+                        } else {
+                            clearInterval(timerInterval);
+                            handleSubmit();
+                        }
+                    }
+                }
+
+                // Raqamlarni ikki raqamli formatda ko'rsatish
+                var hoursLeft = hours < 10 ? '0' + hours : hours;
+                var minutesLeft = minutes < 10 ? '0' + minutes : minutes;
+                var secondsLeft = seconds < 10 ? '0' + seconds : seconds;
+
+                console.log('Current time:', hoursLeft + ':' + minutesLeft + ':' + secondsLeft);
+
+                timerElement.innerHTML = hoursLeft + ':' + minutesLeft + ':' + secondsLeft;
+            }, 1000);
+        }
+
+        startTimer();
+    } else {
+        console.error('Timer element not found!');
     }
 
-    var timeLeft = minutes * 60; // Sekundlarga aylantirish
-    console.log('timeLeft:', timeLeft); // Sekundlarga aylantirilgan vaqt
-
-    function startTimer() {
-        var timerInterval = setInterval(function() {
-            var hoursLeft = Math.floor(timeLeft / 3600); // Soatlarni hisoblash
-            var minutesLeft = Math.floor((timeLeft % 3600) / 60); // Daqiqalarni hisoblash
-            var secondsLeft = timeLeft % 60; // Sekundlarni hisoblash
-
-            // Sekundlarni ikki raqamli formatda ko'rsatish
-            hoursLeft = hoursLeft < 10 ? '0' + hoursLeft : hoursLeft;
-            minutesLeft = minutesLeft < 10 ? '0' + minutesLeft : minutesLeft;
-            secondsLeft = secondsLeft < 10 ? '0' + secondsLeft : secondsLeft;
-
-            timerElement.innerHTML = hoursLeft + ':' + minutesLeft + ':' + secondsLeft;
-
-            timeLeft--;
-
-            if (timeLeft < 0) {
-                clearInterval(timerInterval);
-                submitQuiz(); // Timer tugagach formani yuborish
-            }
-        }, 1000);
-    }
-
-    startTimer();
-} else {
-    console.error('Timer element not found!');
-}
     /* ====================Get data========================= */
     function getData() {
         const originalData = getOriginalQuesFromLocal();
@@ -126,7 +147,7 @@ if (timerElement) {
             },
             success: function (x) {
                 console.log(x);
-                return;
+                // return;
                 if (x) {
                     // LocalSetdan o'chirish
                     clearDataFromLocal()

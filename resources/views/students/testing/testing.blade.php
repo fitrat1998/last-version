@@ -32,8 +32,6 @@
               data-check-url='{{ route('examsSelfSolution', ['type_id' => $data->examtypes_id, 'id' => $data->id]) }}'></noscript>
     <!--/ Examp ID -->
 
-{{ $data }}
-
 <!-- Header -->
     <header class="exam--header">
         <div class="d-flex gap-3">
@@ -45,17 +43,18 @@
 
             </h3>
             <h3 class="exam--header__title">
-                    <span id="timer"> ---
+                <span>---</span>
+                    <span id="timer">
                             @if($data->examtypes_id == 1)
                                     {{ $data->duration($data->id) }}
                              @elseif($data->examtypes_id == 2)
-
+                                    {{ $data->duration($data->id) }}
                              @elseif($data->examtypes_id == 3)
-
+                                     {{ $data->duration($data->id) }}
                              @elseif ($data->examtypes_id == 4)
-
+                                     {{ $data->duration($data->id) }}
                              @elseif ($data->examtypes_id == 5)
-
+                                     {{ $data->duration($data->id) }}
                              @endif
 
 

@@ -108,6 +108,12 @@ class SelfstudyexamsController extends Controller
             'passing' => $request->passing,
         ]);
 
+         $duration = DB::table('quiz_has_duration')->insert([
+            'quiz_id' => $selfstudyexams->id,
+            'duration' => $request->duration,
+            'examtype_id' => $selfstudyexams->examtypes_id,
+        ]);
+
         $topicsValues = [];
         foreach ($request->topics_id as $topic_id) {
             $topicsValues[] = [
@@ -173,7 +179,12 @@ class SelfstudyexamsController extends Controller
         $semesters = Semester::all();
         $topics = Topic::where('subject_id', $selfstudy->subjects_id)->get();
 
-        return view('pages.selfstudyexams.edit', compact('selfstudy', 'examtypes', 'subjects', 'groups', 'semesters', 'topics'));
+        $duration = DB::table('quiz_has_duration')
+            ->where('quiz_id', $id)
+            ->where('examtype_id', $selfstudy->examtypes_id)
+            ->first();
+
+        return view('pages.selfstudyexams.edit', compact('selfstudy', 'examtypes', 'subjects', 'groups', 'semesters', 'topics','duration'));
 
     }
 
@@ -201,6 +212,13 @@ class SelfstudyexamsController extends Controller
             'attempts' => $request->attempts,
             'passing' => $request->passing,
         ]);
+
+        $duration = DB::table('quiz_has_duration')
+            ->where('quiz_id', $id)
+            ->where('examtype_id', $selfstudyexam->examtypes_id)
+            ->update([
+                'duration' => $request->duration
+            ]);
 
         DB::table('exam_has_topic')->where('exams_id', $id)->delete();
 

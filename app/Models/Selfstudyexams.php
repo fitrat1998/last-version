@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Selfstudyexams extends Model
 {
@@ -54,5 +55,24 @@ class Selfstudyexams extends Model
 
     public function status($id){
         return count(ExamsStatusUser::where('user_id',$id)->get()) == 1;
+    }
+
+     public function duration($id)
+    {
+
+        $d = DB::table('quiz_has_duration')->where('quiz_id', $id)->first();
+
+
+        if ($d && $d->duration > 0) {
+            $minutes = $d->duration;
+            $hours = floor($minutes / 60);
+            $remainingMinutes = $minutes % 60;
+            $seconds = 0;
+
+            return sprintf('%02d:%02d:%02d', $hours, $remainingMinutes, $seconds);
+        }
+
+
+        return '00:00:00';
     }
 }

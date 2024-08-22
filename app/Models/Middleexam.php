@@ -44,7 +44,7 @@ class Middleexam extends Model
         return $this->belongsTo(Semester::class, 'semesters_id', 'id');
     }
 
-    public function TimeStatus($start,$end): bool
+    public function TimeStatus($start, $end): bool
     {
         $start = Carbon::createFromFormat('Y-m-d H:i:s', $start);
         $end = Carbon::createFromFormat('Y-m-d H:i:s', $end);
@@ -53,19 +53,28 @@ class Middleexam extends Model
         return ($today->greaterThanOrEqualTo($start) && $today->lessThanOrEqualTo($end));
     }
 
-    public function status($id){
-        return count(ExamsStatusUser::where('user_id',$id)->get()) == 1;
+    public function status($id)
+    {
+        return count(ExamsStatusUser::where('user_id', $id)->get()) == 1;
     }
 
     public function duration($id)
     {
-        $d = DB::table('quiz_has_duration')->where('quiz_id',$id)->first();
-        $minutes = $d->duration;
-        $hours = floor($minutes / 60);
-        $remainingMinutes = $minutes % 60;
-        $seconds = 0;
 
-        return sprintf('%02d:%02d:%02d', $hours, $remainingMinutes, $seconds);
+        $d = DB::table('quiz_has_duration')->where('quiz_id', $id)->first();
+
+
+        if ($d && $d->duration > 0) {
+            $minutes = $d->duration;
+            $hours = floor($minutes / 60);
+            $remainingMinutes = $minutes % 60;
+            $seconds = 0;
+
+            return sprintf('%02d:%02d:%02d', $hours, $remainingMinutes, $seconds);
+        }
+
+
+        return '00:00:00';
     }
 
 }

@@ -110,7 +110,7 @@ class MiddleexamController extends Controller
 //        dd($middleexams);
 
         $duration = DB::table('quiz_has_duration')->insert([
-            'quiz_id'  => $middleexams->id,
+            'quiz_id' => $middleexams->id,
             'duration' => $request->duration,
             'examtype_id' => $middleexams->examtypes_id,
         ]);
@@ -182,7 +182,13 @@ class MiddleexamController extends Controller
         $semesters = Semester::all();
         $topics = Topic::where('subject_id', $middleexam->subjects_id)->get();
 
-        return view('pages.middleexams.edit', compact('middleexam', 'examtypes', 'subjects', 'groups', 'semesters', 'topics'));
+        $duration = DB::table('quiz_has_duration')
+            ->where('quiz_id', $id)
+            ->where('examtype_id', $middleexam->examtypes_id)
+            ->first();
+
+
+        return view('pages.middleexams.edit', compact('middleexam', 'examtypes', 'subjects', 'groups', 'semesters', 'topics','duration'));
     }
 
     /**
@@ -192,12 +198,21 @@ class MiddleexamController extends Controller
      * @param \App\Models\middleexam $middleexam
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMiddleexamRequest $request, $id)
+    public function update(Request $request, $id)
     {
         abort_if_forbidden('middleexam.edit');
 
 
         $middleexams = Middleexam::find($id);
+
+     $duration = DB::table('quiz_has_duration')
+            ->where('quiz_id', $id)
+            ->where('examtype_id', $middleexams->examtypes_id)
+            ->update([
+                'duration' => $request->duration
+            ]);
+
+
 
         $middleexams->update([
             'number' => $request->number,
@@ -210,6 +225,14 @@ class MiddleexamController extends Controller
             'attempts' => $request->attempts,
             'passing' => $request->passing,
         ]);
+
+         $duration = DB::table('quiz_has_duration')
+            ->where('quiz_id', $id)
+            ->where('examtype_id', $middleexams->examtypes_id)
+            ->update([
+                'duration' => $request->duration
+            ]);
+
 
         DB::table('exam_has_topic')->where('exams_id', $id)->delete();
 

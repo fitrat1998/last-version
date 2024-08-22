@@ -54,9 +54,10 @@
                                     <th>Guruhlar</th>
                                     <th>Semester</th>
                                     <th>Urinishlar soni</th>
-                                    <th>O'tish balli</th>
                                     <th>Boshlanish vaqti</th>
                                     <th>Tugash vaqti</th>
+                                    <th>O'tish balli</th>
+                                    <th>Test davomiyligi</th>
                                     <th>Amallar</th>
 
                                 </tr>
@@ -85,6 +86,9 @@
                                         <td>{{ $f->passing }}</td>
                                         <td>{{ $f->start }}</td>
                                         <td>{{ $f->end }}</td>
+                                          <td>
+                                                {{ $f->duration($f->id) ?? 0 }}
+                                            </td>
 
                                         <td class="text-center">
                                             @can('finalexam.destroy')

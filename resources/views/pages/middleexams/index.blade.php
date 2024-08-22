@@ -45,7 +45,7 @@
                                     <th>
                                         <div class="icheck-success">
                                             <input type="checkbox" name="" id="select_all_ids">
-                                            <label for="select_all_ids" ></label>
+                                            <label for="select_all_ids"></label>
                                         </div>
                                     </th>
                                     <th>#</th>
@@ -64,50 +64,59 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                   @if($middleexams)
-                                        @foreach ($middleexams as $m)
-                                    <tr id="datas_ids{{ $m->id }}">
-                                        <td>
-                                            <div class="icheck-success">
-                                                <input type="hidden" name="" id="delete_url" value="{{ route('middleexams.DeleteAll') }}">
-                                                <input type="checkbox" class="checkbox_ids" name="ids" id="checkboxSuccess.{{$m->id}}" value="{{ $m->id }}">
-                                                <label for="checkboxSuccess.{{$m->id}}" >
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td style="width: 30px;">{{ $m->id }}</td>
+                                @if($middleexams)
+                                    @foreach ($middleexams as $m)
+                                        <tr id="datas_ids{{ $m->id }}">
+                                            <td>
+                                                <div class="icheck-success">
+                                                    <input type="hidden" name="" id="delete_url"
+                                                           value="{{ route('middleexams.DeleteAll') }}">
+                                                    <input type="checkbox" class="checkbox_ids" name="ids"
+                                                           id="checkboxSuccess.{{$m->id}}" value="{{ $m->id }}">
+                                                    <label for="checkboxSuccess.{{$m->id}}">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td style="width: 30px;">{{ $m->id }}</td>
 
-                                        <td>{{ $m->examtype->name}}</td>
+                                            <td>{{ $m->examtype->name}}</td>
 
-                                        <td>{{ $m->subject->subject_name ?? 0 }}</td>
-                                        <td><a href="{{ route('attendance_logs.show', $m->id)}}" class="text-dark">{{$m->number}}</a></td>
-                                        <td>{{ $m->group->name }}</td>
-                                        <td>{{ $m->semester->semester_number }}</td>
-                                        <td>{{ $m->start }}</td>
-                                        <td>{{ $m->end }}</td>
-                                        <td>{{ $m->attempts}}</td>
-                                        <td>{{ $m->passing}}</td>
-                                       <td>{{ optional($m->duration($m->id))->duration }}</td>
+                                            <td>{{ $m->subject->subject_name ?? 0 }}</td>
+                                            <td><a href="{{ route('attendance_logs.show', $m->id)}}"
+                                                   class="text-dark">{{$m->number}}</a></td>
+                                            <td>{{ $m->group->name }}</td>
+                                            <td>{{ $m->semester->semester_number }}</td>
+                                            <td>{{ $m->start }}</td>
+                                            <td>{{ $m->end }}</td>
+                                            <td>{{ $m->attempts}}</td>
+                                            <td>{{ $m->passing}}</td>
+                                            <td>
+                                                {{ $m->duration($m->id) ?? 0 }}
+                                            </td>
 
-                                        <td class="text-center">
-                                            @can('middleexam.destroy')
-                                                <form action="{{ route('middleexams.destroy', $m->id) }}" method="post">
-                                                    @csrf
-                                                    <div class="btn-group">
-                                                        @can('middleexam.edit')
-                                                            <a href="{{ route('middleexams.edit', $m->id) }}" type="button"
-                                                               class="btn btn-info btn-sm m-1"> <i class="fa fa-edit"></i> </a>
-                                                        @endcan
-                                                        <input name="_method" type="hidden" value="DELETE">
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="if (confirm('Вы уверены?')) { this.form.submit() } "> <i class="fa fa-trash"></i></button>
-                                                    </div>
-                                                </form>
-                                            @endcan
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                   @endif
+                                            <td class="text-center">
+                                                @can('middleexam.destroy')
+                                                    <form action="{{ route('middleexams.destroy', $m->id) }}"
+                                                          method="post">
+                                                        @csrf
+                                                        <div class="btn-group">
+                                                            @can('middleexam.edit')
+                                                                <a href="{{ route('middleexams.edit', $m->id) }}"
+                                                                   type="button"
+                                                                   class="btn btn-info btn-sm m-1"> <i
+                                                                        class="fa fa-edit"></i> </a>
+                                                            @endcan
+                                                            <input name="_method" type="hidden" value="DELETE">
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                    onclick="if (confirm('Вы уверены?')) { this.form.submit() } ">
+                                                                <i class="fa fa-trash"></i></button>
+                                                        </div>
+                                                    </form>
+                                                @endcan
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>
